@@ -9,7 +9,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { users } from "./auth.generated";
-import { modulos } from "./modulos";
+import { aplicaciones } from "./modulos";
 import { proyectos } from "./proyectos";
 
 export const estadoMiembroOrganizacionEnum = pgEnum("estado_miembro_org", [
@@ -103,8 +103,8 @@ export const materiales = pgTable(
   ],
 );
 
-export const organizacionesModulos = pgTable(
-  "organizaciones_modulos",
+export const organizacionesAplicaciones = pgTable(
+  "organizaciones_aplicaciones",
   {
     id: uuid("id").defaultRandom().primaryKey(),
     creadoEn: timestamp("creado_en", { withTimezone: true })
@@ -113,14 +113,16 @@ export const organizacionesModulos = pgTable(
     organizacionId: uuid("organizacion_id")
       .notNull()
       .references(() => organizaciones.id, { onDelete: "cascade" }),
-    moduloId: uuid("modulo_id")
+    aplicacionId: uuid("aplicacion_id")
       .notNull()
-      .references(() => modulos.id, { onDelete: "restrict" }),
+      .references(() => aplicaciones.id, { onDelete: "restrict" }),
     activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
-    uniqueIndex("organizaciones_modulos_organizacion_id_modulo_id_key_active")
-      .on(t.organizacionId, t.moduloId)
+    uniqueIndex(
+      "organizaciones_aplicaciones_organizacion_id_aplicacion_id_key_active",
+    )
+      .on(t.organizacionId, t.aplicacionId)
       .where(sql`${t.activo} = true`),
   ],
 );
@@ -148,8 +150,8 @@ export const organizacionesMiembros = pgTable(
   ],
 );
 
-export const organizacionesMiembrosModulos = pgTable(
-  "organizaciones_miembros_modulos",
+export const organizacionesMiembrosAplicaciones = pgTable(
+  "organizaciones_miembros_aplicaciones",
   {
     id: uuid("id").defaultRandom().primaryKey(),
     creadoEn: timestamp("creado_en", { withTimezone: true })
@@ -161,16 +163,16 @@ export const organizacionesMiembrosModulos = pgTable(
     usuarioId: text("usuario_id")
       .notNull()
       .references(() => users.id, { onDelete: "restrict" }),
-    moduloId: uuid("modulo_id")
+    aplicacionId: uuid("aplicacion_id")
       .notNull()
-      .references(() => modulos.id, { onDelete: "restrict" }),
+      .references(() => aplicaciones.id, { onDelete: "restrict" }),
     activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
     uniqueIndex(
-      "organizaciones_miembros_modulos_organizacion_id_usuario_id_modulo_id_key_active",
+      "organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_aplicacion_id_key_active",
     )
-      .on(t.organizacionId, t.usuarioId, t.moduloId)
+      .on(t.organizacionId, t.usuarioId, t.aplicacionId)
       .where(sql`${t.activo} = true`),
   ],
 );
