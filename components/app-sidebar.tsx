@@ -46,7 +46,6 @@ type User = {
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   organizations: Organization[];
-  activeOrganizationId: string;
   projects: Project[];
   modules: Module[];
   user: User;
@@ -54,13 +53,14 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 
 export function AppSidebar({
   organizations,
-  activeOrganizationId,
   projects,
   modules,
   user,
   ...props
 }: AppSidebarProps) {
-  const params = useParams<{ projectId?: string }>();
+  const params = useParams<{ organizationId: string; projectId?: string }>();
+
+  const activeOrganizationId = params.organizationId;
   const activeProjectId = params.projectId ?? null;
 
   return (

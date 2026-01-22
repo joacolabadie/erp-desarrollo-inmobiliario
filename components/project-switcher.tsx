@@ -32,8 +32,8 @@ export function ProjectSwitcher({
   projects,
   activeProjectId,
 }: ProjectSwitcherProps) {
-  const { isMobile, state } = useSidebar();
   const router = useRouter();
+  const { isMobile, state } = useSidebar();
 
   const side = isMobile ? "bottom" : state === "expanded" ? "bottom" : "right";
 
@@ -42,14 +42,6 @@ export function ProjectSwitcher({
   const activeProject = isOrganizationView
     ? null
     : projects.find((project) => project.id === activeProjectId);
-
-  const selectedLabel = isOrganizationView
-    ? "Vista General"
-    : activeProject?.nombre;
-
-  const selectedInitials = isOrganizationView
-    ? "VG"
-    : activeProject?.nombre?.charAt(0).toUpperCase();
 
   return (
     <SidebarMenu>
@@ -61,10 +53,14 @@ export function ProjectSwitcher({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                {selectedInitials}
+                {isOrganizationView
+                  ? "VG"
+                  : activeProject?.nombre.charAt(0).toUpperCase()}
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{selectedLabel}</span>
+                <span className="truncate font-medium">
+                  {isOrganizationView ? "Vista General" : activeProject?.nombre}
+                </span>
                 <span className="truncate text-xs">Proyecto</span>
               </div>
               <ChevronsUpDown className="ml-auto" />

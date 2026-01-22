@@ -30,7 +30,6 @@ type NavUserProps = {
 
 export function NavUser({ user }: NavUserProps) {
   const router = useRouter();
-
   const { isMobile, state } = useSidebar();
 
   const side = isMobile ? "bottom" : state === "expanded" ? "bottom" : "right";

@@ -30,8 +30,8 @@ export function OrganizationSwitcher({
   organizations,
   activeOrganizationId,
 }: OrganizationSwitcherProps) {
-  const { isMobile, state } = useSidebar();
   const router = useRouter();
+  const { isMobile, state } = useSidebar();
 
   const side = isMobile ? "bottom" : state === "expanded" ? "bottom" : "right";
 
