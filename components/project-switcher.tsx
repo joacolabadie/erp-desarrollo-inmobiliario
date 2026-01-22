@@ -4,16 +4,14 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
-import { ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type Project = {
@@ -33,13 +31,10 @@ export function ProjectSwitcher({
   activeProjectId,
 }: ProjectSwitcherProps) {
   const router = useRouter();
-  const { isMobile, state } = useSidebar();
 
-  const side = isMobile ? "bottom" : state === "expanded" ? "bottom" : "right";
+  const isGeneralView = activeProjectId === null;
 
-  const isOrganizationView = activeProjectId === null;
-
-  const activeProject = isOrganizationView
+  const activeProject = isGeneralView
     ? null
     : projects.find((project) => project.id === activeProjectId);
 
@@ -48,43 +43,26 @@ export function ProjectSwitcher({
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
-              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                {isOrganizationView
-                  ? "VG"
-                  : activeProject?.nombre.charAt(0).toUpperCase()}
-              </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">
-                  {isOrganizationView ? "Vista General" : activeProject?.nombre}
+            <SidebarMenuButton size="lg">
+              <div className="flex flex-col">
+                <span className="text-muted-foreground truncate text-xs">
+                  Proyecto
                 </span>
-                <span className="truncate text-xs">Proyecto</span>
+                <span className="truncate text-sm font-medium">
+                  {isGeneralView ? "Vista General" : activeProject?.nombre}
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            align="start"
-            side={side}
-            sideOffset={4}
-          >
-            <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Proyectos
-            </DropdownMenuLabel>
+          <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
             <DropdownMenuItem
               onClick={() =>
                 router.push(`/dashboard/organizations/${activeOrganizationId}`)
               }
-              className="gap-2 p-2"
             >
-              <div className="flex size-6 items-center justify-center rounded-md border text-xs">
-                VG
-              </div>
               Vista General
+              {isGeneralView && <Check className="ml-auto" />}
             </DropdownMenuItem>
             {projects.map((project) => (
               <DropdownMenuItem
@@ -94,12 +72,11 @@ export function ProjectSwitcher({
                     `/dashboard/organizations/${activeOrganizationId}/projects/${project.id}`,
                   )
                 }
-                className="gap-2 p-2"
               >
-                <div className="flex size-6 items-center justify-center rounded-md border text-xs">
-                  {project.nombre.charAt(0).toUpperCase()}
-                </div>
                 {project.nombre}
+                {project.id === activeProjectId && (
+                  <Check className="ml-auto" />
+                )}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

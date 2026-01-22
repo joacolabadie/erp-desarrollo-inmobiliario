@@ -64,7 +64,7 @@ export function AppSidebar({
   const activeProjectId = params.projectId ?? null;
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar {...props}>
       <SidebarHeader>
         <OrganizationSwitcher
           organizations={organizations}
