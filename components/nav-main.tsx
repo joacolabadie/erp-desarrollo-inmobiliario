@@ -20,7 +20,6 @@ import Link from "next/link";
 
 type Application = {
   id: string;
-  clave: string;
   slug: string;
   nombre: string;
   scope: "organizacional" | "proyecto" | "mixto";
@@ -28,7 +27,6 @@ type Application = {
 
 type Module = {
   id: string;
-  clave: string;
   nombre: string;
   aplicaciones: Application[];
 };
@@ -59,7 +57,11 @@ export function NavMain({
         );
       });
 
-      return { ...module, applications };
+      return {
+        id: module.id,
+        nombre: module.nombre,
+        aplicaciones: applications,
+      };
     })
     .filter((module) => module.aplicaciones.length > 0);
 

@@ -32,11 +32,9 @@ export function ProjectSwitcher({
 }: ProjectSwitcherProps) {
   const router = useRouter();
 
-  const isGeneralView = activeProjectId === null;
-
-  const activeProject = isGeneralView
-    ? null
-    : projects.find((project) => project.id === activeProjectId);
+  const activeProject = activeProjectId
+    ? projects.find((project) => project.id === activeProjectId)
+    : undefined;
 
   return (
     <SidebarMenu>
@@ -49,7 +47,7 @@ export function ProjectSwitcher({
                   Proyecto
                 </span>
                 <span className="truncate">
-                  {isGeneralView ? "Vista General" : activeProject?.nombre}
+                  {activeProject?.nombre ?? "Vista General"}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
@@ -62,7 +60,7 @@ export function ProjectSwitcher({
               }
             >
               Vista General
-              {isGeneralView && <Check className="ml-auto" />}
+              {activeProjectId === null && <Check className="ml-auto" />}
             </DropdownMenuItem>
             {projects.map((project) => (
               <DropdownMenuItem

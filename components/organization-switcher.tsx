@@ -21,7 +21,7 @@ type Organization = {
 
 type OrganizationSwitcherProps = {
   organizations: Organization[];
-  activeOrganizationId: string;
+  activeOrganizationId: string | null;
 };
 
 export function OrganizationSwitcher({
@@ -30,15 +30,17 @@ export function OrganizationSwitcher({
 }: OrganizationSwitcherProps) {
   const router = useRouter();
 
-  const activeOrganization = organizations.find(
-    (organization) => organization.id === activeOrganizationId,
-  );
+  const activeOrganization = activeOrganizationId
+    ? organizations.find(
+        (organization) => organization.id === activeOrganizationId,
+      )
+    : undefined;
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild disabled={organizations.length === 0}>
             <SidebarMenuButton size="lg">
               <div className="grid flex-1 font-medium">
                 <span className="text-muted-foreground truncate text-xs">

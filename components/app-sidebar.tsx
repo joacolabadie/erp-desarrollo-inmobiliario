@@ -1,6 +1,7 @@
 "use client";
 
 import { NavMain } from "@/components/nav-main";
+import NavPlatform from "@/components/nav-platform";
 import { NavUser } from "@/components/nav-user";
 import { OrganizationSwitcher } from "@/components/organization-switcher";
 import { ProjectSwitcher } from "@/components/project-switcher";
@@ -26,7 +27,6 @@ type Project = {
 
 type Application = {
   id: string;
-  clave: string;
   slug: string;
   nombre: string;
   scope: "organizacional" | "proyecto" | "mixto";
@@ -34,9 +34,14 @@ type Application = {
 
 type Module = {
   id: string;
-  clave: string;
   nombre: string;
   aplicaciones: Application[];
+};
+
+type PlatformApplication = {
+  id: string;
+  slug: string;
+  nombre: string;
 };
 
 type User = {
@@ -48,6 +53,7 @@ type AppSidebarProps = ComponentProps<typeof Sidebar> & {
   organizations: Organization[];
   projects: Project[];
   modules: Module[];
+  platformApplications: PlatformApplication[];
   user: User;
 };
 
@@ -55,12 +61,13 @@ export function AppSidebar({
   organizations,
   projects,
   modules,
+  platformApplications,
   user,
   ...props
 }: AppSidebarProps) {
-  const params = useParams<{ organizationId: string; projectId?: string }>();
+  const params = useParams<{ organizationId?: string; projectId?: string }>();
 
-  const activeOrganizationId = params.organizationId;
+  const activeOrganizationId = params.organizationId ?? null;
   const activeProjectId = params.projectId ?? null;
 
   return (
@@ -70,14 +77,19 @@ export function AppSidebar({
           organizations={organizations}
           activeOrganizationId={activeOrganizationId}
         />
-        <ProjectSwitcher
-          activeOrganizationId={activeOrganizationId}
-          projects={projects}
-          activeProjectId={activeProjectId}
-        />
+        {activeOrganizationId !== null && (
+          <ProjectSwitcher
+            activeOrganizationId={activeOrganizationId}
+            projects={projects}
+            activeProjectId={activeProjectId}
+          />
+        )}
       </SidebarHeader>
       <SidebarContent>
-        {modules.length > 0 && (
+        {platformApplications.length > 0 && (
+          <NavPlatform platformApplications={platformApplications} />
+        )}
+        {activeOrganizationId !== null && modules.length > 0 && (
           <NavMain
             activeOrganizationId={activeOrganizationId}
             activeProjectId={activeProjectId}
