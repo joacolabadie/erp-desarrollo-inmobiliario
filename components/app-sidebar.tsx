@@ -34,6 +34,7 @@ type Application = {
 
 type Module = {
   id: string;
+  slug: string;
   nombre: string;
   aplicaciones: Application[];
 };

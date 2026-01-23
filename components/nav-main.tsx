@@ -27,6 +27,7 @@ type Application = {
 
 type Module = {
   id: string;
+  slug: string;
   nombre: string;
   aplicaciones: Application[];
 };
@@ -59,16 +60,17 @@ export function NavMain({
 
       return {
         id: module.id,
+        slug: module.slug,
         nombre: module.nombre,
         aplicaciones: applications,
       };
     })
     .filter((module) => module.aplicaciones.length > 0);
 
-  const buildApplicationHref = (slug: string) =>
-    !activeProjectId
-      ? `/dashboard/organizations/${activeOrganizationId}/${slug}`
-      : `/dashboard/organizations/${activeOrganizationId}/projects/${activeProjectId}/${slug}`;
+  const buildApplicationHref = (moduleSlug: string, applicationSlug: string) =>
+    activeProjectId
+      ? `/dashboard/organizations/${activeOrganizationId}/projects/${activeProjectId}/${moduleSlug}/${applicationSlug}`
+      : `/dashboard/organizations/${activeOrganizationId}/${moduleSlug}/${applicationSlug}`;
 
   return (
     <SidebarGroup>
@@ -92,7 +94,10 @@ export function NavMain({
                       <div className="absolute top-1/2 -left-2.5 w-2.25 border-t" />
                       <SidebarMenuSubButton asChild>
                         <Link
-                          href={buildApplicationHref(application.slug)}
+                          href={buildApplicationHref(
+                            module.slug,
+                            application.slug,
+                          )}
                           className="w-fit"
                         >
                           <span>{application.nombre}</span>
