@@ -12,7 +12,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useParams } from "next/navigation";
-import * as React from "react";
+import { ComponentProps } from "react";
 
 type Organization = {
   id: string;
@@ -44,7 +44,7 @@ type User = {
   email: string;
 };
 
-type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+type AppSidebarProps = ComponentProps<typeof Sidebar> & {
   organizations: Organization[];
   projects: Project[];
   modules: Module[];

@@ -38,13 +38,13 @@ export function OrganizationSwitcher({
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild disabled={organizations.length === 0}>
+          <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg">
-              <div className="flex flex-col">
+              <div className="grid flex-1 font-medium">
                 <span className="text-muted-foreground truncate text-xs">
                   Organización
                 </span>
-                <span className="truncate text-sm font-medium">
+                <span className="truncate">
                   {activeOrganization?.nombre ?? "Seleccioná una organización"}
                 </span>
               </div>

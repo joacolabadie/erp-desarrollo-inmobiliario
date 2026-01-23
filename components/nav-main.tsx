@@ -63,33 +63,36 @@ export function NavMain({
     })
     .filter((module) => module.aplicaciones.length > 0);
 
-  const buildApplicationHref = (applicationSlug: string) => {
-    if (!activeProjectId) {
-      return `/dashboard/organizations/${activeOrganizationId}/${applicationSlug}`;
-    }
-
-    return `/dashboard/organizations/${activeOrganizationId}/projects/${activeProjectId}/${applicationSlug}`;
-  };
+  const buildApplicationHref = (slug: string) =>
+    !activeProjectId
+      ? `/dashboard/organizations/${activeOrganizationId}/${slug}`
+      : `/dashboard/organizations/${activeOrganizationId}/projects/${activeProjectId}/${slug}`;
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Módulos</SidebarGroupLabel>
+      <SidebarGroupLabel className="text-muted-foreground">
+        Módulos
+      </SidebarGroupLabel>
       <SidebarMenu>
         {filteredModules.map((module) => (
-          <Collapsible key={module.id} asChild className="group/collapsible">
+          <Collapsible key={module.id} asChild>
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={module.nombre}>
+                <SidebarMenuButton className="[&[data-state=open]>svg]:rotate-90">
                   <span>{module.nombre}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  <ChevronRight className="ml-auto transition-transform" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
-                  {module.aplicaciones?.map((application) => (
+                  {module.aplicaciones.map((application) => (
                     <SidebarMenuSubItem key={application.id}>
+                      <div className="absolute top-1/2 -left-2.5 w-2.25 border-t" />
                       <SidebarMenuSubButton asChild>
-                        <Link href={buildApplicationHref(application.slug)}>
+                        <Link
+                          href={buildApplicationHref(application.slug)}
+                          className="w-fit"
+                        >
                           <span>{application.nombre}</span>
                         </Link>
                       </SidebarMenuSubButton>

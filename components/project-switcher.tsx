@@ -44,11 +44,11 @@ export function ProjectSwitcher({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg">
-              <div className="flex flex-col">
+              <div className="grid font-medium">
                 <span className="text-muted-foreground truncate text-xs">
                   Proyecto
                 </span>
-                <span className="truncate text-sm font-medium">
+                <span className="truncate">
                   {isGeneralView ? "Vista General" : activeProject?.nombre}
                 </span>
               </div>

@@ -1,9 +1,9 @@
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
-import { Onest } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const onest = Onest();
+const inter = Inter();
 
 export const metadata: Metadata = {
   title: "ERP",
@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={onest.className}>
+      <body className={inter.className}>
         <Toaster richColors />
         {children}
       </body>
