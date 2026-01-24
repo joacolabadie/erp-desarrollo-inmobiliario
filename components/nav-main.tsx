@@ -82,9 +82,9 @@ export function NavMain({
           <Collapsible key={module.id} asChild>
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton className="[&[data-state=open]>svg]:rotate-90">
+                <SidebarMenuButton className="w-fit [&[data-state=open]>svg]:rotate-90">
+                  <ChevronRight className="transition-transform" />
                   <span>{module.nombre}</span>
-                  <ChevronRight className="ml-auto transition-transform" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               <CollapsibleContent>

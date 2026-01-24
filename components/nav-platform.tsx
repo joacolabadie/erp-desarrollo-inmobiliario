@@ -28,11 +28,11 @@ export default function NavPlatform({
         Plataforma
       </SidebarGroupLabel>
       <SidebarMenu>
-        {platformApplications.map((application) => (
-          <SidebarMenuItem key={application.id} className="w-fit">
+        {platformApplications.map((platformApplication) => (
+          <SidebarMenuItem key={platformApplication.id} className="w-fit">
             <SidebarMenuButton asChild>
-              <Link href={`/dashboard/platform/${application.slug}`}>
-                <span>{application.nombre}</span>
+              <Link href={`/dashboard/platform/${platformApplication.slug}`}>
+                <span>{platformApplication.nombre}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
