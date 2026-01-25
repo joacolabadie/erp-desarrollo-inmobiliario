@@ -213,7 +213,7 @@ export default async function OrganizationLayout({
     });
   }
 
-  const platformAppplications: PlatformApplication[] = await db
+  const platformApplications: PlatformApplication[] = await db
     .select({
       id: platformAplicaciones.id,
       slug: platformAplicaciones.slug,
@@ -247,7 +247,7 @@ export default async function OrganizationLayout({
         organizations={organizations}
         projects={projects}
         modules={modules}
-        platformApplications={platformAppplications}
+        platformApplications={platformApplications}
         user={{ name: session.user.name, email: session.user.email }}
       />
       <SidebarInset>
