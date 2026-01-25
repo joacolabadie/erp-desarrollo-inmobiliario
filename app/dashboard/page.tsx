@@ -22,7 +22,7 @@ export default async function DashboardPage() {
     .from(organizacionesMiembros)
     .innerJoin(
       organizaciones,
-      eq(organizacionesMiembros.organizacionId, organizaciones.id),
+      eq(organizaciones.id, organizacionesMiembros.organizacionId),
     )
     .where(
       and(
