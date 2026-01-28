@@ -1,6 +1,9 @@
-import { AppHeader } from "@/components/app-header";
 import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import {
@@ -248,7 +251,7 @@ export default async function OrganizationLayout({
         user={{ name: session.user.name, email: session.user.email }}
       />
       <SidebarInset>
-        <AppHeader />
+        <SidebarTrigger />
         {children}
       </SidebarInset>
     </SidebarProvider>
