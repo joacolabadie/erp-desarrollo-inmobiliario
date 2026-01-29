@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   integer,
+  pgEnum,
   pgTable,
   text,
   timestamp,
@@ -12,6 +13,19 @@ import {
   organizaciones,
   organizacionesRazonesSociales,
 } from "./organizaciones";
+
+export const proyectoTipoEnum = pgEnum("proyecto_tipo", [
+  "casa",
+  "edificio",
+  "cocheras",
+]);
+
+export const proyectoEstadoEnum = pgEnum("proyecto_estado", [
+  "planificacion",
+  "en_construccion",
+  "finalizado",
+  "cancelado",
+]);
 
 export const proyectos = pgTable(
   "proyectos",
@@ -24,6 +38,8 @@ export const proyectos = pgTable(
       .notNull()
       .references(() => organizaciones.id, { onDelete: "cascade" }),
     nombre: text("nombre").notNull(),
+    tipo: proyectoTipoEnum("tipo").notNull(),
+    estado: proyectoEstadoEnum("estado").default("planificacion").notNull(),
     organizacionRazonSocialPrincipalId: uuid(
       "organizacion_razon_social_principal_id",
     ).references(() => organizacionesRazonesSociales.id, {
@@ -45,6 +61,9 @@ export const proyectosRazonesSociales = pgTable(
     creadoEn: timestamp("creado_en", { withTimezone: true })
       .defaultNow()
       .notNull(),
+    organizacionId: uuid("organizacion_id")
+      .notNull()
+      .references(() => organizaciones.id, { onDelete: "cascade" }),
     proyectoId: uuid("proyecto_id")
       .notNull()
       .references(() => proyectos.id, { onDelete: "cascade" }),

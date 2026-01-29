@@ -1,3 +1,6 @@
+import { users } from "@/lib/server/db/schema/auth.generated";
+import { aplicaciones } from "@/lib/server/db/schema/modulos";
+import { proyectos } from "@/lib/server/db/schema/proyectos";
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -8,14 +11,11 @@ import {
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
-import { users } from "./auth.generated";
-import { aplicaciones } from "./modulos";
-import { proyectos } from "./proyectos";
 
-export const estadoMiembroOrganizacionEnum = pgEnum("estado_miembro_org", [
-  "activo",
-  "suspendido",
-]);
+export const estadoMiembroOrganizacionEnum = pgEnum(
+  "estado_miembro_organizacion",
+  ["activo", "suspendido"],
+);
 
 export const materialTipoEnum = pgEnum("material_tipo", [
   "material",

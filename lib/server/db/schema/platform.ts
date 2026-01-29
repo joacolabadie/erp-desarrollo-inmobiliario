@@ -1,3 +1,4 @@
+import { users } from "@/lib/server/db/schema/auth.generated";
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -7,7 +8,6 @@ import {
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
-import { users } from "./auth.generated";
 
 export const platformAdmins = pgTable(
   "platform_admins",
@@ -43,6 +43,9 @@ export const platformAplicaciones = pgTable(
   (t) => [
     uniqueIndex("platform_aplicaciones_clave_key_active")
       .on(t.clave)
+      .where(sql`${t.activo} = true`),
+    uniqueIndex("platform_aplicaciones_slug_key_active")
+      .on(t.slug)
       .where(sql`${t.activo} = true`),
   ],
 );

@@ -23,12 +23,16 @@ export const modulos = pgTable(
       .defaultNow()
       .notNull(),
     clave: text("clave").notNull(),
+    slug: text("slug").notNull(),
     nombre: text("nombre").notNull(),
     activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
     uniqueIndex("modulos_clave_key_active")
       .on(t.clave)
+      .where(sql`${t.activo} = true`),
+    uniqueIndex("modulos_slug_key_active")
+      .on(t.slug)
       .where(sql`${t.activo} = true`),
   ],
 );
@@ -52,6 +56,9 @@ export const aplicaciones = pgTable(
   (t) => [
     uniqueIndex("aplicaciones_modulo_id_clave_key_active")
       .on(t.moduloId, t.clave)
+      .where(sql`${t.activo} = true`),
+    uniqueIndex("aplicaciones_modulo_id_slug_key_active")
+      .on(t.moduloId, t.slug)
       .where(sql`${t.activo} = true`),
   ],
 );
