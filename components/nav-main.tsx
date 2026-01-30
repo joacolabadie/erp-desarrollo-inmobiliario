@@ -88,7 +88,7 @@ export function NavMain({
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <SidebarMenuSub>
+                <SidebarMenuSub className="mr-0 pr-0">
                   {module.aplicaciones.map((application) => (
                     <SidebarMenuSubItem key={application.id}>
                       <div className="absolute top-1/2 -left-2.5 w-2.25 border-t" />
