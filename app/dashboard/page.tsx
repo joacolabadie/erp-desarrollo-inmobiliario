@@ -39,7 +39,7 @@ export default async function DashboardPage() {
       <div className="grid min-h-screen place-items-center p-6">
         <div className="w-full max-w-lg">
           <div className="space-y-1 text-center">
-            <h1 className="text-2xl font-semibold">
+            <h1 className="text-2xl font-semibold text-balance">
               No pertenecés a ninguna organización
             </h1>
             <p className="text-muted-foreground text-sm text-balance">
