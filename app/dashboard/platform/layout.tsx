@@ -1,9 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import { organizaciones, organizacionesMiembros } from "@/lib/server/db/schema";
@@ -93,10 +89,7 @@ export default async function PlatformLayout({
         platformApplications={platformApplications}
         user={{ name: session.user.name, email: session.user.email }}
       />
-      <SidebarInset>
-        <SidebarTrigger />
-        {children}
-      </SidebarInset>
+      <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>
   );
 }

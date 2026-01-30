@@ -9,7 +9,6 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
@@ -79,17 +78,15 @@ export function AppSidebar({
           organizations={organizations}
           activeOrganizationId={activeOrganizationId}
         />
+        {activeOrganizationId !== null && (
+          <ProjectSwitcher
+            activeOrganizationId={activeOrganizationId}
+            projects={projects}
+            activeProjectId={activeProjectId}
+          />
+        )}
       </SidebarHeader>
       <SidebarContent>
-        {activeOrganizationId !== null && (
-          <SidebarGroup>
-            <ProjectSwitcher
-              activeOrganizationId={activeOrganizationId}
-              projects={projects}
-              activeProjectId={activeProjectId}
-            />
-          </SidebarGroup>
-        )}
         {platformApplications.length > 0 && (
           <NavPlatform platformApplications={platformApplications} />
         )}
