@@ -1,13 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "./ui/sidebar";
+} from "@/components/ui/sidebar";
+import Link from "next/link";
 
 type PlatformApplication = {
   id: string;
@@ -29,7 +29,7 @@ export default function NavPlatform({
       </SidebarGroupLabel>
       <SidebarMenu>
         {platformApplications.map((platformApplication) => (
-          <SidebarMenuItem key={platformApplication.id} className="w-fit">
+          <SidebarMenuItem key={platformApplication.id}>
             <SidebarMenuButton asChild>
               <Link href={`/dashboard/platform/${platformApplication.slug}`}>
                 <span>{platformApplication.nombre}</span>
