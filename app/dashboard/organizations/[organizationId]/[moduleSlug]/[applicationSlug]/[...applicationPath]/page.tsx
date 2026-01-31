@@ -3,16 +3,18 @@ import { applicationRegistry } from "@/registry/applications";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function OrganizationApplicationPage({
+export default async function OrganizationApplicationSubroutePage({
   params,
 }: {
   params: Promise<{
     organizationId: string;
     moduleSlug: string;
     applicationSlug: string;
+    applicationPath: string[];
   }>;
 }) {
-  const { organizationId, moduleSlug, applicationSlug } = await params;
+  const { organizationId, moduleSlug, applicationSlug, applicationPath } =
+    await params;
 
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -35,7 +37,7 @@ export default async function OrganizationApplicationPage({
     <Component
       organizationId={organizationId}
       projectId={null}
-      applicationPath={[]}
+      applicationPath={applicationPath}
     />
   );
 }

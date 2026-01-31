@@ -3,6 +3,7 @@ import { ComponentType } from "react";
 export type ApplicationComponentProps = {
   organizationId: string;
   projectId: string | null;
+  applicationPath: string[];
 };
 
 export type ApplicationComponent = ComponentType<ApplicationComponentProps>;
@@ -16,7 +17,12 @@ export type ApplicationRegistry = Record<
   Record<string, ApplicationEntry>
 >;
 
-export type PlatformApplicationComponent = ComponentType;
+export type PlatformApplicationComponentProps = {
+  platformApplicationPath: string[];
+};
+
+export type PlatformApplicationComponent =
+  ComponentType<PlatformApplicationComponentProps>;
 
 export type PlatformApplicationEntry = {
   component: PlatformApplicationComponent;

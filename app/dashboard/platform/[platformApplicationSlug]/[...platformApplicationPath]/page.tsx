@@ -3,14 +3,15 @@ import { platformApplicationRegistry } from "@/registry/platform-applications";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function PlatformApplicationPage({
+export default async function PlatformApplicationSubroutePage({
   params,
 }: {
   params: Promise<{
     platformApplicationSlug: string;
+    platformApplicationPath: string[];
   }>;
 }) {
-  const { platformApplicationSlug } = await params;
+  const { platformApplicationSlug, platformApplicationPath } = await params;
 
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -29,5 +30,5 @@ export default async function PlatformApplicationPage({
 
   const Component = applicationDefinition.component;
 
-  return <Component platformApplicationPath={[]} />;
+  return <Component platformApplicationPath={platformApplicationPath} />;
 }

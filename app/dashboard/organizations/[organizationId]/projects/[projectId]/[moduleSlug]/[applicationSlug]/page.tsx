@@ -35,5 +35,11 @@ export default async function ProjectApplicationPage({
 
   const Component = applicationDefinition.component;
 
-  return <Component organizationId={organizationId} projectId={projectId} />;
+  return (
+    <Component
+      organizationId={organizationId}
+      projectId={projectId}
+      applicationPath={[]}
+    />
+  );
 }
