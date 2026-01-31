@@ -1,3 +1,4 @@
+import { AppHeader } from "@/components/app-header";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
@@ -246,7 +247,10 @@ export default async function OrganizationLayout({
         platformApplications={platformApplications}
         user={{ name: session.user.name, email: session.user.email }}
       />
-      <SidebarInset>{children}</SidebarInset>
+      <SidebarInset className="flex-col">
+        <AppHeader />
+        <main className="flex-1">{children}</main>
+      </SidebarInset>
     </SidebarProvider>
   );
 }

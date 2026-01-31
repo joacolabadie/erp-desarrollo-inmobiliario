@@ -73,7 +73,7 @@ export function AppSidebar({
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader className="border-b">
+      <SidebarHeader>
         <OrganizationSwitcher
           organizations={organizations}
           activeOrganizationId={activeOrganizationId}
@@ -98,7 +98,7 @@ export function AppSidebar({
           />
         )}
       </SidebarContent>
-      <SidebarFooter className="border-t">
+      <SidebarFooter>
         <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
