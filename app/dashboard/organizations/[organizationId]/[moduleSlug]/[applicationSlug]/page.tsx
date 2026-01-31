@@ -1,4 +1,6 @@
+import { auth } from "@/lib/auth";
 import { applicationRegistry } from "@/registry/applications";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function OrganizationApplicationPage({
@@ -11,6 +13,14 @@ export default async function OrganizationApplicationPage({
   }>;
 }) {
   const { organizationId, moduleSlug, applicationSlug } = await params;
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect("/auth/sign-in");
+  }
 
   const moduleRegistry =
     applicationRegistry[moduleSlug as keyof typeof applicationRegistry];
