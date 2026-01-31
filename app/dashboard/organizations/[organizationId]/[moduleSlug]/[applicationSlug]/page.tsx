@@ -22,10 +22,8 @@ export default async function OrganizationApplicationPage({
     redirect("/auth/sign-in");
   }
 
-  const moduleRegistry =
-    applicationRegistry[moduleSlug as keyof typeof applicationRegistry];
-  const applicationDefinition =
-    moduleRegistry?.[applicationSlug as keyof typeof moduleRegistry];
+  const moduleRegistry = applicationRegistry[moduleSlug];
+  const applicationDefinition = moduleRegistry?.[applicationSlug];
 
   if (!applicationDefinition) {
     redirect(`/dashboard/organizations/${organizationId}`);
