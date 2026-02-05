@@ -21,7 +21,9 @@ export default async function PlatformApplicationPage({
   }
 
   const applicationDefinition =
-    platformApplicationRegistry[platformApplicationSlug];
+    platformApplicationRegistry[
+      platformApplicationSlug as keyof typeof platformApplicationRegistry
+    ];
 
   if (!applicationDefinition) {
     redirect("/dashboard");
