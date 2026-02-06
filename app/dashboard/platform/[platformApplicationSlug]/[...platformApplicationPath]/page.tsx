@@ -22,9 +22,7 @@ export default async function PlatformApplicationSubroutePage({
   }
 
   const applicationDefinition =
-    platformApplicationRegistry[
-      platformApplicationSlug as keyof typeof platformApplicationRegistry
-    ];
+    platformApplicationRegistry[platformApplicationSlug];
 
   if (!applicationDefinition) {
     redirect("/dashboard");
