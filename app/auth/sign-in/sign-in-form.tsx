@@ -43,12 +43,12 @@ export function SignInForm() {
   function onSubmit(data: z.infer<typeof formSchema>) {
     startTransition(async () => {
       try {
-        const res = await authClient.signIn.email({
+        const response = await authClient.signIn.email({
           email: data.email,
           password: data.password,
         });
 
-        if (res.error) {
+        if (response.error) {
           toast.error("Verificá tus credenciales e intentá de nuevo.");
 
           return;

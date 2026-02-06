@@ -110,6 +110,10 @@ export default async function OrganizationLayout({
       proyectos,
       eq(proyectos.id, organizacionesMiembrosProyectos.proyectoId),
     )
+    .innerJoin(
+      organizaciones,
+      eq(organizaciones.id, organizacionesMiembrosProyectos.organizacionId),
+    )
     .where(
       and(
         eq(organizacionesMiembrosProyectos.organizacionId, organizationId),
@@ -119,6 +123,7 @@ export default async function OrganizationLayout({
         eq(organizacionesMiembros.activo, true),
         eq(proyectos.organizacionId, organizationId),
         eq(proyectos.activo, true),
+        eq(organizaciones.activo, true),
       ),
     )
     .orderBy(asc(proyectos.nombre), asc(proyectos.id));
@@ -164,6 +169,10 @@ export default async function OrganizationLayout({
         ),
       ),
     )
+    .innerJoin(
+      organizaciones,
+      eq(organizaciones.id, organizacionesMiembrosAplicaciones.organizacionId),
+    )
     .innerJoin(modulos, eq(modulos.id, aplicaciones.moduloId))
     .where(
       and(
@@ -174,6 +183,7 @@ export default async function OrganizationLayout({
         eq(organizacionesMiembros.activo, true),
         eq(aplicaciones.activo, true),
         eq(organizacionesAplicaciones.activo, true),
+        eq(organizaciones.activo, true),
         eq(modulos.activo, true),
       ),
     )
@@ -248,7 +258,11 @@ export default async function OrganizationLayout({
         user={{ name: session.user.name, email: session.user.email }}
       />
       <SidebarInset className="flex-col">
-        <AppHeader />
+        <AppHeader
+          organizations={organizations}
+          projects={projects}
+          modules={modules}
+        />
         <main className="flex-1">{children}</main>
       </SidebarInset>
     </SidebarProvider>

@@ -62,13 +62,13 @@ export function SignUpForm() {
   function onSubmit(data: z.infer<typeof formSchema>) {
     startTransition(async () => {
       try {
-        const res = await authClient.signUp.email({
+        const response = await authClient.signUp.email({
           name: data.fullName,
           email: data.email,
           password: data.password,
         });
 
-        if (res.error) {
+        if (response.error) {
           toast.error("Ocurrió un error inesperado al registrarte.");
 
           return;

@@ -91,7 +91,7 @@ export default async function PlatformLayout({
         user={{ name: session.user.name, email: session.user.email }}
       />
       <SidebarInset className="flex-col">
-        <AppHeader />
+        <AppHeader platformApplications={platformApplications} />
         <main className="flex-1">{children}</main>
       </SidebarInset>
     </SidebarProvider>

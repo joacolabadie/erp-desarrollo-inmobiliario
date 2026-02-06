@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import {
+  organizaciones,
   organizacionesMiembros,
   organizacionesMiembrosProyectos,
   proyectos,
@@ -49,6 +50,10 @@ export default async function ProjectLayout({
       proyectos,
       eq(proyectos.id, organizacionesMiembrosProyectos.proyectoId),
     )
+    .innerJoin(
+      organizaciones,
+      eq(organizaciones.id, organizacionesMiembrosProyectos.organizacionId),
+    )
     .where(
       and(
         eq(organizacionesMiembrosProyectos.organizacionId, organizationId),
@@ -58,6 +63,7 @@ export default async function ProjectLayout({
         eq(organizacionesMiembros.activo, true),
         eq(proyectos.organizacionId, organizationId),
         eq(proyectos.activo, true),
+        eq(organizaciones.activo, true),
       ),
     );
 

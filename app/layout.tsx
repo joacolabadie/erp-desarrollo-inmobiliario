@@ -6,7 +6,7 @@ import "./globals.css";
 const inter = Inter();
 
 export const metadata: Metadata = {
-  title: "ERP",
+  title: "ERP Desarrollo Inmobiliario",
 };
 
 export default function RootLayout({
