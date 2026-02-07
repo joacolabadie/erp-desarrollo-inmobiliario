@@ -47,7 +47,7 @@ export function ProjectSwitcher({
                   Proyecto
                 </span>
                 <span className="truncate">
-                  {activeProject?.nombre ?? "Vista General"}
+                  {activeProject?.nombre ?? "Vista general"}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
@@ -59,7 +59,7 @@ export function ProjectSwitcher({
                 router.push(`/dashboard/organizations/${activeOrganizationId}`)
               }
             >
-              Vista General
+              Vista general
               {activeProjectId === null && <Check className="ml-auto" />}
             </DropdownMenuItem>
             {projects.map((project) => (

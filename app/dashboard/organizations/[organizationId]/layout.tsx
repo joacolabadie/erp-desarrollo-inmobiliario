@@ -262,6 +262,7 @@ export default async function OrganizationLayout({
           organizations={organizations}
           projects={projects}
           modules={modules}
+          platformApplications={[]}
         />
         <main className="flex-1">{children}</main>
       </SidebarInset>
