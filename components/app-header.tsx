@@ -1,15 +1,15 @@
 "use client";
 
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useParams } from "next/navigation";
-import { useMemo } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "./ui/breadcrumb";
+} from "@/components/ui/breadcrumb";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useParams } from "next/navigation";
+import { useMemo } from "react";
 
 type Organization = {
   id: string;
