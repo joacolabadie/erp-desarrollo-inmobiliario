@@ -15,7 +15,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { Module } from "@/lib/types/dashboard";
+import type { Module } from "@/lib/types/dashboard";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 

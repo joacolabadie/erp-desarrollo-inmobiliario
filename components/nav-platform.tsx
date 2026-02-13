@@ -7,7 +7,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { PlatformApplication } from "@/lib/types/dashboard";
+import type { PlatformApplication } from "@/lib/types/dashboard";
 import Link from "next/link";
 
 type NavPlatformProps = {

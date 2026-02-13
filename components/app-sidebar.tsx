@@ -12,7 +12,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import {
+import type {
   Module,
   Organization,
   PlatformApplication,
@@ -20,7 +20,7 @@ import {
   User,
 } from "@/lib/types/dashboard";
 import { useParams } from "next/navigation";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 type AppSidebarProps = ComponentProps<typeof Sidebar> & {
   organizations: Organization[];
