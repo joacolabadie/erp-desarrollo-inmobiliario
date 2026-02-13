@@ -85,6 +85,16 @@ export default async function DashboardLayout({
     })
     .from(organizacionesMiembrosProyectos)
     .innerJoin(
+      proyectos,
+      and(
+        eq(proyectos.id, organizacionesMiembrosProyectos.proyectoId),
+        eq(
+          proyectos.organizacionId,
+          organizacionesMiembrosProyectos.organizacionId,
+        ),
+      ),
+    )
+    .innerJoin(
       organizacionesMiembros,
       and(
         eq(
@@ -98,10 +108,6 @@ export default async function DashboardLayout({
       ),
     )
     .innerJoin(
-      proyectos,
-      eq(proyectos.id, organizacionesMiembrosProyectos.proyectoId),
-    )
-    .innerJoin(
       organizaciones,
       eq(organizaciones.id, organizacionesMiembrosProyectos.organizacionId),
     )
@@ -109,13 +115,9 @@ export default async function DashboardLayout({
       and(
         eq(organizacionesMiembrosProyectos.usuarioId, session.user.id),
         eq(organizacionesMiembrosProyectos.activo, true),
+        eq(proyectos.activo, true),
         eq(organizacionesMiembros.estado, "activo"),
         eq(organizacionesMiembros.activo, true),
-        eq(
-          proyectos.organizacionId,
-          organizacionesMiembrosProyectos.organizacionId,
-        ),
-        eq(proyectos.activo, true),
         eq(organizaciones.activo, true),
       ),
     )
@@ -134,6 +136,10 @@ export default async function DashboardLayout({
     })
     .from(organizacionesMiembrosAplicaciones)
     .innerJoin(
+      aplicaciones,
+      eq(aplicaciones.id, organizacionesMiembrosAplicaciones.aplicacionId),
+    )
+    .innerJoin(
       organizacionesMiembros,
       and(
         eq(
@@ -145,10 +151,6 @@ export default async function DashboardLayout({
           organizacionesMiembrosAplicaciones.usuarioId,
         ),
       ),
-    )
-    .innerJoin(
-      aplicaciones,
-      eq(aplicaciones.id, organizacionesMiembrosAplicaciones.aplicacionId),
     )
     .innerJoin(
       organizacionesAplicaciones,
@@ -172,9 +174,9 @@ export default async function DashboardLayout({
       and(
         eq(organizacionesMiembrosAplicaciones.usuarioId, session.user.id),
         eq(organizacionesMiembrosAplicaciones.activo, true),
+        eq(aplicaciones.activo, true),
         eq(organizacionesMiembros.estado, "activo"),
         eq(organizacionesMiembros.activo, true),
-        eq(aplicaciones.activo, true),
         eq(organizacionesAplicaciones.activo, true),
         eq(organizaciones.activo, true),
         eq(modulos.activo, true),

@@ -28,11 +28,21 @@ export default async function ProjectLayout({
     redirect("/auth/sign-in");
   }
 
-  const projects = await db
+  const project = await db
     .select({
       id: proyectos.id,
     })
     .from(organizacionesMiembrosProyectos)
+    .innerJoin(
+      proyectos,
+      and(
+        eq(proyectos.id, organizacionesMiembrosProyectos.proyectoId),
+        eq(
+          proyectos.organizacionId,
+          organizacionesMiembrosProyectos.organizacionId,
+        ),
+      ),
+    )
     .innerJoin(
       organizacionesMiembros,
       and(
@@ -47,10 +57,6 @@ export default async function ProjectLayout({
       ),
     )
     .innerJoin(
-      proyectos,
-      eq(proyectos.id, organizacionesMiembrosProyectos.proyectoId),
-    )
-    .innerJoin(
       organizaciones,
       eq(organizaciones.id, organizacionesMiembrosProyectos.organizacionId),
     )
@@ -58,19 +64,17 @@ export default async function ProjectLayout({
       and(
         eq(organizacionesMiembrosProyectos.organizacionId, organizationId),
         eq(organizacionesMiembrosProyectos.usuarioId, session.user.id),
+        eq(organizacionesMiembrosProyectos.proyectoId, projectId),
         eq(organizacionesMiembrosProyectos.activo, true),
+        eq(proyectos.activo, true),
         eq(organizacionesMiembros.estado, "activo"),
         eq(organizacionesMiembros.activo, true),
-        eq(proyectos.organizacionId, organizationId),
-        eq(proyectos.activo, true),
         eq(organizaciones.activo, true),
       ),
-    );
+    )
+    .limit(1);
 
-  if (
-    projects.length === 0 ||
-    !projects.some((project) => project.id === projectId)
-  ) {
+  if (project.length === 0) {
     redirect(`/dashboard/organizations/${organizationId}`);
   }
 
