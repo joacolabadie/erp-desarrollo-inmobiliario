@@ -7,13 +7,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { PlatformApplication } from "@/lib/types/dashboard";
 import Link from "next/link";
-
-type PlatformApplication = {
-  id: string;
-  slug: string;
-  nombre: string;
-};
 
 type NavPlatformProps = {
   platformApplications: PlatformApplication[];

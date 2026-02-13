@@ -11,13 +11,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Project } from "@/lib/types/dashboard";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-type Project = {
-  id: string;
-  nombre: string;
-};
 
 type ProjectSwitcherProps = {
   activeOrganizationId: string;
@@ -32,9 +28,14 @@ export function ProjectSwitcher({
 }: ProjectSwitcherProps) {
   const router = useRouter();
 
-  const activeProject = activeProjectId
-    ? projects.find((project) => project.id === activeProjectId)
-    : undefined;
+  const organizationProjects = projects.filter(
+    (project) => project.organizacionId === activeOrganizationId,
+  );
+
+  const activeProject =
+    activeProjectId !== null
+      ? organizationProjects.find((project) => project.id === activeProjectId)
+      : undefined;
 
   return (
     <SidebarMenu>
@@ -62,7 +63,7 @@ export function ProjectSwitcher({
               Vista general
               {activeProjectId === null && <Check className="ml-auto" />}
             </DropdownMenuItem>
-            {projects.map((project) => (
+            {organizationProjects.map((project) => (
               <DropdownMenuItem
                 key={project.id}
                 onClick={() =>

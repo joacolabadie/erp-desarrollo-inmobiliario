@@ -11,13 +11,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Organization } from "@/lib/types/dashboard";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-type Organization = {
-  id: string;
-  nombre: string;
-};
 
 type OrganizationSwitcherProps = {
   organizations: Organization[];
@@ -30,11 +26,12 @@ export function OrganizationSwitcher({
 }: OrganizationSwitcherProps) {
   const router = useRouter();
 
-  const activeOrganization = activeOrganizationId
-    ? organizations.find(
-        (organization) => organization.id === activeOrganizationId,
-      )
-    : undefined;
+  const activeOrganization =
+    activeOrganizationId !== null
+      ? organizations.find(
+          (organization) => organization.id === activeOrganizationId,
+        )
+      : undefined;
 
   return (
     <SidebarMenu>

@@ -13,13 +13,9 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
+import { User } from "@/lib/types/dashboard";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-type User = {
-  name: string;
-  email: string;
-};
 
 type NavUserProps = {
   user: User;

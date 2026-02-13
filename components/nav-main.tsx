@@ -15,22 +15,9 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { Module } from "@/lib/types/dashboard";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-
-type Application = {
-  id: string;
-  slug: string;
-  nombre: string;
-  scope: "organizacional" | "proyecto" | "mixto";
-};
-
-type Module = {
-  id: string;
-  slug: string;
-  nombre: string;
-  aplicaciones: Application[];
-};
 
 type NavMainProps = {
   activeOrganizationId: string;
@@ -68,7 +55,7 @@ export function NavMain({
     .filter((module) => module.aplicaciones.length > 0);
 
   const buildApplicationHref = (moduleSlug: string, applicationSlug: string) =>
-    activeProjectId
+    activeProjectId !== null
       ? `/dashboard/organizations/${activeOrganizationId}/projects/${activeProjectId}/${moduleSlug}/${applicationSlug}`
       : `/dashboard/organizations/${activeOrganizationId}/${moduleSlug}/${applicationSlug}`;
 

@@ -12,43 +12,15 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import {
+  Module,
+  Organization,
+  PlatformApplication,
+  Project,
+  User,
+} from "@/lib/types/dashboard";
 import { useParams } from "next/navigation";
 import { ComponentProps } from "react";
-
-type Organization = {
-  id: string;
-  nombre: string;
-};
-
-type Project = {
-  id: string;
-  nombre: string;
-};
-
-type Application = {
-  id: string;
-  slug: string;
-  nombre: string;
-  scope: "organizacional" | "proyecto" | "mixto";
-};
-
-type Module = {
-  id: string;
-  slug: string;
-  nombre: string;
-  aplicaciones: Application[];
-};
-
-type PlatformApplication = {
-  id: string;
-  slug: string;
-  nombre: string;
-};
-
-type User = {
-  name: string;
-  email: string;
-};
 
 type AppSidebarProps = ComponentProps<typeof Sidebar> & {
   organizations: Organization[];
@@ -71,6 +43,13 @@ export function AppSidebar({
   const activeOrganizationId = params.organizationId ?? null;
   const activeProjectId = params.projectId ?? null;
 
+  const organizationModules =
+    activeOrganizationId !== null
+      ? modules.filter(
+          (module) => module.organizacionId === activeOrganizationId,
+        )
+      : [];
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -90,11 +69,11 @@ export function AppSidebar({
         {platformApplications.length > 0 && (
           <NavPlatform platformApplications={platformApplications} />
         )}
-        {activeOrganizationId !== null && modules.length > 0 && (
+        {activeOrganizationId !== null && organizationModules.length > 0 && (
           <NavMain
             activeOrganizationId={activeOrganizationId}
             activeProjectId={activeProjectId}
-            modules={modules}
+            modules={organizationModules}
           />
         )}
       </SidebarContent>
