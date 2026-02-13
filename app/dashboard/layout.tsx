@@ -38,12 +38,6 @@ type Module = {
   aplicaciones: Application[];
 };
 
-type PlatformApplication = {
-  id: string;
-  slug: string;
-  nombre: string;
-};
-
 export default async function DashboardLayout({
   children,
 }: {
@@ -218,7 +212,7 @@ export default async function DashboardLayout({
     });
   }
 
-  const platformApplications: PlatformApplication[] = await db
+  const platformApplications = await db
     .select({
       id: platformAplicaciones.id,
       slug: platformAplicaciones.slug,
