@@ -36,7 +36,7 @@ export default async function DashboardPage() {
 
   if (organizations.length === 0) {
     return (
-      <div className="grid min-h-screen place-items-center p-6">
+      <div className="grid min-h-full place-items-center p-6">
         <div className="w-full max-w-lg">
           <div className="space-y-1 text-center">
             <h1 className="text-2xl font-semibold text-balance">

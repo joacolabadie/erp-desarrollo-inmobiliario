@@ -249,14 +249,14 @@ export default async function DashboardLayout({
         platformApplications={platformApplications}
         user={{ name: session.user.name, email: session.user.email }}
       />
-      <SidebarInset className="flex-col">
+      <SidebarInset className="h-svh flex-col overflow-y-hidden">
         <AppHeader
           organizations={organizations}
           projects={projects}
           modules={modules}
           platformApplications={platformApplications}
         />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 overflow-y-auto">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );
