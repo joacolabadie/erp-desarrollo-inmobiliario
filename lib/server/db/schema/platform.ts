@@ -9,8 +9,8 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-export const platformAdmins = pgTable(
-  "platform_admins",
+export const plataformaAdministradores = pgTable(
+  "plataforma_administradores",
   {
     id: uuid("id").defaultRandom().primaryKey(),
     creadoEn: timestamp("creado_en", { withTimezone: true })
@@ -22,14 +22,14 @@ export const platformAdmins = pgTable(
     activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
-    uniqueIndex("platform_admins_usuario_id_key_active")
+    uniqueIndex("plataforma_administradores_usuario_id_key_active")
       .on(t.usuarioId)
       .where(sql`${t.activo} = true`),
   ],
 );
 
-export const platformAplicaciones = pgTable(
-  "platform_aplicaciones",
+export const plataformaAplicaciones = pgTable(
+  "plataforma_aplicaciones",
   {
     id: uuid("id").defaultRandom().primaryKey(),
     creadoEn: timestamp("creado_en", { withTimezone: true })
@@ -41,35 +41,35 @@ export const platformAplicaciones = pgTable(
     activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
-    uniqueIndex("platform_aplicaciones_clave_key_active")
+    uniqueIndex("plataforma_aplicaciones_clave_key_active")
       .on(t.clave)
       .where(sql`${t.activo} = true`),
-    uniqueIndex("platform_aplicaciones_slug_key_active")
+    uniqueIndex("plataforma_aplicaciones_slug_key_active")
       .on(t.slug)
       .where(sql`${t.activo} = true`),
   ],
 );
 
-export const platformAdminsAplicaciones = pgTable(
-  "platform_admins_aplicaciones",
+export const plataformaAdministradoresAplicaciones = pgTable(
+  "plataforma_administradores_aplicaciones",
   {
     id: uuid("id").defaultRandom().primaryKey(),
     creadoEn: timestamp("creado_en", { withTimezone: true })
       .defaultNow()
       .notNull(),
-    platformAdminId: uuid("platform_admin_id")
+    plataformaAdministradorId: uuid("plataforma_administrador_id")
       .notNull()
-      .references(() => platformAdmins.id, { onDelete: "cascade" }),
-    platformAplicacionId: uuid("platform_aplicacion_id")
+      .references(() => plataformaAdministradores.id, { onDelete: "cascade" }),
+    plataformaAplicacionId: uuid("plataforma_aplicacion_id")
       .notNull()
-      .references(() => platformAplicaciones.id, { onDelete: "restrict" }),
+      .references(() => plataformaAplicaciones.id, { onDelete: "restrict" }),
     activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
     uniqueIndex(
-      "platform_admins_aplicaciones_platform_admin_id_platform_aplicacion_id_key_active",
+      "plataforma_administradores_aplicaciones_plataforma_administrador_id_plataforma_aplicacion_id_key_active",
     )
-      .on(t.platformAdminId, t.platformAplicacionId)
+      .on(t.plataformaAdministradorId, t.plataformaAplicacionId)
       .where(sql`${t.activo} = true`),
   ],
 );
