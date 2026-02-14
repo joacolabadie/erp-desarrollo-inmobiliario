@@ -1,3 +1,7 @@
+import {
+  organizaciones,
+  organizacionesRazonesSociales,
+} from "@/lib/server/db/schema/organizaciones";
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -9,10 +13,6 @@ import {
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
-import {
-  organizaciones,
-  organizacionesRazonesSociales,
-} from "./organizaciones";
 
 export const proyectoTipoEnum = pgEnum("proyecto_tipo", [
   "casa",
