@@ -1,34 +1,34 @@
 import { ComponentType } from "react";
 
-export type ApplicationComponentProps = {
-  organizationId: string;
-  projectId: string | null;
-  applicationPath: string[];
+export type AplicacionComponentProps = {
+  organizacionId: string;
+  proyectoId: string | null;
+  rutaAplicacion: string[];
 };
 
-export type ApplicationComponent = ComponentType<ApplicationComponentProps>;
+export type AplicacionComponent = ComponentType<AplicacionComponentProps>;
 
-export type ApplicationEntry = {
-  component: ApplicationComponent;
+export type AplicacionEntry = {
+  component: AplicacionComponent;
 };
 
-export type ApplicationRegistry = Record<
+export type AplicacionRegistry = Record<
   string,
-  Record<string, ApplicationEntry>
+  Record<string, AplicacionEntry>
 >;
 
-export type PlatformApplicationComponentProps = {
-  platformApplicationPath: string[];
+export type PlataformaAplicacionComponentProps = {
+  rutaPlataformaAplicacion: string[];
 };
 
-export type PlatformApplicationComponent =
-  ComponentType<PlatformApplicationComponentProps>;
+export type PlataformaAplicacionComponent =
+  ComponentType<PlataformaAplicacionComponentProps>;
 
-export type PlatformApplicationEntry = {
-  component: PlatformApplicationComponent;
+export type PlataformaAplicacionEntry = {
+  component: PlataformaAplicacionComponent;
 };
 
-export type PlatformAplicationRegistry = Record<
+export type PlataformaAplicacionRegistry = Record<
   string,
-  PlatformApplicationEntry
+  PlataformaAplicacionEntry
 >;
