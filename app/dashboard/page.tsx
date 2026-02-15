@@ -1,6 +1,9 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
-import { organizaciones, organizacionesMiembros } from "@/lib/server/db/schema";
+import {
+  organizacionesMiembros as organizacionesMiembrosTabla,
+  organizaciones as organizacionesTabla,
+} from "@/lib/server/db/schema";
 import { and, asc, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -14,29 +17,29 @@ export default async function DashboardPage() {
     redirect("/auth/sign-in");
   }
 
-  const organizations = await db
+  const organizaciones = await db
     .select({
-      id: organizaciones.id,
-      nombre: organizaciones.nombre,
+      id: organizacionesTabla.id,
+      nombre: organizacionesTabla.nombre,
     })
-    .from(organizacionesMiembros)
+    .from(organizacionesMiembrosTabla)
     .innerJoin(
-      organizaciones,
-      eq(organizaciones.id, organizacionesMiembros.organizacionId),
+      organizacionesTabla,
+      eq(organizacionesTabla.id, organizacionesMiembrosTabla.organizacionId),
     )
     .where(
       and(
-        eq(organizacionesMiembros.usuarioId, session.user.id),
-        eq(organizacionesMiembros.estado, "activo"),
-        eq(organizacionesMiembros.activo, true),
-        eq(organizaciones.activo, true),
+        eq(organizacionesMiembrosTabla.usuarioId, session.user.id),
+        eq(organizacionesMiembrosTabla.estado, "activo"),
+        eq(organizacionesMiembrosTabla.activo, true),
+        eq(organizacionesTabla.activo, true),
       ),
     )
-    .orderBy(asc(organizaciones.nombre), asc(organizaciones.id));
+    .orderBy(asc(organizacionesTabla.nombre), asc(organizacionesTabla.id));
 
-  if (organizations.length === 0) {
+  if (organizaciones.length === 0) {
     return (
-      <div className="grid min-h-full place-items-center p-6">
+      <div className="grid min-h-full place-items-center px-4 py-12">
         <div className="w-full max-w-lg">
           <div className="space-y-1 text-center">
             <h1 className="text-2xl font-semibold text-balance">
@@ -52,5 +55,5 @@ export default async function DashboardPage() {
     );
   }
 
-  redirect(`/dashboard/organizations/${organizations[0].id}`);
+  redirect(`/dashboard/organizations/${organizaciones[0].id}`);
 }

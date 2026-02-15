@@ -4,39 +4,23 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import {
-  aplicaciones,
-  modulos,
-  organizaciones,
-  organizacionesAplicaciones,
-  organizacionesMiembros,
-  organizacionesMiembrosAplicaciones,
-  organizacionesMiembrosProyectos,
-  proyectos,
+  aplicaciones as aplicacionesTabla,
+  modulos as modulosTabla,
+  organizacionesAplicaciones as organizacionesAplicacionesTabla,
+  organizacionesMiembrosAplicaciones as organizacionesMiembrosAplicacionesTabla,
+  organizacionesMiembrosProyectos as organizacionesMiembrosProyectosTabla,
+  organizacionesMiembros as organizacionesMiembrosTabla,
+  organizaciones as organizacionesTabla,
+  plataformaAdministradoresAplicaciones as plataformaAdministradoresAplicacionesTabla,
+  plataformaAdministradores as plataformaAdministradoresTabla,
+  plataformaAplicaciones as plataformaAplicacionesTabla,
+  proyectos as proyectosTabla,
 } from "@/lib/server/db/schema";
-import {
-  platformAdmins,
-  platformAdminsAplicaciones,
-  platformAplicaciones,
-} from "@/lib/server/db/schema/platform";
+import type { Modulo } from "@/lib/types/dashboard";
 import { and, asc, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
-
-type Application = {
-  id: string;
-  slug: string;
-  nombre: string;
-  scope: "organizacional" | "proyecto" | "mixto";
-};
-
-type Module = {
-  id: string;
-  organizacionId: string;
-  slug: string;
-  nombre: string;
-  aplicaciones: Application[];
-};
 
 export default async function DashboardLayout({
   children,
@@ -51,210 +35,225 @@ export default async function DashboardLayout({
     redirect("/auth/sign-in");
   }
 
-  const organizations = await db
+  const organizaciones = await db
     .select({
-      id: organizaciones.id,
-      nombre: organizaciones.nombre,
+      id: organizacionesTabla.id,
+      nombre: organizacionesTabla.nombre,
     })
-    .from(organizacionesMiembros)
+    .from(organizacionesMiembrosTabla)
     .innerJoin(
-      organizaciones,
-      eq(organizaciones.id, organizacionesMiembros.organizacionId),
+      organizacionesTabla,
+      eq(organizacionesTabla.id, organizacionesMiembrosTabla.organizacionId),
     )
     .where(
       and(
-        eq(organizacionesMiembros.usuarioId, session.user.id),
-        eq(organizacionesMiembros.estado, "activo"),
-        eq(organizacionesMiembros.activo, true),
-        eq(organizaciones.activo, true),
+        eq(organizacionesMiembrosTabla.usuarioId, session.user.id),
+        eq(organizacionesMiembrosTabla.estado, "activo"),
+        eq(organizacionesMiembrosTabla.activo, true),
+        eq(organizacionesTabla.activo, true),
       ),
     )
-    .orderBy(asc(organizaciones.nombre), asc(organizaciones.id));
+    .orderBy(asc(organizacionesTabla.nombre), asc(organizacionesTabla.id));
 
-  const projects = await db
+  const proyectos = await db
     .select({
-      id: proyectos.id,
-      organizacionId: proyectos.organizacionId,
-      nombre: proyectos.nombre,
+      id: proyectosTabla.id,
+      organizacionId: proyectosTabla.organizacionId,
+      nombre: proyectosTabla.nombre,
     })
-    .from(organizacionesMiembrosProyectos)
+    .from(organizacionesMiembrosProyectosTabla)
     .innerJoin(
-      proyectos,
+      proyectosTabla,
       and(
-        eq(proyectos.id, organizacionesMiembrosProyectos.proyectoId),
+        eq(proyectosTabla.id, organizacionesMiembrosProyectosTabla.proyectoId),
         eq(
-          proyectos.organizacionId,
-          organizacionesMiembrosProyectos.organizacionId,
+          proyectosTabla.organizacionId,
+          organizacionesMiembrosProyectosTabla.organizacionId,
         ),
       ),
     )
     .innerJoin(
-      organizacionesMiembros,
+      organizacionesMiembrosTabla,
       and(
         eq(
-          organizacionesMiembros.organizacionId,
-          organizacionesMiembrosProyectos.organizacionId,
+          organizacionesMiembrosTabla.organizacionId,
+          organizacionesMiembrosProyectosTabla.organizacionId,
         ),
         eq(
-          organizacionesMiembros.usuarioId,
-          organizacionesMiembrosProyectos.usuarioId,
+          organizacionesMiembrosTabla.usuarioId,
+          organizacionesMiembrosProyectosTabla.usuarioId,
         ),
       ),
     )
     .innerJoin(
-      organizaciones,
-      eq(organizaciones.id, organizacionesMiembrosProyectos.organizacionId),
+      organizacionesTabla,
+      eq(
+        organizacionesTabla.id,
+        organizacionesMiembrosProyectosTabla.organizacionId,
+      ),
     )
     .where(
       and(
-        eq(organizacionesMiembrosProyectos.usuarioId, session.user.id),
-        eq(organizacionesMiembrosProyectos.activo, true),
-        eq(proyectos.activo, true),
-        eq(organizacionesMiembros.estado, "activo"),
-        eq(organizacionesMiembros.activo, true),
-        eq(organizaciones.activo, true),
+        eq(organizacionesMiembrosProyectosTabla.usuarioId, session.user.id),
+        eq(organizacionesMiembrosProyectosTabla.activo, true),
+        eq(proyectosTabla.activo, true),
+        eq(organizacionesMiembrosTabla.estado, "activo"),
+        eq(organizacionesMiembrosTabla.activo, true),
+        eq(organizacionesTabla.activo, true),
       ),
     )
-    .orderBy(asc(proyectos.nombre), asc(proyectos.id));
+    .orderBy(asc(proyectosTabla.nombre), asc(proyectosTabla.id));
 
-  const applications = await db
+  const aplicaciones = await db
     .select({
-      organizacionId: organizacionesMiembrosAplicaciones.organizacionId,
-      moduloId: modulos.id,
-      moduloSlug: modulos.slug,
-      moduloNombre: modulos.nombre,
-      aplicacionId: aplicaciones.id,
-      aplicacionSlug: aplicaciones.slug,
-      aplicacionNombre: aplicaciones.nombre,
-      aplicacionScope: aplicaciones.scope,
+      organizacionId: organizacionesMiembrosAplicacionesTabla.organizacionId,
+      moduloId: modulosTabla.id,
+      moduloSlug: modulosTabla.slug,
+      moduloNombre: modulosTabla.nombre,
+      aplicacionId: aplicacionesTabla.id,
+      aplicacionSlug: aplicacionesTabla.slug,
+      aplicacionNombre: aplicacionesTabla.nombre,
+      aplicacionScope: aplicacionesTabla.scope,
     })
-    .from(organizacionesMiembrosAplicaciones)
+    .from(organizacionesMiembrosAplicacionesTabla)
     .innerJoin(
-      aplicaciones,
-      eq(aplicaciones.id, organizacionesMiembrosAplicaciones.aplicacionId),
+      aplicacionesTabla,
+      eq(
+        aplicacionesTabla.id,
+        organizacionesMiembrosAplicacionesTabla.aplicacionId,
+      ),
     )
     .innerJoin(
-      organizacionesMiembros,
+      organizacionesMiembrosTabla,
       and(
         eq(
-          organizacionesMiembros.organizacionId,
-          organizacionesMiembrosAplicaciones.organizacionId,
+          organizacionesMiembrosTabla.organizacionId,
+          organizacionesMiembrosAplicacionesTabla.organizacionId,
         ),
         eq(
-          organizacionesMiembros.usuarioId,
-          organizacionesMiembrosAplicaciones.usuarioId,
+          organizacionesMiembrosTabla.usuarioId,
+          organizacionesMiembrosAplicacionesTabla.usuarioId,
         ),
       ),
     )
     .innerJoin(
-      organizacionesAplicaciones,
+      organizacionesAplicacionesTabla,
       and(
         eq(
-          organizacionesAplicaciones.organizacionId,
-          organizacionesMiembrosAplicaciones.organizacionId,
+          organizacionesAplicacionesTabla.organizacionId,
+          organizacionesMiembrosAplicacionesTabla.organizacionId,
         ),
         eq(
-          organizacionesAplicaciones.aplicacionId,
-          organizacionesMiembrosAplicaciones.aplicacionId,
+          organizacionesAplicacionesTabla.aplicacionId,
+          organizacionesMiembrosAplicacionesTabla.aplicacionId,
         ),
       ),
     )
     .innerJoin(
-      organizaciones,
-      eq(organizaciones.id, organizacionesMiembrosAplicaciones.organizacionId),
+      organizacionesTabla,
+      eq(
+        organizacionesTabla.id,
+        organizacionesMiembrosAplicacionesTabla.organizacionId,
+      ),
     )
-    .innerJoin(modulos, eq(modulos.id, aplicaciones.moduloId))
+    .innerJoin(modulosTabla, eq(modulosTabla.id, aplicacionesTabla.moduloId))
     .where(
       and(
-        eq(organizacionesMiembrosAplicaciones.usuarioId, session.user.id),
-        eq(organizacionesMiembrosAplicaciones.activo, true),
-        eq(aplicaciones.activo, true),
-        eq(organizacionesMiembros.estado, "activo"),
-        eq(organizacionesMiembros.activo, true),
-        eq(organizacionesAplicaciones.activo, true),
-        eq(organizaciones.activo, true),
-        eq(modulos.activo, true),
+        eq(organizacionesMiembrosAplicacionesTabla.usuarioId, session.user.id),
+        eq(organizacionesMiembrosAplicacionesTabla.activo, true),
+        eq(aplicacionesTabla.activo, true),
+        eq(organizacionesMiembrosTabla.estado, "activo"),
+        eq(organizacionesMiembrosTabla.activo, true),
+        eq(organizacionesAplicacionesTabla.activo, true),
+        eq(organizacionesTabla.activo, true),
+        eq(modulosTabla.activo, true),
       ),
     )
     .orderBy(
-      asc(modulos.nombre),
-      asc(modulos.id),
-      asc(aplicaciones.nombre),
-      asc(aplicaciones.id),
+      asc(modulosTabla.nombre),
+      asc(modulosTabla.id),
+      asc(aplicacionesTabla.nombre),
+      asc(aplicacionesTabla.id),
     );
 
-  const modules: Module[] = [];
+  const modulos: Modulo[] = [];
 
-  for (const application of applications) {
-    let moduleItem = modules.find(
-      (module) =>
-        module.organizacionId === application.organizacionId &&
-        module.id === application.moduloId,
+  for (const aplicacion of aplicaciones) {
+    let modulo = modulos.find(
+      (modulo) =>
+        modulo.organizacionId === aplicacion.organizacionId &&
+        modulo.id === aplicacion.moduloId,
     );
 
-    if (!moduleItem) {
-      moduleItem = {
-        organizacionId: application.organizacionId,
-        id: application.moduloId,
-        slug: application.moduloSlug,
-        nombre: application.moduloNombre,
+    if (!modulo) {
+      modulo = {
+        organizacionId: aplicacion.organizacionId,
+        id: aplicacion.moduloId,
+        slug: aplicacion.moduloSlug,
+        nombre: aplicacion.moduloNombre,
         aplicaciones: [],
       };
 
-      modules.push(moduleItem);
+      modulos.push(modulo);
     }
 
-    moduleItem.aplicaciones.push({
-      id: application.aplicacionId,
-      slug: application.aplicacionSlug,
-      nombre: application.aplicacionNombre,
-      scope: application.aplicacionScope,
+    modulo.aplicaciones.push({
+      id: aplicacion.aplicacionId,
+      slug: aplicacion.aplicacionSlug,
+      nombre: aplicacion.aplicacionNombre,
+      scope: aplicacion.aplicacionScope,
     });
   }
 
-  const platformApplications = await db
+  const plataformaAplicaciones = await db
     .select({
-      id: platformAplicaciones.id,
-      slug: platformAplicaciones.slug,
-      nombre: platformAplicaciones.nombre,
+      id: plataformaAplicacionesTabla.id,
+      slug: plataformaAplicacionesTabla.slug,
+      nombre: plataformaAplicacionesTabla.nombre,
     })
-    .from(platformAdminsAplicaciones)
+    .from(plataformaAdministradoresAplicacionesTabla)
     .innerJoin(
-      platformAdmins,
-      eq(platformAdmins.id, platformAdminsAplicaciones.platformAdminId),
+      plataformaAdministradoresTabla,
+      eq(
+        plataformaAdministradoresTabla.id,
+        plataformaAdministradoresAplicacionesTabla.plataformaAdministradorId,
+      ),
     )
     .innerJoin(
-      platformAplicaciones,
+      plataformaAplicacionesTabla,
       eq(
-        platformAplicaciones.id,
-        platformAdminsAplicaciones.platformAplicacionId,
+        plataformaAplicacionesTabla.id,
+        plataformaAdministradoresAplicacionesTabla.plataformaAplicacionId,
       ),
     )
     .where(
       and(
-        eq(platformAdminsAplicaciones.activo, true),
-        eq(platformAdmins.usuarioId, session.user.id),
-        eq(platformAdmins.activo, true),
-        eq(platformAplicaciones.activo, true),
+        eq(plataformaAdministradoresAplicacionesTabla.activo, true),
+        eq(plataformaAdministradoresTabla.usuarioId, session.user.id),
+        eq(plataformaAdministradoresTabla.activo, true),
+        eq(plataformaAplicacionesTabla.activo, true),
       ),
     )
-    .orderBy(asc(platformAplicaciones.nombre), asc(platformAplicaciones.id));
+    .orderBy(
+      asc(plataformaAplicacionesTabla.nombre),
+      asc(plataformaAplicacionesTabla.id),
+    );
 
   return (
     <SidebarProvider>
       <AppSidebar
-        organizations={organizations}
-        projects={projects}
-        modules={modules}
-        platformApplications={platformApplications}
-        user={{ name: session.user.name, email: session.user.email }}
+        organizaciones={organizaciones}
+        proyectos={proyectos}
+        modulos={modulos}
+        plataformaAplicaciones={plataformaAplicaciones}
+        usuario={{ name: session.user.name, email: session.user.email }}
       />
       <SidebarInset className="h-svh flex-col overflow-y-hidden">
         <AppHeader
-          organizations={organizations}
-          projects={projects}
-          modules={modules}
-          platformApplications={platformApplications}
+          organizaciones={organizaciones}
+          proyectos={proyectos}
+          modulos={modulos}
+          plataformaAplicaciones={plataformaAplicaciones}
         />
         <main className="flex-1 overflow-y-auto">{children}</main>
       </SidebarInset>
