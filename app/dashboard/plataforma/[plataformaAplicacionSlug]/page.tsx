@@ -1,9 +1,9 @@
 import { auth } from "@/lib/auth";
-import { plataformaAplicacionRegistry } from "@/registry/plataforma-aplicaciones";
+import { plataformaAplicacionRegistry } from "@/registry/plataforma-aplicacion";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function PlataformAplicacionPage({
+export default async function PlataformaAplicacionPage({
   params,
 }: {
   params: Promise<{

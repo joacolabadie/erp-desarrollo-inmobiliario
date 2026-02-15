@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { aplicacionRegistry } from "@/registry/aplicaciones";
+import { aplicacionRegistry } from "@/registry/aplicacion";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 

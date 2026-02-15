@@ -55,5 +55,5 @@ export default async function DashboardPage() {
     );
   }
 
-  redirect(`/dashboard/organizations/${organizaciones[0].id}`);
+  redirect(`/dashboard/organizaciones/${organizaciones[0].id}`);
 }
