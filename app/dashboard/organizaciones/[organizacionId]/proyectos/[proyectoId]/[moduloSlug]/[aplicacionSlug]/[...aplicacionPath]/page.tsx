@@ -3,7 +3,7 @@ import { aplicacionRegistry } from "@/registry/aplicaciones";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function ProyectoAplicacionPage({
+export default async function ProyectoAplicacionSubroutePage({
   params,
 }: {
   params: Promise<{
@@ -11,10 +11,16 @@ export default async function ProyectoAplicacionPage({
     proyectoId: string;
     moduloSlug: string;
     aplicacionSlug: string;
+    aplicacionPath: string[];
   }>;
 }) {
-  const { organizacionId, proyectoId, moduloSlug, aplicacionSlug } =
-    await params;
+  const {
+    organizacionId,
+    proyectoId,
+    moduloSlug,
+    aplicacionSlug,
+    aplicacionPath,
+  } = await params;
 
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -39,7 +45,7 @@ export default async function ProyectoAplicacionPage({
     <Component
       organizacionId={organizacionId}
       proyectoId={proyectoId}
-      aplicacionPath={[]}
+      aplicacionPath={aplicacionPath}
     />
   );
 }
