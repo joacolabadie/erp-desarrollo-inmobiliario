@@ -3,17 +3,17 @@ import { applicationRegistry } from "@/registry/applications";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function OrganizationApplicationSubroutePage({
+export default async function ProjectApplicationPage({
   params,
 }: {
   params: Promise<{
     organizationId: string;
+    projectId: string;
     moduleSlug: string;
     applicationSlug: string;
-    applicationPath: string[];
   }>;
 }) {
-  const { organizationId, moduleSlug, applicationSlug, applicationPath } =
+  const { organizationId, projectId, moduleSlug, applicationSlug } =
     await params;
 
   const session = await auth.api.getSession({
@@ -28,7 +28,9 @@ export default async function OrganizationApplicationSubroutePage({
   const applicationDefinition = moduleRegistry?.[applicationSlug];
 
   if (!applicationDefinition) {
-    redirect(`/dashboard/organizations/${organizationId}`);
+    redirect(
+      `/dashboard/organizations/${organizationId}/projects/${projectId}`,
+    );
   }
 
   const Component = applicationDefinition.component;
@@ -36,8 +38,8 @@ export default async function OrganizationApplicationSubroutePage({
   return (
     <Component
       organizationId={organizationId}
-      projectId={null}
-      applicationPath={applicationPath}
+      projectId={projectId}
+      applicationPath={[]}
     />
   );
 }
