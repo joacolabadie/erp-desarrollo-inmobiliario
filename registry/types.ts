@@ -3,7 +3,7 @@ import { ComponentType } from "react";
 export type AplicacionComponentProps = {
   organizacionId: string;
   proyectoId: string | null;
-  rutaAplicacion: string[];
+  aplicacionPath: string[];
 };
 
 export type AplicacionComponent = ComponentType<AplicacionComponentProps>;
@@ -18,7 +18,7 @@ export type AplicacionRegistry = Record<
 >;
 
 export type PlataformaAplicacionComponentProps = {
-  rutaPlataformaAplicacion: string[];
+  plataformaAplicacionPath: string[];
 };
 
 export type PlataformaAplicacionComponent =
