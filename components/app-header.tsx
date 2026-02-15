@@ -1,5 +1,6 @@
 "use client";
 
+import { ModeToggle } from "@/components/mode-toggle";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -112,51 +113,56 @@ export function AppHeader({
   ]);
 
   return (
-    <header className="bg-sidebar border-sidebar-border sticky top-0 flex h-16 items-center gap-3 border-b px-4">
-      <SidebarTrigger className="-ml-1" />
-      <Breadcrumb>
-        <BreadcrumbList>
-          {breadcrumb.nombrePlataformaAplicacion !== null ? (
-            <>
-              <BreadcrumbItem>
-                <BreadcrumbPage>Plataforma</BreadcrumbPage>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>
-                  {breadcrumb.nombrePlataformaAplicacion}
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </>
-          ) : breadcrumb.nombreOrganizacion !== null ? (
-            <>
-              <BreadcrumbItem>
-                <BreadcrumbPage>{breadcrumb.nombreOrganizacion}</BreadcrumbPage>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>
-                  {breadcrumb.nombreProyecto ?? "Vista general"}
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-              {breadcrumb.nombreModulo && breadcrumb.nombreAplicacion && (
-                <>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>{breadcrumb.nombreModulo}</BreadcrumbPage>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>
-                      {breadcrumb.nombreAplicacion}
-                    </BreadcrumbPage>
-                  </BreadcrumbItem>
-                </>
-              )}
-            </>
-          ) : null}
-        </BreadcrumbList>
-      </Breadcrumb>
+    <header className="bg-sidebar border-sidebar-border sticky top-0 flex h-16 items-center justify-between gap-4 border-b px-4">
+      <div className="flex items-center gap-3">
+        <SidebarTrigger className="-ml-1" />
+        <Breadcrumb>
+          <BreadcrumbList>
+            {breadcrumb.nombrePlataformaAplicacion !== null ? (
+              <>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Plataforma</BreadcrumbPage>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    {breadcrumb.nombrePlataformaAplicacion}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </>
+            ) : breadcrumb.nombreOrganizacion !== null ? (
+              <>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    {breadcrumb.nombreOrganizacion}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    {breadcrumb.nombreProyecto ?? "Vista general"}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+                {breadcrumb.nombreModulo && breadcrumb.nombreAplicacion && (
+                  <>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>{breadcrumb.nombreModulo}</BreadcrumbPage>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>
+                        {breadcrumb.nombreAplicacion}
+                      </BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                )}
+              </>
+            ) : null}
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+      <ModeToggle />
     </header>
   );
 }
