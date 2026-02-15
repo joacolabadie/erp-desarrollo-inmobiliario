@@ -9,112 +9,106 @@ import {
 } from "@/components/ui/breadcrumb";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import type {
-  Module,
-  Organization,
-  PlatformApplication,
-  Project,
+  AplicacionPlataforma,
+  Modulo,
+  Organizacion,
+  Proyecto,
 } from "@/lib/types/dashboard";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
 type AppHeaderProps = {
-  organizations: Organization[];
-  projects: Project[];
-  modules: Module[];
-  platformApplications: PlatformApplication[];
+  organizaciones: Organizacion[];
+  proyectos: Proyecto[];
+  modulos: Modulo[];
+  plataformaAplicaciones: AplicacionPlataforma[];
 };
 
 export function AppHeader({
-  organizations,
-  projects,
-  modules,
-  platformApplications,
+  organizaciones,
+  proyectos,
+  modulos,
+  plataformaAplicaciones,
 }: AppHeaderProps) {
   const params = useParams<{
-    organizationId?: string;
-    projectId?: string;
-    moduleSlug?: string;
-    applicationSlug?: string;
-    platformApplicationSlug?: string;
+    organizacionId?: string;
+    proyectoId?: string;
+    moduloSlug?: string;
+    aplicacionSlug?: string;
+    plataformaAplicacionSlug?: string;
   }>();
 
   const breadcrumb = useMemo(() => {
-    const activeOrganizationId = params.organizationId ?? null;
-    const activeProjectId = params.projectId ?? null;
-    const activeModuleSlug = params.moduleSlug ?? null;
-    const activeApplicationSlug = params.applicationSlug ?? null;
-    const activePlatformApplicationSlug =
-      params.platformApplicationSlug ?? null;
+    const organizacionId = params.organizacionId ?? null;
+    const proyectoId = params.proyectoId ?? null;
+    const moduloSlug = params.moduloSlug ?? null;
+    const aplicacionSlug = params.aplicacionSlug ?? null;
+    const plataformaAplicacionSlug = params.plataformaAplicacionSlug ?? null;
 
-    const activeOrganizationName =
-      activeOrganizationId !== null
-        ? (organizations.find(
-            (organization) => organization.id === activeOrganizationId,
+    const nombreOrganizacion =
+      organizacionId !== null
+        ? (organizaciones.find(
+            (organizacion) => organizacion.id === organizacionId,
           )?.nombre ?? null)
         : null;
 
-    const organizationProjects =
-      activeOrganizationId !== null
-        ? projects.filter(
-            (project) => project.organizacionId === activeOrganizationId,
+    const proyectosOrganizacion =
+      organizacionId !== null
+        ? proyectos.filter(
+            (proyecto) => proyecto.organizacionId === organizacionId,
           )
         : [];
 
-    const activeProjectName =
-      activeProjectId !== null
-        ? (organizationProjects.find(
-            (project) => project.id === activeProjectId,
-          )?.nombre ?? null)
+    const nombreProyecto =
+      proyectoId !== null
+        ? (proyectosOrganizacion.find((proyecto) => proyecto.id === proyectoId)
+            ?.nombre ?? null)
         : null;
 
-    const organizationModules =
-      activeOrganizationId !== null
-        ? modules.filter(
-            (moduleItem) => moduleItem.organizacionId === activeOrganizationId,
-          )
+    const modulosOrganizacion =
+      organizacionId !== null
+        ? modulos.filter((modulo) => modulo.organizacionId === organizacionId)
         : [];
 
-    const moduleItem =
-      activeModuleSlug !== null
-        ? organizationModules.find(
-            (moduleItem) => moduleItem.slug === activeModuleSlug,
-          )
+    const modulo =
+      moduloSlug !== null
+        ? modulosOrganizacion.find((modulo) => modulo.slug === moduloSlug)
         : undefined;
 
-    const moduleName = moduleItem?.nombre ?? null;
+    const nombreModulo = modulo?.nombre ?? null;
 
-    const applicationName =
-      moduleItem !== undefined && activeApplicationSlug !== null
-        ? (moduleItem.aplicaciones.find(
-            (application) => application.slug === activeApplicationSlug,
+    const nombreAplicacion =
+      modulo !== undefined && aplicacionSlug !== null
+        ? (modulo.aplicaciones.find(
+            (aplicacion) => aplicacion.slug === aplicacionSlug,
           )?.nombre ?? null)
         : null;
 
-    const platformApplicationName =
-      activePlatformApplicationSlug !== null
-        ? (platformApplications.find(
-            (platformApplication) =>
-              platformApplication.slug === activePlatformApplicationSlug,
+    const nombrePlataformaAplicacion =
+      plataformaAplicacionSlug !== null
+        ? (plataformaAplicaciones.find(
+            (plataformaAplicacion) =>
+              plataformaAplicacion.slug === plataformaAplicacionSlug,
           )?.nombre ?? null)
         : null;
 
     return {
-      activeOrganizationName,
-      activeProjectName,
-      moduleName,
-      applicationName,
-      platformApplicationName,
+      nombreOrganizacion,
+      nombreProyecto,
+      nombreModulo,
+      nombreAplicacion,
+      nombrePlataformaAplicacion,
     };
   }, [
-    params.organizationId,
-    params.projectId,
-    params.moduleSlug,
-    params.applicationSlug,
-    params.platformApplicationSlug,
-    organizations,
-    projects,
-    modules,
-    platformApplications,
+    params.organizacionId,
+    params.proyectoId,
+    params.moduloSlug,
+    params.aplicacionSlug,
+    params.plataformaAplicacionSlug,
+    organizaciones,
+    proyectos,
+    modulos,
+    plataformaAplicaciones,
   ]);
 
   return (
@@ -122,7 +116,7 @@ export function AppHeader({
       <SidebarTrigger className="-ml-1" />
       <Breadcrumb>
         <BreadcrumbList>
-          {breadcrumb.platformApplicationName !== null ? (
+          {breadcrumb.nombrePlataformaAplicacion !== null ? (
             <>
               <BreadcrumbItem>
                 <BreadcrumbPage>Plataforma</BreadcrumbPage>
@@ -130,33 +124,31 @@ export function AppHeader({
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage>
-                  {breadcrumb.platformApplicationName}
+                  {breadcrumb.nombrePlataformaAplicacion}
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </>
-          ) : breadcrumb.activeOrganizationName !== null ? (
+          ) : breadcrumb.nombreOrganizacion !== null ? (
             <>
               <BreadcrumbItem>
-                <BreadcrumbPage>
-                  {breadcrumb.activeOrganizationName}
-                </BreadcrumbPage>
+                <BreadcrumbPage>{breadcrumb.nombreOrganizacion}</BreadcrumbPage>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage>
-                  {breadcrumb.activeProjectName ?? "Vista general"}
+                  {breadcrumb.nombreProyecto ?? "Vista general"}
                 </BreadcrumbPage>
               </BreadcrumbItem>
-              {breadcrumb.moduleName && breadcrumb.applicationName && (
+              {breadcrumb.nombreModulo && breadcrumb.nombreAplicacion && (
                 <>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
-                    <BreadcrumbPage>{breadcrumb.moduleName}</BreadcrumbPage>
+                    <BreadcrumbPage>{breadcrumb.nombreModulo}</BreadcrumbPage>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
                     <BreadcrumbPage>
-                      {breadcrumb.applicationName}
+                      {breadcrumb.nombreAplicacion}
                     </BreadcrumbPage>
                   </BreadcrumbItem>
                 </>

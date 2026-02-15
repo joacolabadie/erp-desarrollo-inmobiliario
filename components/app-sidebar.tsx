@@ -3,8 +3,8 @@
 import { NavMain } from "@/components/nav-main";
 import NavPlatform from "@/components/nav-platform";
 import { NavUser } from "@/components/nav-user";
-import { OrganizationSwitcher } from "@/components/organization-switcher";
-import { ProjectSwitcher } from "@/components/project-switcher";
+import { OrganizacionSwitcher } from "@/components/organizacion-switcher";
+import { ProyectoSwitcher } from "@/components/proyecto-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -13,72 +13,70 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import type {
-  Module,
-  Organization,
-  PlatformApplication,
-  Project,
-  User,
+  AplicacionPlataforma,
+  Modulo,
+  Organizacion,
+  Proyecto,
+  Usuario,
 } from "@/lib/types/dashboard";
 import { useParams } from "next/navigation";
 import type { ComponentProps } from "react";
 
 type AppSidebarProps = ComponentProps<typeof Sidebar> & {
-  organizations: Organization[];
-  projects: Project[];
-  modules: Module[];
-  platformApplications: PlatformApplication[];
-  user: User;
+  organizaciones: Organizacion[];
+  proyectos: Proyecto[];
+  modulos: Modulo[];
+  plataformaAplicaciones: AplicacionPlataforma[];
+  usuario: Usuario;
 };
 
 export function AppSidebar({
-  organizations,
-  projects,
-  modules,
-  platformApplications,
-  user,
+  organizaciones,
+  proyectos,
+  modulos,
+  plataformaAplicaciones,
+  usuario,
   ...props
 }: AppSidebarProps) {
-  const params = useParams<{ organizationId?: string; projectId?: string }>();
+  const params = useParams<{ organizacionId?: string; proyectoId?: string }>();
 
-  const activeOrganizationId = params.organizationId ?? null;
-  const activeProjectId = params.projectId ?? null;
+  const organizacionId = params.organizacionId ?? null;
+  const proyectoId = params.proyectoId ?? null;
 
-  const organizationModules =
-    activeOrganizationId !== null
-      ? modules.filter(
-          (module) => module.organizacionId === activeOrganizationId,
-        )
+  const modulosOrganizacion =
+    organizacionId !== null
+      ? modulos.filter((modulo) => modulo.organizacionId === organizacionId)
       : [];
 
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <OrganizationSwitcher
-          organizations={organizations}
-          activeOrganizationId={activeOrganizationId}
+        <OrganizacionSwitcher
+          organizaciones={organizaciones}
+          organizacionId={organizacionId}
         />
-        {activeOrganizationId !== null && (
-          <ProjectSwitcher
-            activeOrganizationId={activeOrganizationId}
-            projects={projects}
-            activeProjectId={activeProjectId}
+        {organizacionId !== null && (
+          <ProyectoSwitcher
+            organizacionId={organizacionId}
+            proyectos={proyectos}
+            proyectoId={proyectoId}
           />
         )}
       </SidebarHeader>
       <SidebarContent>
-        {platformApplications.length > 0 && (
-          <NavPlatform platformApplications={platformApplications} />
+        {plataformaAplicaciones.length > 0 && (
+          <NavPlatform plataformaAplicaciones={plataformaAplicaciones} />
         )}
-        {activeOrganizationId !== null && organizationModules.length > 0 && (
+        {organizacionId !== null && modulosOrganizacion.length > 0 && (
           <NavMain
-            activeOrganizationId={activeOrganizationId}
-            activeProjectId={activeProjectId}
-            modules={organizationModules}
+            organizacionId={organizacionId}
+            proyectoId={proyectoId}
+            modulos={modulosOrganizacion}
           />
         )}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser usuario={usuario} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

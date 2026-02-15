@@ -15,49 +15,46 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import type { Module } from "@/lib/types/dashboard";
+import type { Modulo } from "@/lib/types/dashboard";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 type NavMainProps = {
-  activeOrganizationId: string;
-  activeProjectId: string | null;
-  modules: Module[];
+  organizacionId: string;
+  proyectoId: string | null;
+  modulos: Modulo[];
 };
 
-export function NavMain({
-  activeOrganizationId,
-  activeProjectId,
-  modules,
-}: NavMainProps) {
-  const filteredModules = modules
-    .map((module) => {
-      const applications = module.aplicaciones.filter((application) => {
-        if (activeProjectId === null) {
+export function NavMain({ organizacionId, proyectoId, modulos }: NavMainProps) {
+  const modulosFiltrados = modulos
+    .map((modulo) => {
+      const aplicaciones = modulo.aplicaciones.filter((aplicacion) => {
+        if (proyectoId === null) {
           return (
-            application.scope === "organizacional" ||
-            application.scope === "mixto"
+            aplicacion.scope === "organizacional" ||
+            aplicacion.scope === "mixto"
           );
         }
 
-        return (
-          application.scope === "proyecto" || application.scope === "mixto"
-        );
+        return aplicacion.scope === "proyecto" || aplicacion.scope === "mixto";
       });
 
       return {
-        id: module.id,
-        slug: module.slug,
-        nombre: module.nombre,
-        aplicaciones: applications,
+        id: modulo.id,
+        slug: modulo.slug,
+        nombre: modulo.nombre,
+        aplicaciones,
       };
     })
-    .filter((module) => module.aplicaciones.length > 0);
+    .filter((modulo) => modulo.aplicaciones.length > 0);
 
-  const buildApplicationHref = (moduleSlug: string, applicationSlug: string) =>
-    activeProjectId !== null
-      ? `/dashboard/organizations/${activeOrganizationId}/projects/${activeProjectId}/${moduleSlug}/${applicationSlug}`
-      : `/dashboard/organizations/${activeOrganizationId}/${moduleSlug}/${applicationSlug}`;
+  const construirAplicacionHref = (
+    moduloSlug: string,
+    aplicacionSlug: string,
+  ) =>
+    proyectoId !== null
+      ? `/dashboard/organizaciones/${organizacionId}/proyectos/${proyectoId}/${moduloSlug}/${aplicacionSlug}`
+      : `/dashboard/organizaciones/${organizacionId}/${moduloSlug}/${aplicacionSlug}`;
 
   return (
     <SidebarGroup>
@@ -65,28 +62,28 @@ export function NavMain({
         Módulos
       </SidebarGroupLabel>
       <SidebarMenu>
-        {filteredModules.map((module) => (
-          <Collapsible key={module.id} asChild>
+        {modulosFiltrados.map((modulo) => (
+          <Collapsible key={modulo.id} asChild>
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton className="[&[data-state=open]>svg]:rotate-90">
-                  <span>{module.nombre}</span>
+                  <span>{modulo.nombre}</span>
                   <ChevronRight className="ml-auto transition-transform" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub className="mr-0 pr-0">
-                  {module.aplicaciones.map((application) => (
-                    <SidebarMenuSubItem key={application.id}>
+                  {modulo.aplicaciones.map((aplicacion) => (
+                    <SidebarMenuSubItem key={aplicacion.id}>
                       <div className="absolute top-1/2 -left-2.5 w-2.25 border-t" />
                       <SidebarMenuSubButton asChild>
                         <Link
-                          href={buildApplicationHref(
-                            module.slug,
-                            application.slug,
+                          href={construirAplicacionHref(
+                            modulo.slug,
+                            aplicacion.slug,
                           )}
                         >
-                          <span>{application.nombre}</span>
+                          <span>{aplicacion.nombre}</span>
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

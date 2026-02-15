@@ -7,15 +7,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import type { PlatformApplication } from "@/lib/types/dashboard";
+import type { AplicacionPlataforma } from "@/lib/types/dashboard";
 import Link from "next/link";
 
 type NavPlatformProps = {
-  platformApplications: PlatformApplication[];
+  plataformaAplicaciones: AplicacionPlataforma[];
 };
 
 export default function NavPlatform({
-  platformApplications,
+  plataformaAplicaciones,
 }: NavPlatformProps) {
   return (
     <SidebarGroup>
@@ -23,11 +23,11 @@ export default function NavPlatform({
         Plataforma
       </SidebarGroupLabel>
       <SidebarMenu>
-        {platformApplications.map((platformApplication) => (
-          <SidebarMenuItem key={platformApplication.id}>
+        {plataformaAplicaciones.map((plataformaAplicacion) => (
+          <SidebarMenuItem key={plataformaAplicacion.id}>
             <SidebarMenuButton asChild>
-              <Link href={`/dashboard/platform/${platformApplication.slug}`}>
-                <span>{platformApplication.nombre}</span>
+              <Link href={`/dashboard/plataforma/${plataformaAplicacion.slug}`}>
+                <span>{plataformaAplicacion.nombre}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

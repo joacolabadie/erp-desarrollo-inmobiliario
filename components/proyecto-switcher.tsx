@@ -11,30 +11,30 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import type { Project } from "@/lib/types/dashboard";
+import type { Proyecto } from "@/lib/types/dashboard";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-type ProjectSwitcherProps = {
-  activeOrganizationId: string;
-  projects: Project[];
-  activeProjectId: string | null;
+type ProyectoSwitcherProps = {
+  organizacionId: string;
+  proyectos: Proyecto[];
+  proyectoId: string | null;
 };
 
-export function ProjectSwitcher({
-  activeOrganizationId,
-  projects,
-  activeProjectId,
-}: ProjectSwitcherProps) {
+export function ProyectoSwitcher({
+  organizacionId,
+  proyectos,
+  proyectoId,
+}: ProyectoSwitcherProps) {
   const router = useRouter();
 
-  const organizationProjects = projects.filter(
-    (project) => project.organizacionId === activeOrganizationId,
+  const proyectosOrganizacion = proyectos.filter(
+    (proyecto) => proyecto.organizacionId === organizacionId,
   );
 
-  const activeProject =
-    activeProjectId !== null
-      ? organizationProjects.find((project) => project.id === activeProjectId)
+  const proyecto =
+    proyectoId !== null
+      ? proyectosOrganizacion.find((proyecto) => proyecto.id === proyectoId)
       : undefined;
 
   return (
@@ -48,7 +48,7 @@ export function ProjectSwitcher({
                   Proyecto
                 </span>
                 <span className="truncate">
-                  {activeProject?.nombre ?? "Vista general"}
+                  {proyecto?.nombre ?? "Vista general"}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
@@ -57,25 +57,23 @@ export function ProjectSwitcher({
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
             <DropdownMenuItem
               onClick={() =>
-                router.push(`/dashboard/organizations/${activeOrganizationId}`)
+                router.push(`/dashboard/organizaciones/${organizacionId}`)
               }
             >
               Vista general
-              {activeProjectId === null && <Check className="ml-auto" />}
+              {proyectoId === null && <Check className="ml-auto" />}
             </DropdownMenuItem>
-            {organizationProjects.map((project) => (
+            {proyectosOrganizacion.map((proyecto) => (
               <DropdownMenuItem
-                key={project.id}
+                key={proyecto.id}
                 onClick={() =>
                   router.push(
-                    `/dashboard/organizations/${activeOrganizationId}/projects/${project.id}`,
+                    `/dashboard/organizaciones/${organizacionId}/proyectos/${proyecto.id}`,
                   )
                 }
               >
-                {project.nombre}
-                {project.id === activeProjectId && (
-                  <Check className="ml-auto" />
-                )}
+                {proyecto.nombre}
+                {proyecto.id === proyectoId && <Check className="ml-auto" />}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

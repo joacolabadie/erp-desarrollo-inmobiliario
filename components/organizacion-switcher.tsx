@@ -11,25 +11,25 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import type { Organization } from "@/lib/types/dashboard";
+import type { Organizacion } from "@/lib/types/dashboard";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-type OrganizationSwitcherProps = {
-  organizations: Organization[];
-  activeOrganizationId: string | null;
+type OrganizacionSwitcherProps = {
+  organizaciones: Organizacion[];
+  organizacionId: string | null;
 };
 
-export function OrganizationSwitcher({
-  organizations,
-  activeOrganizationId,
-}: OrganizationSwitcherProps) {
+export function OrganizacionSwitcher({
+  organizaciones,
+  organizacionId,
+}: OrganizacionSwitcherProps) {
   const router = useRouter();
 
-  const activeOrganization =
-    activeOrganizationId !== null
-      ? organizations.find(
-          (organization) => organization.id === activeOrganizationId,
+  const organizacion =
+    organizacionId !== null
+      ? organizaciones.find(
+          (organizacion) => organizacion.id === organizacionId,
         )
       : undefined;
 
@@ -37,29 +37,29 @@ export function OrganizationSwitcher({
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild disabled={organizations.length === 0}>
+          <DropdownMenuTrigger asChild disabled={organizaciones.length === 0}>
             <SidebarMenuButton size="lg">
               <div className="grid flex-1 font-medium">
                 <span className="text-muted-foreground truncate text-xs">
                   Organización
                 </span>
                 <span className="truncate">
-                  {activeOrganization?.nombre ?? "Seleccioná una organización"}
+                  {organizacion?.nombre ?? "Seleccioná una organización"}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
-            {organizations.map((organization) => (
+            {organizaciones.map((organizacion) => (
               <DropdownMenuItem
-                key={organization.id}
+                key={organizacion.id}
                 onClick={() =>
-                  router.push(`/dashboard/organizations/${organization.id}`)
+                  router.push(`/dashboard/organizaciones/${organizacion.id}`)
                 }
               >
-                {organization.nombre}
-                {organization.id === activeOrganizationId && (
+                {organizacion.nombre}
+                {organizacion.id === organizacionId && (
                   <Check className="ml-auto" />
                 )}
               </DropdownMenuItem>
