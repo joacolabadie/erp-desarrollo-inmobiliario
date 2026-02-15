@@ -94,7 +94,7 @@ export function SignInForm() {
                 id={field.name}
                 type="password"
                 placeholder="••••••••"
-                autoComplete="new-password"
+                autoComplete="current-password"
                 aria-invalid={fieldState.invalid}
                 disabled={isPending}
               />

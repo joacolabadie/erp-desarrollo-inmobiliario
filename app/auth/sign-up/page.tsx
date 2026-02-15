@@ -1,8 +1,8 @@
+import { SignUpForm } from "@/app/auth/sign-up/sign-up-form";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { SignUpForm } from "./sign-up-form";
 
 export default async function SignUpPage() {
   const session = await auth.api.getSession({
