@@ -17,18 +17,18 @@ export type AplicacionRegistry = Record<
   Record<string, AplicacionEntry>
 >;
 
-export type PlataformaAplicacionComponentProps = {
-  plataformaAplicacionPath: string[];
+export type AplicacionPlataformaComponentProps = {
+  aplicacionPlataformaPath: string[];
 };
 
-export type PlataformaAplicacionComponent =
-  ComponentType<PlataformaAplicacionComponentProps>;
+export type AplicacionPlataformaComponent =
+  ComponentType<AplicacionPlataformaComponentProps>;
 
-export type PlataformaAplicacionEntry = {
-  component: PlataformaAplicacionComponent;
+export type AplicacionPlataformaEntry = {
+  component: AplicacionPlataformaComponent;
 };
 
-export type PlataformaAplicacionRegistry = Record<
+export type AplicacionPlataformaRegistry = Record<
   string,
-  PlataformaAplicacionEntry
+  AplicacionPlataformaEntry
 >;
