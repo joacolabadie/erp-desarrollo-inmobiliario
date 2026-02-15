@@ -246,7 +246,7 @@ export default async function DashboardLayout({
         proyectos={proyectos}
         modulos={modulos}
         plataformaAplicaciones={plataformaAplicaciones}
-        usuario={{ name: session.user.name, email: session.user.email }}
+        user={{ name: session.user.name, email: session.user.email }}
       />
       <SidebarInset className="h-svh flex-col overflow-y-hidden">
         <AppHeader

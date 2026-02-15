@@ -13,15 +13,15 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
-import type { Usuario } from "@/lib/types/dashboard";
+import type { User } from "@/lib/types/dashboard";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type NavUserProps = {
-  usuario: Usuario;
+  user: User;
 };
 
-export function NavUser({ usuario }: NavUserProps) {
+export function NavUser({ user }: NavUserProps) {
   const router = useRouter();
 
   return (
@@ -32,13 +32,13 @@ export function NavUser({ usuario }: NavUserProps) {
             <SidebarMenuButton size="lg">
               <Avatar>
                 <AvatarFallback>
-                  {usuario.name.charAt(0).toUpperCase()}
+                  {user.name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 font-medium">
-                <span className="truncate">{usuario.name}</span>
+                <span className="truncate">{user.name}</span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {usuario.email}
+                  {user.email}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />

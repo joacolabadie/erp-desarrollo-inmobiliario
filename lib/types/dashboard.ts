@@ -32,7 +32,7 @@ export type AplicacionPlataforma = {
   nombre: string;
 };
 
-export type Usuario = {
+export type User = {
   name: string;
   email: string;
 };

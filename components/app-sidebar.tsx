@@ -17,7 +17,7 @@ import type {
   Modulo,
   Organizacion,
   Proyecto,
-  Usuario,
+  User,
 } from "@/lib/types/dashboard";
 import { useParams } from "next/navigation";
 import type { ComponentProps } from "react";
@@ -27,7 +27,7 @@ type AppSidebarProps = ComponentProps<typeof Sidebar> & {
   proyectos: Proyecto[];
   modulos: Modulo[];
   plataformaAplicaciones: AplicacionPlataforma[];
-  usuario: Usuario;
+  user: User;
 };
 
 export function AppSidebar({
@@ -35,7 +35,7 @@ export function AppSidebar({
   proyectos,
   modulos,
   plataformaAplicaciones,
-  usuario,
+  user,
   ...props
 }: AppSidebarProps) {
   const params = useParams<{ organizacionId?: string; proyectoId?: string }>();
@@ -76,7 +76,7 @@ export function AppSidebar({
         )}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser usuario={usuario} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
