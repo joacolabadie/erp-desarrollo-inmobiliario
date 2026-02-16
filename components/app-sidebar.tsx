@@ -1,7 +1,7 @@
 "use client";
 
 import { NavMain } from "@/components/nav-main";
-import NavPlatform from "@/components/nav-platform";
+import NavPlataforma from "@/components/nav-plataforma";
 import { NavUser } from "@/components/nav-user";
 import { OrganizacionSwitcher } from "@/components/organizacion-switcher";
 import { ProyectoSwitcher } from "@/components/proyecto-switcher";
@@ -26,7 +26,7 @@ type AppSidebarProps = ComponentProps<typeof Sidebar> & {
   organizaciones: Organizacion[];
   proyectos: Proyecto[];
   modulos: Modulo[];
-  plataformaAplicaciones: AplicacionPlataforma[];
+  aplicacionesPlataforma: AplicacionPlataforma[];
   user: User;
 };
 
@@ -34,7 +34,7 @@ export function AppSidebar({
   organizaciones,
   proyectos,
   modulos,
-  plataformaAplicaciones,
+  aplicacionesPlataforma,
   user,
   ...props
 }: AppSidebarProps) {
@@ -64,8 +64,8 @@ export function AppSidebar({
         )}
       </SidebarHeader>
       <SidebarContent>
-        {plataformaAplicaciones.length > 0 && (
-          <NavPlatform plataformaAplicaciones={plataformaAplicaciones} />
+        {aplicacionesPlataforma.length > 0 && (
+          <NavPlataforma aplicacionesPlataforma={aplicacionesPlataforma} />
         )}
         {organizacionId !== null && modulosOrganizacion.length > 0 && (
           <NavMain

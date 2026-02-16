@@ -10,24 +10,24 @@ import {
 import type { AplicacionPlataforma } from "@/lib/types/dashboard";
 import Link from "next/link";
 
-type NavPlatformProps = {
-  plataformaAplicaciones: AplicacionPlataforma[];
+type NavPlataformaProps = {
+  aplicacionesPlataforma: AplicacionPlataforma[];
 };
 
-export default function NavPlatform({
-  plataformaAplicaciones,
-}: NavPlatformProps) {
+export default function NavPlataforma({
+  aplicacionesPlataforma,
+}: NavPlataformaProps) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel className="text-muted-foreground">
         Plataforma
       </SidebarGroupLabel>
       <SidebarMenu>
-        {plataformaAplicaciones.map((plataformaAplicacion) => (
-          <SidebarMenuItem key={plataformaAplicacion.id}>
+        {aplicacionesPlataforma.map((aplicacionPlataforma) => (
+          <SidebarMenuItem key={aplicacionPlataforma.id}>
             <SidebarMenuButton asChild>
-              <Link href={`/dashboard/plataforma/${plataformaAplicacion.slug}`}>
-                <span>{plataformaAplicacion.nombre}</span>
+              <Link href={`/dashboard/plataforma/${aplicacionPlataforma.slug}`}>
+                <span>{aplicacionPlataforma.nombre}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

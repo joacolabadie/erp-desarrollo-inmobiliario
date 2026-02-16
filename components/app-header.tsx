@@ -8,6 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import type {
   AplicacionPlataforma,
@@ -22,21 +23,21 @@ type AppHeaderProps = {
   organizaciones: Organizacion[];
   proyectos: Proyecto[];
   modulos: Modulo[];
-  plataformaAplicaciones: AplicacionPlataforma[];
+  aplicacionesPlataforma: AplicacionPlataforma[];
 };
 
 export function AppHeader({
   organizaciones,
   proyectos,
   modulos,
-  plataformaAplicaciones,
+  aplicacionesPlataforma,
 }: AppHeaderProps) {
   const params = useParams<{
     organizacionId?: string;
     proyectoId?: string;
     moduloSlug?: string;
     aplicacionSlug?: string;
-    plataformaAplicacionSlug?: string;
+    aplicacionPlataformaSlug?: string;
   }>();
 
   const breadcrumb = useMemo(() => {
@@ -44,7 +45,7 @@ export function AppHeader({
     const proyectoId = params.proyectoId ?? null;
     const moduloSlug = params.moduloSlug ?? null;
     const aplicacionSlug = params.aplicacionSlug ?? null;
-    const plataformaAplicacionSlug = params.plataformaAplicacionSlug ?? null;
+    const aplicacionPlataformaSlug = params.aplicacionPlataformaSlug ?? null;
 
     const nombreOrganizacion =
       organizacionId !== null
@@ -85,11 +86,11 @@ export function AppHeader({
           )?.nombre ?? null)
         : null;
 
-    const nombrePlataformaAplicacion =
-      plataformaAplicacionSlug !== null
-        ? (plataformaAplicaciones.find(
-            (plataformaAplicacion) =>
-              plataformaAplicacion.slug === plataformaAplicacionSlug,
+    const nombreAplicacionPlataforma =
+      aplicacionPlataformaSlug !== null
+        ? (aplicacionesPlataforma.find(
+            (aplicacionPlataforma) =>
+              aplicacionPlataforma.slug === aplicacionPlataformaSlug,
           )?.nombre ?? null)
         : null;
 
@@ -98,27 +99,28 @@ export function AppHeader({
       nombreProyecto,
       nombreModulo,
       nombreAplicacion,
-      nombrePlataformaAplicacion,
+      nombreAplicacionPlataforma,
     };
   }, [
     params.organizacionId,
     params.proyectoId,
     params.moduloSlug,
     params.aplicacionSlug,
-    params.plataformaAplicacionSlug,
+    params.aplicacionPlataformaSlug,
     organizaciones,
     proyectos,
     modulos,
-    plataformaAplicaciones,
+    aplicacionesPlataforma,
   ]);
 
   return (
     <header className="bg-sidebar border-sidebar-border sticky top-0 flex h-16 items-center justify-between gap-4 border-b px-4">
-      <div className="flex items-center gap-3">
-        <SidebarTrigger className="-ml-1" />
+      <div className="flex items-center gap-4">
+        <SidebarTrigger />
+        <Separator orientation="vertical" className="mr-2 h-4 self-center!" />
         <Breadcrumb>
           <BreadcrumbList>
-            {breadcrumb.nombrePlataformaAplicacion !== null ? (
+            {breadcrumb.nombreAplicacionPlataforma !== null ? (
               <>
                 <BreadcrumbItem>
                   <BreadcrumbPage>Plataforma</BreadcrumbPage>
@@ -126,7 +128,7 @@ export function AppHeader({
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbPage>
-                    {breadcrumb.nombrePlataformaAplicacion}
+                    {breadcrumb.nombreAplicacionPlataforma}
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </>

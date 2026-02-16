@@ -205,7 +205,7 @@ export default async function DashboardLayout({
     });
   }
 
-  const plataformaAplicaciones = await db
+  const aplicacionesPlataforma = await db
     .select({
       id: plataformaAplicacionesTabla.id,
       slug: plataformaAplicacionesTabla.slug,
@@ -245,7 +245,7 @@ export default async function DashboardLayout({
         organizaciones={organizaciones}
         proyectos={proyectos}
         modulos={modulos}
-        plataformaAplicaciones={plataformaAplicaciones}
+        aplicacionesPlataforma={aplicacionesPlataforma}
         user={{ name: session.user.name, email: session.user.email }}
       />
       <SidebarInset className="h-svh flex-col overflow-y-hidden">
@@ -253,7 +253,7 @@ export default async function DashboardLayout({
           organizaciones={organizaciones}
           proyectos={proyectos}
           modulos={modulos}
-          plataformaAplicaciones={plataformaAplicaciones}
+          aplicacionesPlataforma={aplicacionesPlataforma}
         />
         <main className="flex-1 overflow-y-auto">{children}</main>
       </SidebarInset>
