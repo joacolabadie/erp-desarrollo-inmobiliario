@@ -10,8 +10,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -47,8 +47,6 @@ const formSchema = z
 export function SignUpForm() {
   const router = useRouter();
 
-  const [isPending, startTransition] = useTransition();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,26 +57,26 @@ export function SignUpForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    startTransition(async () => {
-      try {
-        const response = await authClient.signUp.email({
-          name: data.fullName,
-          email: data.email,
-          password: data.password,
-        });
+  const isSubmitting = form.formState.isSubmitting;
 
-        if (response.error) {
-          toast.error("Ocurrió un error inesperado al registrarte.");
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    try {
+      const response = await authClient.signUp.email({
+        name: data.fullName,
+        email: data.email,
+        password: data.password,
+      });
 
-          return;
-        }
-
-        router.push("/dashboard");
-      } catch {
+      if (response.error) {
         toast.error("Ocurrió un error inesperado al registrarte.");
+
+        return;
       }
-    });
+
+      router.push("/dashboard");
+    } catch {
+      toast.error("Ocurrió un error inesperado al registrarte.");
+    }
   }
 
   return (
@@ -96,7 +94,7 @@ export function SignUpForm() {
                 placeholder="Nombre completo"
                 autoComplete="name"
                 aria-invalid={fieldState.invalid}
-                disabled={isPending}
+                disabled={isSubmitting}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -115,7 +113,7 @@ export function SignUpForm() {
                 placeholder="Correo electrónico"
                 autoComplete="email"
                 aria-invalid={fieldState.invalid}
-                disabled={isPending}
+                disabled={isSubmitting}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -134,7 +132,7 @@ export function SignUpForm() {
                 placeholder="••••••••"
                 autoComplete="new-password"
                 aria-invalid={fieldState.invalid}
-                disabled={isPending}
+                disabled={isSubmitting}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -153,14 +151,15 @@ export function SignUpForm() {
                 placeholder="••••••••"
                 autoComplete="new-password"
                 aria-invalid={fieldState.invalid}
-                disabled={isPending}
+                disabled={isSubmitting}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
         <Field>
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting && <LoaderCircle className="animate-spin" />}
             Registrarme
           </Button>
         </Field>

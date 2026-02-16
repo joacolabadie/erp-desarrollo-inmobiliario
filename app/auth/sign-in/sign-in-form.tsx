@@ -10,8 +10,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -30,8 +30,6 @@ const formSchema = z.object({
 export function SignInForm() {
   const router = useRouter();
 
-  const [isPending, startTransition] = useTransition();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,25 +38,25 @@ export function SignInForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    startTransition(async () => {
-      try {
-        const response = await authClient.signIn.email({
-          email: data.email,
-          password: data.password,
-        });
+  const isSubmitting = form.formState.isSubmitting;
 
-        if (response.error) {
-          toast.error("Verificá tus credenciales e intentá de nuevo.");
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    try {
+      const response = await authClient.signIn.email({
+        email: data.email,
+        password: data.password,
+      });
 
-          return;
-        }
+      if (response.error) {
+        toast.error("Verificá tus credenciales e intentá de nuevo.");
 
-        router.push("/dashboard");
-      } catch {
-        toast.error("Ocurrió un error inesperado al ingresar.");
+        return;
       }
-    });
+
+      router.push("/dashboard");
+    } catch {
+      toast.error("Ocurrió un error inesperado al ingresar.");
+    }
   }
 
   return (
@@ -77,7 +75,7 @@ export function SignInForm() {
                 placeholder="Correo electrónico"
                 autoComplete="email"
                 aria-invalid={fieldState.invalid}
-                disabled={isPending}
+                disabled={isSubmitting}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -96,14 +94,15 @@ export function SignInForm() {
                 placeholder="••••••••"
                 autoComplete="current-password"
                 aria-invalid={fieldState.invalid}
-                disabled={isPending}
+                disabled={isSubmitting}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
         <Field>
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting && <LoaderCircle className="animate-spin" />}
             Ingresar
           </Button>
         </Field>
