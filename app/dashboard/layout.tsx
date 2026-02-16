@@ -20,7 +20,7 @@ import type { Modulo } from "@/lib/types/dashboard";
 import { and, asc, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export default async function DashboardLayout({
   children,
