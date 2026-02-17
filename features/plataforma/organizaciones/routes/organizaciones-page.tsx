@@ -7,7 +7,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { columns } from "@/features/plataforma/organizaciones/routes/columns";
+import { organizacionesColumns } from "@/features/plataforma/organizaciones/routes/columns";
 import { CrearOrganizacionForm } from "@/features/plataforma/organizaciones/routes/crear-organizacion-form";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
@@ -67,7 +67,7 @@ export default async function OrganizacionesPage() {
             </SheetContent>
           </Sheet>
         </div>
-        <DataTable columns={columns} data={organizaciones} />
+        <DataTable columns={organizacionesColumns} data={organizaciones} />
       </div>
     </main>
   );

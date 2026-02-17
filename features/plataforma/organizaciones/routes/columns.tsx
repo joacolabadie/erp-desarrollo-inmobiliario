@@ -14,7 +14,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 
-export const columns: ColumnDef<Organizacion>[] = [
+export const organizacionesColumns: ColumnDef<Organizacion>[] = [
   {
     accessorKey: "nombre",
     header: "Nombre",
@@ -40,14 +40,14 @@ export const columns: ColumnDef<Organizacion>[] = [
                 Copiar ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link
-                  href={`/dashboard/plataforma/organizaciones/${organizacion.id}/aplicaciones`}
+                  href={`/dashboard/plataforma/organizaciones/${organizacion.id}/modulos`}
                 >
-                  Ver aplicaciones
+                  Ver módulos
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link
                   href={`/dashboard/plataforma/organizaciones/${organizacion.id}/miembros`}
                 >

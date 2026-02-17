@@ -1,4 +1,4 @@
-import OrganizacionesPage from "@/features/plataforma/organizaciones/routes/page";
+import OrganizacionesPage from "@/features/plataforma/organizaciones/routes/organizaciones-page";
 import { auth } from "@/lib/auth";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import { AplicacionPlataformaComponentProps } from "@/registry/types";
