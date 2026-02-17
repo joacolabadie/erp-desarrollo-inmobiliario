@@ -48,10 +48,7 @@ export function NavMain({ organizacionId, proyectoId, modulos }: NavMainProps) {
     })
     .filter((modulo) => modulo.aplicaciones.length > 0);
 
-  const construirAplicacionHref = (
-    moduloSlug: string,
-    aplicacionSlug: string,
-  ) =>
+  const buildAplicacionHref = (moduloSlug: string, aplicacionSlug: string) =>
     proyectoId !== null
       ? `/dashboard/organizaciones/${organizacionId}/proyectos/${proyectoId}/${moduloSlug}/${aplicacionSlug}`
       : `/dashboard/organizaciones/${organizacionId}/${moduloSlug}/${aplicacionSlug}`;
@@ -78,7 +75,7 @@ export function NavMain({ organizacionId, proyectoId, modulos }: NavMainProps) {
                       <div className="absolute top-1/2 -left-2.5 w-2.25 border-t" />
                       <SidebarMenuSubButton asChild>
                         <Link
-                          href={construirAplicacionHref(
+                          href={buildAplicacionHref(
                             modulo.slug,
                             aplicacion.slug,
                           )}

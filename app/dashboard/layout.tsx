@@ -1,5 +1,6 @@
 import { AppHeader } from "@/components/app-header";
 import { AppSidebar } from "@/components/app-sidebar";
+import { BreadcrumbExtrasProvider } from "@/components/breadcrumb-extras";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
@@ -249,13 +250,15 @@ export default async function DashboardLayout({
         user={{ name: session.user.name, email: session.user.email }}
       />
       <SidebarInset className="h-svh flex-col overflow-y-hidden">
-        <AppHeader
-          organizaciones={organizaciones}
-          proyectos={proyectos}
-          modulos={modulos}
-          aplicacionesPlataforma={aplicacionesPlataforma}
-        />
-        <main className="flex-1 overflow-y-auto">{children}</main>
+        <BreadcrumbExtrasProvider>
+          <AppHeader
+            organizaciones={organizaciones}
+            proyectos={proyectos}
+            modulos={modulos}
+            aplicacionesPlataforma={aplicacionesPlataforma}
+          />
+          <main className="flex-1 overflow-y-auto">{children}</main>
+        </BreadcrumbExtrasProvider>
       </SidebarInset>
     </SidebarProvider>
   );

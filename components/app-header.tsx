@@ -1,9 +1,11 @@
 "use client";
 
+import { useBreadcrumbExtras } from "@/components/breadcrumb-extras";
 import { ModeToggle } from "@/components/mode-toggle";
 import {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -16,8 +18,9 @@ import type {
   Organizacion,
   Proyecto,
 } from "@/lib/types/dashboard";
+import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 
 type AppHeaderProps = {
   organizaciones: Organizacion[];
@@ -39,6 +42,19 @@ export function AppHeader({
     aplicacionSlug?: string;
     aplicacionPlataformaSlug?: string;
   }>();
+
+  const { extras } = useBreadcrumbExtras();
+
+  const aplicacionPlataformHref = params.aplicacionPlataformaSlug
+    ? `/dashboard/plataforma/${params.aplicacionPlataformaSlug}`
+    : null;
+
+  const aplicacionHref =
+    params.organizacionId && params.moduloSlug && params.aplicacionSlug
+      ? params.proyectoId
+        ? `/dashboard/organizaciones/${params.organizacionId}/proyectos/${params.proyectoId}/${params.moduloSlug}/${params.aplicacionSlug}`
+        : `/dashboard/organizaciones/${params.organizacionId}/${params.moduloSlug}/${params.aplicacionSlug}`
+      : null;
 
   const breadcrumb = useMemo(() => {
     const organizacionId = params.organizacionId ?? null;
@@ -127,10 +143,32 @@ export function AppHeader({
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>
-                    {breadcrumb.nombreAplicacionPlataforma}
-                  </BreadcrumbPage>
+                  {extras.length > 0 && aplicacionPlataformHref !== null ? (
+                    <BreadcrumbLink asChild>
+                      <Link href={aplicacionPlataformHref}>
+                        {breadcrumb.nombreAplicacionPlataforma}
+                      </Link>
+                    </BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbPage>
+                      {breadcrumb.nombreAplicacionPlataforma}
+                    </BreadcrumbPage>
+                  )}
                 </BreadcrumbItem>
+                {extras.map((extra) => (
+                  <Fragment key={extra.key}>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      {extra.href !== null ? (
+                        <BreadcrumbLink asChild>
+                          <Link href={extra.href}>{extra.label}</Link>
+                        </BreadcrumbLink>
+                      ) : (
+                        <BreadcrumbPage>{extra.label}</BreadcrumbPage>
+                      )}
+                    </BreadcrumbItem>
+                  </Fragment>
+                ))}
               </>
             ) : breadcrumb.nombreOrganizacion !== null ? (
               <>
@@ -153,10 +191,32 @@ export function AppHeader({
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                      <BreadcrumbPage>
-                        {breadcrumb.nombreAplicacion}
-                      </BreadcrumbPage>
+                      {extras.length > 0 && aplicacionHref !== null ? (
+                        <BreadcrumbLink asChild>
+                          <Link href={aplicacionHref}>
+                            {breadcrumb.nombreAplicacion}
+                          </Link>
+                        </BreadcrumbLink>
+                      ) : (
+                        <BreadcrumbPage>
+                          {breadcrumb.nombreAplicacion}
+                        </BreadcrumbPage>
+                      )}
                     </BreadcrumbItem>
+                    {extras.map((extra) => (
+                      <Fragment key={extra.key}>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                          {extra.href !== null ? (
+                            <BreadcrumbLink asChild>
+                              <Link href={extra.href}>{extra.label}</Link>
+                            </BreadcrumbLink>
+                          ) : (
+                            <BreadcrumbPage>{extra.label}</BreadcrumbPage>
+                          )}
+                        </BreadcrumbItem>
+                      </Fragment>
+                    ))}
                   </>
                 )}
               </>
