@@ -106,7 +106,7 @@ export default async function DashboardLayout({
 
   const aplicaciones = await db
     .select({
-      organizacionId: organizacionesMiembrosAplicacionesTabla.organizacionId,
+      organizacionId: organizacionesTabla.id,
       moduloId: modulosTabla.id,
       moduloSlug: modulosTabla.slug,
       moduloNombre: modulosTabla.nombre,
@@ -123,6 +123,7 @@ export default async function DashboardLayout({
         organizacionesMiembrosAplicacionesTabla.aplicacionId,
       ),
     )
+    .innerJoin(modulosTabla, eq(modulosTabla.id, aplicacionesTabla.moduloId))
     .innerJoin(
       organizacionesMiembrosTabla,
       and(
@@ -156,17 +157,16 @@ export default async function DashboardLayout({
         organizacionesMiembrosAplicacionesTabla.organizacionId,
       ),
     )
-    .innerJoin(modulosTabla, eq(modulosTabla.id, aplicacionesTabla.moduloId))
     .where(
       and(
         eq(organizacionesMiembrosAplicacionesTabla.usuarioId, session.user.id),
         eq(organizacionesMiembrosAplicacionesTabla.activo, true),
         eq(aplicacionesTabla.activo, true),
+        eq(modulosTabla.activo, true),
         eq(organizacionesMiembrosTabla.estado, "activo"),
         eq(organizacionesMiembrosTabla.activo, true),
         eq(organizacionesAplicacionesTabla.activo, true),
         eq(organizacionesTabla.activo, true),
-        eq(modulosTabla.activo, true),
       ),
     )
     .orderBy(
