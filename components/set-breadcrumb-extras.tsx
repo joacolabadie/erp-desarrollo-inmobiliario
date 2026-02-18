@@ -1,47 +1,41 @@
 "use client";
 
-import {
-  useBreadcrumbExtras,
-  type BreadcrumbExtra,
+import type {
+  BreadcrumbExtra,
+  BreadcrumbExtraInput,
 } from "@/components/breadcrumb-extras";
+import { useBreadcrumbExtras } from "@/components/breadcrumb-extras";
 import { useEffect, useMemo } from "react";
+
+function makeKey(extra: BreadcrumbExtraInput) {
+  return `${extra.label}::${extra.href ?? ""}`;
+}
 
 export function SetBreadcrumbExtras({
   extras,
 }: {
-  extras: BreadcrumbExtra[] | null;
+  extras: BreadcrumbExtraInput[] | null;
 }) {
   const { setExtras } = useBreadcrumbExtras();
 
   const normalized = useMemo<BreadcrumbExtra[]>(() => {
-    const list =
-      (extras ?? [])
-        .filter(
-          (extra) =>
-            !!extra && typeof extra.key === "string" && extra.key.length > 0,
-        )
-        .map((extra) => ({
-          key: extra.key,
-          label: extra.label ?? "",
-          href: extra.href ?? null,
-        })) ?? [];
-
-    list.sort((a, b) => a.key.localeCompare(b.key));
-
-    return list;
+    return (extras ?? [])
+      .filter(
+        (extra) =>
+          !!extra && typeof extra.label === "string" && extra.label.length > 0,
+      )
+      .map((extra, idx) => ({
+        key: `${makeKey(extra)}::${idx}`,
+        label: extra.label,
+        href: extra.href ?? null,
+      }));
   }, [extras]);
-
-  const signature = useMemo(() => {
-    return normalized
-      .map((e) => `${e.key}::${e.label}::${e.href ?? ""}`)
-      .join("||");
-  }, [normalized]);
 
   useEffect(() => {
     setExtras(normalized);
 
     return () => setExtras([]);
-  }, [signature, setExtras, normalized]);
+  }, [normalized, setExtras]);
 
   return null;
 }

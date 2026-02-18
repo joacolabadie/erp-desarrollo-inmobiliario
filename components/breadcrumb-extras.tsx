@@ -10,6 +10,11 @@ import {
   type SetStateAction,
 } from "react";
 
+export type BreadcrumbExtraInput = {
+  label: string;
+  href?: string | null;
+};
+
 export type BreadcrumbExtra = {
   key: string;
   label: string;
