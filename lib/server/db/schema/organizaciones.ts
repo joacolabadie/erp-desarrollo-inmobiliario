@@ -1,3 +1,5 @@
+import { MATERIAL_TIPO_VALUES } from "@/lib/domain/materiales/tipo";
+import { MIEMBRO_ORGANIZACION_ESTADO_VALUES } from "@/lib/domain/organizaciones/miembro-estado";
 import { users } from "@/lib/server/db/schema/auth.generated";
 import { aplicaciones } from "@/lib/server/db/schema/modulos";
 import { proyectos } from "@/lib/server/db/schema/proyectos";
@@ -14,13 +16,10 @@ import {
 
 export const estadoMiembroOrganizacionEnum = pgEnum(
   "estado_miembro_organizacion",
-  ["activo", "suspendido"],
+  MIEMBRO_ORGANIZACION_ESTADO_VALUES,
 );
 
-export const materialTipoEnum = pgEnum("material_tipo", [
-  "material",
-  "mano_obra",
-]);
+export const materialTipoEnum = pgEnum("material_tipo", MATERIAL_TIPO_VALUES);
 
 export const organizaciones = pgTable("organizaciones", {
   id: uuid("id").defaultRandom().primaryKey(),

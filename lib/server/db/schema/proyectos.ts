@@ -1,3 +1,5 @@
+import { PROYECTO_ESTADO_VALUES } from "@/lib/domain/proyectos/estado";
+import { PROYECTO_TIPO_VALUES } from "@/lib/domain/proyectos/tipo";
 import {
   organizaciones,
   organizacionesRazonesSociales,
@@ -14,18 +16,12 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-export const proyectoTipoEnum = pgEnum("proyecto_tipo", [
-  "casa",
-  "edificio",
-  "cocheras",
-]);
+export const proyectoTipoEnum = pgEnum("proyecto_tipo", PROYECTO_TIPO_VALUES);
 
-export const proyectoEstadoEnum = pgEnum("proyecto_estado", [
-  "planificacion",
-  "en_construccion",
-  "finalizado",
-  "cancelado",
-]);
+export const proyectoEstadoEnum = pgEnum(
+  "proyecto_estado",
+  PROYECTO_ESTADO_VALUES,
+);
 
 export const proyectos = pgTable(
   "proyectos",

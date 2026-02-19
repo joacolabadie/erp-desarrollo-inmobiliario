@@ -1,3 +1,4 @@
+import { APLICACION_SCOPE_VALUES } from "@/lib/domain/aplicaciones/scope";
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -9,11 +10,10 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-export const aplicacionesScopeEnum = pgEnum("aplicaciones_scopes", [
-  "organizacional",
-  "proyecto",
-  "mixto",
-]);
+export const aplicacionesScopeEnum = pgEnum(
+  "aplicaciones_scopes",
+  APLICACION_SCOPE_VALUES,
+);
 
 export const modulos = pgTable(
   "modulos",
