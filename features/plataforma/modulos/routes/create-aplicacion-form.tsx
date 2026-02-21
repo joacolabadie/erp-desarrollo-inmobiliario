@@ -42,7 +42,7 @@ export function CreateAplicacionForm({ moduloId }: CreateAplicacionFormProps) {
       clave: "",
       slug: "",
       nombre: "",
-      scope: undefined,
+      scope: "",
     },
   });
 
@@ -128,7 +128,7 @@ export function CreateAplicacionForm({ moduloId }: CreateAplicacionFormProps) {
               <FieldLabel htmlFor={field.name}>Scope</FieldLabel>
               <Select
                 name={field.name}
-                value={field.value ?? ""}
+                value={field.value}
                 onValueChange={field.onChange}
                 disabled={isSubmitting}
               >

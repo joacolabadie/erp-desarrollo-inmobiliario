@@ -57,10 +57,13 @@ export const createAplicacionSchema = z.object({
       255,
       "El nombre de la aplicación no puede superar los 255 caracteres.",
     ),
-  scope: z.enum(
-    APLICACION_SCOPE_VALUES,
-    "Seleccioná el scope de la aplicación.",
-  ),
+  scope: z
+    .string()
+    .min(1, "Seleccioná el scope de la aplicación.")
+    .refine(
+      (value) => (APLICACION_SCOPE_VALUES as readonly string[]).includes(value),
+      "Seleccioná el scope de la aplicación.",
+    ),
 });
 
 export type CreateAplicacionSchema = z.infer<typeof createAplicacionSchema>;
