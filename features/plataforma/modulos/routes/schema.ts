@@ -1,7 +1,4 @@
-import {
-  APLICACION_SCOPE_VALUES,
-  AplicacionScope,
-} from "@/lib/domain/aplicaciones/scope";
+import { APLICACION_SCOPE_VALUES } from "@/lib/domain/aplicaciones/scope";
 import * as z from "zod";
 
 export const createModuloSchema = z.object({
@@ -90,13 +87,10 @@ export const createAplicacionSchema = z.object({
       "El nombre de la aplicación no puede superar los 255 caracteres.",
     ),
   scope: z
-    .string()
-    .min(1, "Seleccioná el scope de la aplicación.")
-    .refine(
-      (value) => (APLICACION_SCOPE_VALUES as readonly string[]).includes(value),
-      "Seleccioná el scope de la aplicación.",
-    )
-    .transform((value) => value as AplicacionScope),
+    .enum(APLICACION_SCOPE_VALUES)
+    .or(z.literal(""))
+    .refine((value) => value !== "", "Seleccioná el scope de la aplicación."),
 });
 
-export type CreateAplicacionSchema = z.infer<typeof createAplicacionSchema>;
+export type CreateAplicacionFormValues = z.input<typeof createAplicacionSchema>;
+export type CreateAplicacionPayload = z.output<typeof createAplicacionSchema>;
