@@ -1,3 +1,4 @@
+import ModuloAplicacionesPage from "@/features/plataforma/modulos/routes/modulo-aplicaciones-page";
 import ModulosPage from "@/features/plataforma/modulos/routes/modulos-page";
 import { auth } from "@/lib/auth";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
@@ -27,6 +28,12 @@ export default async function ModulosAplicacionPlataforma({
 
   if (aplicacionPlataformaPath.length === 0) {
     return <ModulosPage />;
+  }
+
+  if (aplicacionPlataformaPath.length === 2) {
+    if (aplicacionPlataformaPath[1] === "aplicaciones") {
+      return <ModuloAplicacionesPage moduloId={aplicacionPlataformaPath[0]} />;
+    }
   }
 
   redirect("/dashboard/plataforma/modulos");
