@@ -18,9 +18,9 @@ import {
 } from "@/components/ui/select";
 import { createAplicacionAction } from "@/features/plataforma/modulos/routes/actions";
 import {
-  CreateAplicacionPayload,
   createAplicacionSchema,
   type CreateAplicacionFormValues,
+  type CreateAplicacionPayload,
 } from "@/features/plataforma/modulos/routes/schema";
 import {
   APLICACION_SCOPE_LABELS,
