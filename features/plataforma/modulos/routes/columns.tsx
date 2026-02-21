@@ -27,6 +27,7 @@ type Modulo = {
 
 export type Aplicacion = {
   id: string;
+  moduloId: string;
   clave: string;
   slug: string;
   nombre: string;
@@ -130,6 +131,13 @@ export const aplicacionesColumns: ColumnDef<Aplicacion>[] = [
                 onClick={() => navigator.clipboard.writeText(aplicacion.id)}
               >
                 Copiar ID
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  href={`/dashboard/plataforma/modulos/${aplicacion.moduloId}/aplicaciones/${aplicacion.id}/editar`}
+                >
+                  Editar
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
