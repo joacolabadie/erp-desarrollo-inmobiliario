@@ -15,10 +15,13 @@ import {
 } from "@/features/plataforma/modulos/routes/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export function CreateModuloForm() {
+  const router = useRouter();
+
   const form = useForm<CreateModuloSchema>({
     resolver: zodResolver(createModuloSchema),
     defaultValues: {
@@ -48,7 +51,7 @@ export function CreateModuloForm() {
 
       toast.success("Módulo creado correctamente.");
 
-      form.reset();
+      router.push("/dashboard/plataforma/modulos");
     } catch {
       toast.error("Ocurrió un error inesperado al crear el módulo.");
     }
