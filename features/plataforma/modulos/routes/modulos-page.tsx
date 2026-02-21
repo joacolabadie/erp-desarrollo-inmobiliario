@@ -3,6 +3,7 @@ import { DataTable } from "@/components/ui/data-table";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -62,6 +63,9 @@ export default async function ModulosPage() {
             <SheetContent>
               <SheetHeader>
                 <SheetTitle>Crear módulo</SheetTitle>
+                <SheetDescription>
+                  Completá los datos para crear un nuevo módulo.
+                </SheetDescription>
               </SheetHeader>
               <div className="overflow-y-auto px-4 pb-4">
                 <CreateModuloForm />

@@ -4,6 +4,7 @@ import { DataTable } from "@/components/ui/data-table";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -96,6 +97,9 @@ export default async function ModuloAplicacionesPage({
               <SheetContent>
                 <SheetHeader>
                   <SheetTitle>Crear aplicación</SheetTitle>
+                  <SheetDescription>
+                    Completá los datos para crear una nueva aplicación.
+                  </SheetDescription>
                 </SheetHeader>
                 <div className="overflow-y-auto px-4 pb-4">
                   <CreateAplicacionForm moduloId={moduloId} />
