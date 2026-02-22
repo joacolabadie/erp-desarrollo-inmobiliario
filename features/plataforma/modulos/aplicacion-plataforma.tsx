@@ -1,3 +1,5 @@
+import CreateModuloPage from "@/features/plataforma/modulos/routes/create-modulo-page";
+import EditModuloPage from "@/features/plataforma/modulos/routes/edit-modulo-page";
 import ModuloAplicacionesPage from "@/features/plataforma/modulos/routes/modulo-aplicaciones-page";
 import ModulosPage from "@/features/plataforma/modulos/routes/modulos-page";
 import { auth } from "@/lib/auth";
@@ -30,7 +32,17 @@ export default async function ModulosAplicacionPlataforma({
     return <ModulosPage />;
   }
 
+  if (aplicacionPlataformaPath.length === 1) {
+    if (aplicacionPlataformaPath[0] === "crear") {
+      return <CreateModuloPage />;
+    }
+  }
+
   if (aplicacionPlataformaPath.length === 2) {
+    if (aplicacionPlataformaPath[1] === "editar") {
+      return <EditModuloPage moduloId={aplicacionPlataformaPath[0]} />;
+    }
+
     if (aplicacionPlataformaPath[1] === "aplicaciones") {
       return <ModuloAplicacionesPage moduloId={aplicacionPlataformaPath[0]} />;
     }
