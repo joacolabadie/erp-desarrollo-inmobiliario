@@ -27,6 +27,7 @@ import {
 } from "@/lib/domain/aplicaciones/scope";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -35,6 +36,8 @@ type CreateAplicacionFormProps = {
 };
 
 export function CreateAplicacionForm({ moduloId }: CreateAplicacionFormProps) {
+  const router = useRouter();
+
   const form = useForm<CreateAplicacionSchema>({
     resolver: zodResolver(createAplicacionSchema),
     defaultValues: {
@@ -63,7 +66,7 @@ export function CreateAplicacionForm({ moduloId }: CreateAplicacionFormProps) {
 
       toast.success("Aplicación creada correctamente.");
 
-      form.reset();
+      router.push(`/dashboard/plataforma/modulos/${moduloId}/aplicaciones`);
     } catch {
       toast.error("Ocurrió un error inesperado al crear la aplicación.");
     }
