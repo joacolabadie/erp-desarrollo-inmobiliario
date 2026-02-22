@@ -16,10 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createAplicacionAction } from "@/features/plataforma/modulos/routes/actions";
+import { editAplicacionAction } from "@/features/plataforma/modulos/routes/actions";
 import {
-  createAplicacionSchema,
-  type CreateAplicacionSchema,
+  editAplicacionSchema,
+  type EditAplicacionSchema,
 } from "@/features/plataforma/modulos/routes/schema";
 import {
   APLICACION_SCOPE_LABELS,
@@ -30,42 +30,53 @@ import { LoaderCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-type CreateAplicacionFormProps = {
+type EditAplicacionFormProps = {
   moduloId: string;
+  aplicacionId: string;
+  clave: string;
+  slug: string;
+  nombre: string;
+  scope: string;
 };
 
-export function CreateAplicacionForm({ moduloId }: CreateAplicacionFormProps) {
-  const form = useForm<CreateAplicacionSchema>({
-    resolver: zodResolver(createAplicacionSchema),
+export function EditAplicacionForm({
+  moduloId,
+  aplicacionId,
+  clave,
+  slug,
+  nombre,
+  scope,
+}: EditAplicacionFormProps) {
+  const form = useForm<EditAplicacionSchema>({
+    resolver: zodResolver(editAplicacionSchema),
     defaultValues: {
       moduloId,
-      clave: "",
-      slug: "",
-      nombre: "",
-      scope: "",
+      aplicacionId,
+      clave,
+      slug,
+      nombre,
+      scope,
     },
   });
 
   const isSubmitting = form.formState.isSubmitting;
 
-  async function onSubmit(data: CreateAplicacionSchema) {
+  async function onSubmit(data: EditAplicacionSchema) {
     try {
-      const response = await createAplicacionAction(data);
+      const response = await editAplicacionAction(data);
 
       if (!response.ok) {
         toast.error(
           response.message ||
-            "Ocurrió un error inesperado al crear la aplicación.",
+            "Ocurrió un error inesperado al editar la aplicación.",
         );
 
         return;
       }
 
-      toast.success("Aplicación creada correctamente.");
-
-      form.reset();
+      toast.success("Aplicación editada correctamente.");
     } catch {
-      toast.error("Ocurrió un error inesperado al crear la aplicación.");
+      toast.error("Ocurrió un error inesperado al editar la aplicación.");
     }
   }
 
@@ -155,7 +166,7 @@ export function CreateAplicacionForm({ moduloId }: CreateAplicacionFormProps) {
         <Field>
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting && <LoaderCircle className="animate-spin" />}
-            Crear
+            Guardar
           </Button>
         </Field>
       </FieldGroup>

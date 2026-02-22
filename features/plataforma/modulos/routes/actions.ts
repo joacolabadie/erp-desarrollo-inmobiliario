@@ -3,9 +3,11 @@
 import {
   createAplicacionSchema,
   createModuloSchema,
+  editAplicacionSchema,
   editModuloSchema,
   type CreateAplicacionSchema,
   type CreateModuloSchema,
+  type EditAplicacionSchema,
   type EditModuloSchema,
 } from "@/features/plataforma/modulos/routes/schema";
 import { auth } from "@/lib/auth";
@@ -156,6 +158,65 @@ export async function createAplicacionAction(input: CreateAplicacionSchema) {
     return {
       ok: false,
       message: "Ocurrió un error inesperado al crear la aplicación.",
+    };
+  }
+}
+
+export async function editAplicacionAction(input: EditAplicacionSchema) {
+  const result = editAplicacionSchema.safeParse(input);
+
+  if (!result.success) {
+    return { ok: false, message: "Invalid form data" };
+  }
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return { ok: false, message: "Unauthorized" };
+  }
+
+  const allowed = await hasAplicacionPlataformaAccess({
+    userId: session.user.id,
+    clave: "MODULOS",
+  });
+
+  if (!allowed) {
+    return { ok: false, message: "Unauthorized" };
+  }
+
+  const { moduloId, aplicacionId, clave, slug, nombre } = result.data;
+
+  const scope = result.data.scope as AplicacionScope;
+
+  try {
+    await db
+      .update(aplicacionesTabla)
+      .set({
+        clave,
+        slug,
+        nombre,
+        scope,
+      })
+      .where(
+        and(
+          eq(aplicacionesTabla.id, aplicacionId),
+          eq(aplicacionesTabla.moduloId, moduloId),
+          eq(aplicacionesTabla.activo, true),
+        ),
+      );
+
+    revalidatePath(`/dashboard/plataforma/modulos/${moduloId}/aplicaciones`);
+    revalidatePath(
+      `/dashboard/plataforma/modulos/${moduloId}/aplicaciones/${aplicacionId}/editar`,
+    );
+
+    return { ok: true };
+  } catch {
+    return {
+      ok: false,
+      message: "Ocurrió un error inesperado al editar la aplicación.",
     };
   }
 }

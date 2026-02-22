@@ -116,7 +116,7 @@ export function EditModuloForm({
         <Field>
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting && <LoaderCircle className="animate-spin" />}
-            Guardar cambios
+            Guardar
           </Button>
         </Field>
       </FieldGroup>

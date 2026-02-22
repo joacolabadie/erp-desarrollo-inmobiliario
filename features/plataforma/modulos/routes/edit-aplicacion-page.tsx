@@ -1,7 +1,6 @@
 import { SetBreadcrumbExtras } from "@/components/set-breadcrumb-extras";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
-import { aplicacionesColumns } from "@/features/plataforma/modulos/routes/columns";
+import { EditAplicacionForm } from "@/features/plataforma/modulos/routes/edit-aplicacion-form";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import {
@@ -9,19 +8,21 @@ import {
   modulos as modulosTabla,
 } from "@/lib/server/db/schema";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
-import { and, asc, eq } from "drizzle-orm";
-import { Plus } from "lucide-react";
+import { and, eq } from "drizzle-orm";
+import { ChevronLeft } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-type ModuloAplicacionesPageProps = {
+type EditAplicacionPageProps = {
   moduloId: string;
+  aplicacionId: string;
 };
 
-export default async function ModuloAplicacionesPage({
+export default async function EditAplicacionPage({
   moduloId,
-}: ModuloAplicacionesPageProps) {
+  aplicacionId,
+}: EditAplicacionPageProps) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -52,10 +53,9 @@ export default async function ModuloAplicacionesPage({
     redirect("/dashboard/plataforma/modulos");
   }
 
-  const aplicaciones = await db
+  const aplicacion = await db
     .select({
       id: aplicacionesTabla.id,
-      moduloId: aplicacionesTabla.moduloId,
       clave: aplicacionesTabla.clave,
       slug: aplicacionesTabla.slug,
       nombre: aplicacionesTabla.nombre,
@@ -64,31 +64,48 @@ export default async function ModuloAplicacionesPage({
     .from(aplicacionesTabla)
     .where(
       and(
+        eq(aplicacionesTabla.id, aplicacionId),
         eq(aplicacionesTabla.moduloId, moduloId),
         eq(aplicacionesTabla.activo, true),
       ),
     )
-    .orderBy(asc(aplicacionesTabla.clave), asc(aplicacionesTabla.id));
+    .limit(1);
+
+  if (aplicacion.length === 0) {
+    redirect(`/dashboard/plataforma/modulos/${moduloId}/aplicaciones`);
+  }
 
   return (
     <>
       <SetBreadcrumbExtras
-        extras={[{ label: modulo[0].nombre }, { label: "Aplicaciones" }]}
+        extras={[
+          { label: modulo[0].nombre },
+          { label: "Aplicaciones" },
+          { label: aplicacion[0].nombre },
+          { label: "Editar" },
+        ]}
       />
       <main className="px-4 py-12">
-        <div className="container mx-auto space-y-12">
+        <div className="mx-auto max-w-2xl space-y-12">
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-2xl font-semibold">Aplicaciones</h1>
-            <Button asChild>
+            <h1 className="text-2xl font-semibold">Editar aplicación</h1>
+            <Button variant="ghost" asChild>
               <Link
-                href={`/dashboard/plataforma/modulos/${moduloId}/aplicaciones/crear`}
+                href={`/dashboard/plataforma/modulos/${moduloId}/aplicaciones`}
               >
-                <Plus />
-                Crear aplicación
+                <ChevronLeft />
+                Volver
               </Link>
             </Button>
           </div>
-          <DataTable columns={aplicacionesColumns} data={aplicaciones} />
+          <EditAplicacionForm
+            moduloId={moduloId}
+            aplicacionId={aplicacion[0].id}
+            clave={aplicacion[0].clave}
+            slug={aplicacion[0].slug}
+            nombre={aplicacion[0].nombre}
+            scope={aplicacion[0].scope}
+          />
         </div>
       </main>
     </>

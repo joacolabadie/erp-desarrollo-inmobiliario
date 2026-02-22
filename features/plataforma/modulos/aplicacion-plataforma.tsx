@@ -1,4 +1,6 @@
+import CreateAplicacionPage from "@/features/plataforma/modulos/routes/create-aplicacion-page";
 import CreateModuloPage from "@/features/plataforma/modulos/routes/create-modulo-page";
+import EditAplicacionPage from "@/features/plataforma/modulos/routes/edit-aplicacion-page";
 import EditModuloPage from "@/features/plataforma/modulos/routes/edit-modulo-page";
 import ModuloAplicacionesPage from "@/features/plataforma/modulos/routes/modulo-aplicaciones-page";
 import ModulosPage from "@/features/plataforma/modulos/routes/modulos-page";
@@ -45,6 +47,29 @@ export default async function ModulosAplicacionPlataforma({
 
     if (aplicacionPlataformaPath[1] === "aplicaciones") {
       return <ModuloAplicacionesPage moduloId={aplicacionPlataformaPath[0]} />;
+    }
+  }
+
+  if (aplicacionPlataformaPath.length === 3) {
+    if (
+      aplicacionPlataformaPath[1] === "aplicaciones" &&
+      aplicacionPlataformaPath[2] === "crear"
+    ) {
+      return <CreateAplicacionPage moduloId={aplicacionPlataformaPath[0]} />;
+    }
+  }
+
+  if (aplicacionPlataformaPath.length === 4) {
+    if (
+      aplicacionPlataformaPath[1] === "aplicaciones" &&
+      aplicacionPlataformaPath[3] === "editar"
+    ) {
+      return (
+        <EditAplicacionPage
+          moduloId={aplicacionPlataformaPath[0]}
+          aplicacionId={aplicacionPlataformaPath[2]}
+        />
+      );
     }
   }
 
