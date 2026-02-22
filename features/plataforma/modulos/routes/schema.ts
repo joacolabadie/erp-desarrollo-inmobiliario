@@ -87,10 +87,13 @@ export const createAplicacionSchema = z.object({
       "El nombre de la aplicación no puede superar los 255 caracteres.",
     ),
   scope: z
-    .enum(APLICACION_SCOPE_VALUES)
-    .or(z.literal(""))
-    .refine((value) => value !== "", "Seleccioná el scope de la aplicación."),
+    .string()
+    .trim()
+    .min(1, "Seleccioná un scope para la aplicación.")
+    .refine(
+      (value) => (APLICACION_SCOPE_VALUES as readonly string[]).includes(value),
+      "Seleccioná un scope para la aplicación.",
+    ),
 });
 
-export type CreateAplicacionFormValues = z.input<typeof createAplicacionSchema>;
-export type CreateAplicacionPayload = z.output<typeof createAplicacionSchema>;
+export type CreateAplicacionSchema = z.infer<typeof createAplicacionSchema>;

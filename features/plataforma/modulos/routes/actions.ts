@@ -4,11 +4,12 @@ import {
   createAplicacionSchema,
   createModuloSchema,
   editModuloSchema,
-  type CreateAplicacionPayload,
+  type CreateAplicacionSchema,
   type CreateModuloSchema,
   type EditModuloSchema,
 } from "@/features/plataforma/modulos/routes/schema";
 import { auth } from "@/lib/auth";
+import type { AplicacionScope } from "@/lib/domain";
 import { db } from "@/lib/server/db";
 import {
   aplicaciones as aplicacionesTabla,
@@ -111,7 +112,7 @@ export async function editModuloAction(input: EditModuloSchema) {
   }
 }
 
-export async function createAplicacionAction(input: CreateAplicacionPayload) {
+export async function createAplicacionAction(input: CreateAplicacionSchema) {
   const result = createAplicacionSchema.safeParse(input);
 
   if (!result.success) {
@@ -135,7 +136,9 @@ export async function createAplicacionAction(input: CreateAplicacionPayload) {
     return { ok: false, message: "Unauthorized" };
   }
 
-  const { moduloId, clave, slug, nombre, scope } = result.data;
+  const { moduloId, clave, slug, nombre } = result.data;
+
+  const scope = result.data.scope as AplicacionScope;
 
   try {
     await db.insert(aplicacionesTabla).values({

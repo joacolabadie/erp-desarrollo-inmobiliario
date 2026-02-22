@@ -19,8 +19,7 @@ import {
 import { createAplicacionAction } from "@/features/plataforma/modulos/routes/actions";
 import {
   createAplicacionSchema,
-  type CreateAplicacionFormValues,
-  type CreateAplicacionPayload,
+  type CreateAplicacionSchema,
 } from "@/features/plataforma/modulos/routes/schema";
 import {
   APLICACION_SCOPE_LABELS,
@@ -36,7 +35,7 @@ type CreateAplicacionFormProps = {
 };
 
 export function CreateAplicacionForm({ moduloId }: CreateAplicacionFormProps) {
-  const form = useForm<CreateAplicacionFormValues>({
+  const form = useForm<CreateAplicacionSchema>({
     resolver: zodResolver(createAplicacionSchema),
     defaultValues: {
       moduloId,
@@ -49,12 +48,9 @@ export function CreateAplicacionForm({ moduloId }: CreateAplicacionFormProps) {
 
   const isSubmitting = form.formState.isSubmitting;
 
-  async function onSubmit(data: CreateAplicacionFormValues) {
+  async function onSubmit(data: CreateAplicacionSchema) {
     try {
-      const payload: CreateAplicacionPayload =
-        createAplicacionSchema.parse(data);
-
-      const response = await createAplicacionAction(payload);
+      const response = await createAplicacionAction(data);
 
       if (!response.ok) {
         toast.error(

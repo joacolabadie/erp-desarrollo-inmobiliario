@@ -35,11 +35,7 @@ export function CreateModuloForm() {
 
   async function onSubmit(data: CreateModuloSchema) {
     try {
-      const response = await createModuloAction({
-        clave: data.clave,
-        slug: data.slug,
-        nombre: data.nombre,
-      });
+      const response = await createModuloAction(data);
 
       if (!response.ok) {
         toast.error(
