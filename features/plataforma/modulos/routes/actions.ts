@@ -111,7 +111,6 @@ export async function editModuloAction(input: EditModuloSchema) {
     }
 
     revalidatePath("/dashboard/plataforma/modulos");
-    revalidatePath(`/dashboard/plataforma/modulos/${moduloId}/editar`);
 
     return { ok: true };
   } catch {
@@ -237,9 +236,6 @@ export async function editAplicacionAction(input: EditAplicacionSchema) {
     }
 
     revalidatePath(`/dashboard/plataforma/modulos/${moduloId}/aplicaciones`);
-    revalidatePath(
-      `/dashboard/plataforma/modulos/${moduloId}/aplicaciones/${aplicacionId}/editar`,
-    );
 
     return { ok: true };
   } catch {
