@@ -93,14 +93,22 @@ export async function editModuloAction(input: EditModuloSchema) {
   const { moduloId, clave, slug, nombre } = result.data;
 
   try {
-    await db
+    const updatedModulo = await db
       .update(modulosTabla)
       .set({
         clave,
         slug,
         nombre,
       })
-      .where(and(eq(modulosTabla.id, moduloId), eq(modulosTabla.activo, true)));
+      .where(and(eq(modulosTabla.id, moduloId), eq(modulosTabla.activo, true)))
+      .returning({ id: modulosTabla.id });
+
+    if (updatedModulo.length === 0) {
+      return {
+        ok: false,
+        message: "El módulo no existe o está inactivo.",
+      };
+    }
 
     revalidatePath("/dashboard/plataforma/modulos");
     revalidatePath(`/dashboard/plataforma/modulos/${moduloId}/editar`);
@@ -143,6 +151,19 @@ export async function createAplicacionAction(input: CreateAplicacionSchema) {
   const scope = result.data.scope as AplicacionScope;
 
   try {
+    const modulo = await db
+      .select({ id: modulosTabla.id })
+      .from(modulosTabla)
+      .where(and(eq(modulosTabla.id, moduloId), eq(modulosTabla.activo, true)))
+      .limit(1);
+
+    if (modulo.length === 0) {
+      return {
+        ok: false,
+        message: "El módulo seleccionado no existe o está inactivo.",
+      };
+    }
+
     await db.insert(aplicacionesTabla).values({
       moduloId,
       clave,
@@ -191,7 +212,7 @@ export async function editAplicacionAction(input: EditAplicacionSchema) {
   const scope = result.data.scope as AplicacionScope;
 
   try {
-    await db
+    const updatedAplicacion = await db
       .update(aplicacionesTabla)
       .set({
         clave,
@@ -205,7 +226,15 @@ export async function editAplicacionAction(input: EditAplicacionSchema) {
           eq(aplicacionesTabla.moduloId, moduloId),
           eq(aplicacionesTabla.activo, true),
         ),
-      );
+      )
+      .returning({ id: aplicacionesTabla.id });
+
+    if (updatedAplicacion.length === 0) {
+      return {
+        ok: false,
+        message: "La aplicación no existe o está inactiva.",
+      };
+    }
 
     revalidatePath(`/dashboard/plataforma/modulos/${moduloId}/aplicaciones`);
     revalidatePath(
