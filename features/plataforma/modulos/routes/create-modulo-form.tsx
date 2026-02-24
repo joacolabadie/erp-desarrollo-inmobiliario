@@ -47,6 +47,8 @@ export function CreateModuloForm() {
 
       toast.success("Módulo creado correctamente.");
 
+      form.reset();
+
       router.push("/dashboard/plataforma/modulos");
     } catch {
       toast.error("Ocurrió un error inesperado al crear el módulo.");

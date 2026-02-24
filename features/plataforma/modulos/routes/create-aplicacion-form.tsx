@@ -66,6 +66,8 @@ export function CreateAplicacionForm({ moduloId }: CreateAplicacionFormProps) {
 
       toast.success("Aplicación creada correctamente.");
 
+      form.reset();
+
       router.push(`/dashboard/plataforma/modulos/${moduloId}/aplicaciones`);
     } catch {
       toast.error("Ocurrió un error inesperado al crear la aplicación.");
