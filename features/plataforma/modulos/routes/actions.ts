@@ -18,7 +18,7 @@ import {
   modulos as modulosTabla,
 } from "@/lib/server/db/schema";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
-import { and, eq } from "drizzle-orm";
+import { and, DrizzleQueryError, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
@@ -58,7 +58,36 @@ export async function createModuloAction(input: CreateModuloSchema) {
     revalidatePath("/dashboard/plataforma/modulos");
 
     return { ok: true };
-  } catch {
+  } catch (error: unknown) {
+    const cause = error instanceof DrizzleQueryError ? error.cause : error;
+
+    if (typeof cause === "object" && cause !== null) {
+      const code = (cause as Record<string, unknown>)["code"];
+
+      if (code === "23505") {
+        const constraint = (cause as Record<string, unknown>)["constraint"];
+
+        if (constraint === "modulos_clave_key_active") {
+          return {
+            ok: false,
+            message: "Ya existe un módulo activo con esta clave.",
+          };
+        }
+
+        if (constraint === "modulos_slug_key_active") {
+          return {
+            ok: false,
+            message: "Ya existe un módulo activo con este slug.",
+          };
+        }
+
+        return {
+          ok: false,
+          message: "Ya existe un módulo activo con estos datos.",
+        };
+      }
+    }
+
     return {
       ok: false,
       message: "Ocurrió un error inesperado al crear el módulo.",
@@ -113,7 +142,36 @@ export async function editModuloAction(input: EditModuloSchema) {
     revalidatePath("/dashboard/plataforma/modulos");
 
     return { ok: true };
-  } catch {
+  } catch (error: unknown) {
+    const cause = error instanceof DrizzleQueryError ? error.cause : error;
+
+    if (typeof cause === "object" && cause !== null) {
+      const code = (cause as Record<string, unknown>)["code"];
+
+      if (code === "23505") {
+        const constraint = (cause as Record<string, unknown>)["constraint"];
+
+        if (constraint === "modulos_clave_key_active") {
+          return {
+            ok: false,
+            message: "Ya existe un módulo activo con esta clave.",
+          };
+        }
+
+        if (constraint === "modulos_slug_key_active") {
+          return {
+            ok: false,
+            message: "Ya existe un módulo activo con este slug.",
+          };
+        }
+
+        return {
+          ok: false,
+          message: "Ya existe un módulo activo con estos datos.",
+        };
+      }
+    }
+
     return {
       ok: false,
       message: "Ocurrió un error inesperado al editar el módulo.",
@@ -174,7 +232,39 @@ export async function createAplicacionAction(input: CreateAplicacionSchema) {
     revalidatePath(`/dashboard/plataforma/modulos/${moduloId}/aplicaciones`);
 
     return { ok: true };
-  } catch {
+  } catch (error: unknown) {
+    const cause = error instanceof DrizzleQueryError ? error.cause : error;
+
+    if (typeof cause === "object" && cause !== null) {
+      const code = (cause as Record<string, unknown>)["code"];
+
+      if (code === "23505") {
+        const constraint = (cause as Record<string, unknown>)["constraint"];
+
+        if (constraint === "aplicaciones_modulo_id_clave_key_active") {
+          return {
+            ok: false,
+            message:
+              "Ya existe una aplicación activa en este módulo con esta clave.",
+          };
+        }
+
+        if (constraint === "aplicaciones_modulo_id_slug_key_active") {
+          return {
+            ok: false,
+            message:
+              "Ya existe una aplicación activa en este módulo con este slug.",
+          };
+        }
+
+        return {
+          ok: false,
+          message:
+            "Ya existe una aplicación activa en este módulo con estos datos.",
+        };
+      }
+    }
+
     return {
       ok: false,
       message: "Ocurrió un error inesperado al crear la aplicación.",
@@ -238,7 +328,39 @@ export async function editAplicacionAction(input: EditAplicacionSchema) {
     revalidatePath(`/dashboard/plataforma/modulos/${moduloId}/aplicaciones`);
 
     return { ok: true };
-  } catch {
+  } catch (error: unknown) {
+    const cause = error instanceof DrizzleQueryError ? error.cause : error;
+
+    if (typeof cause === "object" && cause !== null) {
+      const code = (cause as Record<string, unknown>)["code"];
+
+      if (code === "23505") {
+        const constraint = (cause as Record<string, unknown>)["constraint"];
+
+        if (constraint === "aplicaciones_modulo_id_clave_key_active") {
+          return {
+            ok: false,
+            message:
+              "Ya existe una aplicación activa en este módulo con esta clave.",
+          };
+        }
+
+        if (constraint === "aplicaciones_modulo_id_slug_key_active") {
+          return {
+            ok: false,
+            message:
+              "Ya existe una aplicación activa en este módulo con este slug.",
+          };
+        }
+
+        return {
+          ok: false,
+          message:
+            "Ya existe una aplicación activa en este módulo con estos datos.",
+        };
+      }
+    }
+
     return {
       ok: false,
       message: "Ocurrió un error inesperado al editar la aplicación.",
