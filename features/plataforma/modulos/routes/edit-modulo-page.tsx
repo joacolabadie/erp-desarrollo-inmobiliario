@@ -55,7 +55,6 @@ export default async function EditModuloPage({
       <SetBreadcrumbExtras
         extras={[{ label: modulo[0].nombre }, { label: "Editar" }]}
       />
-
       <main className="px-4 py-12">
         <div className="mx-auto max-w-2xl space-y-12">
           <div className="flex items-center justify-between gap-4">

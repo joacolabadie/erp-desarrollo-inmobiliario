@@ -80,7 +80,7 @@ export default async function ModuloAplicacionesPage({
           <div className="flex items-center justify-between gap-4">
             <h1 className="text-2xl font-semibold">Aplicaciones</h1>
             <Button variant="ghost" asChild>
-              <Link href="/dashboard/plataforma/modulos/">
+              <Link href="/dashboard/plataforma/modulos">
                 <ChevronLeft />
                 Volver
               </Link>
@@ -90,11 +90,11 @@ export default async function ModuloAplicacionesPage({
             columns={aplicacionesColumns}
             data={aplicaciones}
             search={{
-              placeholder: "Buscar aplicacion...",
+              placeholder: "Buscar aplicación...",
               columns: ["clave", "slug", "nombre"],
             }}
             action={{
-              label: "Crear aplicacion",
+              label: "Crear aplicación",
               href: `/dashboard/plataforma/modulos/${moduloId}/aplicaciones/crear`,
               iconName: "plus",
             }}

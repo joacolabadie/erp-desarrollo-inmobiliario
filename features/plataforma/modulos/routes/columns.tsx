@@ -25,7 +25,7 @@ type Modulo = {
   nombre: string;
 };
 
-export type Aplicacion = {
+type Aplicacion = {
   id: string;
   moduloId: string;
   clave: string;

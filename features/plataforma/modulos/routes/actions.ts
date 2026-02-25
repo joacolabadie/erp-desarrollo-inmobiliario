@@ -26,7 +26,7 @@ export async function createModuloAction(input: CreateModuloSchema) {
   const result = createModuloSchema.safeParse(input);
 
   if (!result.success) {
-    return { ok: false, message: "Invalid form data" };
+    return { ok: false, message: "Datos del formulario inválidos." };
   }
 
   const session = await auth.api.getSession({
@@ -34,7 +34,7 @@ export async function createModuloAction(input: CreateModuloSchema) {
   });
 
   if (!session) {
-    return { ok: false, message: "Unauthorized" };
+    return { ok: false, message: "No autorizado." };
   }
 
   const allowed = await hasAplicacionPlataformaAccess({
@@ -43,7 +43,7 @@ export async function createModuloAction(input: CreateModuloSchema) {
   });
 
   if (!allowed) {
-    return { ok: false, message: "Unauthorized" };
+    return { ok: false, message: "No autorizado." };
   }
 
   const { clave, slug, nombre } = result.data;
@@ -99,7 +99,7 @@ export async function editModuloAction(input: EditModuloSchema) {
   const result = editModuloSchema.safeParse(input);
 
   if (!result.success) {
-    return { ok: false, message: "Invalid form data" };
+    return { ok: false, message: "Datos del formulario inválidos." };
   }
 
   const session = await auth.api.getSession({
@@ -107,7 +107,7 @@ export async function editModuloAction(input: EditModuloSchema) {
   });
 
   if (!session) {
-    return { ok: false, message: "Unauthorized" };
+    return { ok: false, message: "No autorizado." };
   }
 
   const allowed = await hasAplicacionPlataformaAccess({
@@ -116,7 +116,7 @@ export async function editModuloAction(input: EditModuloSchema) {
   });
 
   if (!allowed) {
-    return { ok: false, message: "Unauthorized" };
+    return { ok: false, message: "No autorizado." };
   }
 
   const { moduloId, clave, slug, nombre } = result.data;
@@ -183,7 +183,7 @@ export async function createAplicacionAction(input: CreateAplicacionSchema) {
   const result = createAplicacionSchema.safeParse(input);
 
   if (!result.success) {
-    return { ok: false, message: "Invalid form data" };
+    return { ok: false, message: "Datos del formulario inválidos." };
   }
 
   const session = await auth.api.getSession({
@@ -191,7 +191,7 @@ export async function createAplicacionAction(input: CreateAplicacionSchema) {
   });
 
   if (!session) {
-    return { ok: false, message: "Unauthorized" };
+    return { ok: false, message: "No autorizado." };
   }
 
   const allowed = await hasAplicacionPlataformaAccess({
@@ -200,7 +200,7 @@ export async function createAplicacionAction(input: CreateAplicacionSchema) {
   });
 
   if (!allowed) {
-    return { ok: false, message: "Unauthorized" };
+    return { ok: false, message: "No autorizado." };
   }
 
   const { moduloId, clave, slug, nombre } = result.data;
@@ -276,7 +276,7 @@ export async function editAplicacionAction(input: EditAplicacionSchema) {
   const result = editAplicacionSchema.safeParse(input);
 
   if (!result.success) {
-    return { ok: false, message: "Invalid form data" };
+    return { ok: false, message: "Datos del formulario inválidos." };
   }
 
   const session = await auth.api.getSession({
@@ -284,7 +284,7 @@ export async function editAplicacionAction(input: EditAplicacionSchema) {
   });
 
   if (!session) {
-    return { ok: false, message: "Unauthorized" };
+    return { ok: false, message: "No autorizado." };
   }
 
   const allowed = await hasAplicacionPlataformaAccess({
@@ -293,7 +293,7 @@ export async function editAplicacionAction(input: EditAplicacionSchema) {
   });
 
   if (!allowed) {
-    return { ok: false, message: "Unauthorized" };
+    return { ok: false, message: "No autorizado." };
   }
 
   const { moduloId, aplicacionId, clave, slug, nombre } = result.data;
