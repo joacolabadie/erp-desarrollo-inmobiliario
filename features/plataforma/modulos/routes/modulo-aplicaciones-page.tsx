@@ -10,7 +10,7 @@ import {
 } from "@/lib/server/db/schema";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import { and, asc, eq } from "drizzle-orm";
-import { Plus } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -79,16 +79,26 @@ export default async function ModuloAplicacionesPage({
         <div className="container mx-auto space-y-12">
           <div className="flex items-center justify-between gap-4">
             <h1 className="text-2xl font-semibold">Aplicaciones</h1>
-            <Button asChild>
-              <Link
-                href={`/dashboard/plataforma/modulos/${moduloId}/aplicaciones/crear`}
-              >
-                <Plus />
-                Crear aplicación
+            <Button variant="ghost" asChild>
+              <Link href="/dashboard/plataforma/modulos/">
+                <ChevronLeft />
+                Volver
               </Link>
             </Button>
           </div>
-          <DataTable columns={aplicacionesColumns} data={aplicaciones} />
+          <DataTable
+            columns={aplicacionesColumns}
+            data={aplicaciones}
+            search={{
+              placeholder: "Buscar aplicacion...",
+              columns: ["clave", "slug", "nombre"],
+            }}
+            action={{
+              label: "Crear aplicacion",
+              href: `/dashboard/plataforma/modulos/${moduloId}/aplicaciones/crear`,
+              iconName: "plus",
+            }}
+          />
         </div>
       </main>
     </>

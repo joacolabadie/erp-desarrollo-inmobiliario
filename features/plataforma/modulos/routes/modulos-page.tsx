@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { modulosColumns } from "@/features/plataforma/modulos/routes/columns";
 import { auth } from "@/lib/auth";
@@ -6,9 +5,7 @@ import { db } from "@/lib/server/db";
 import { modulos as modulosTabla } from "@/lib/server/db/schema";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import { asc, eq } from "drizzle-orm";
-import { Plus } from "lucide-react";
 import { headers } from "next/headers";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function ModulosPage() {
@@ -43,16 +40,20 @@ export default async function ModulosPage() {
   return (
     <main className="px-4 py-12">
       <div className="container mx-auto space-y-12">
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="text-2xl font-semibold">Módulos</h1>
-          <Button asChild>
-            <Link href="/dashboard/plataforma/modulos/crear">
-              <Plus />
-              Crear módulo
-            </Link>
-          </Button>
-        </div>
-        <DataTable columns={modulosColumns} data={modulos} />
+        <h1 className="text-2xl font-semibold">Módulos</h1>
+        <DataTable
+          columns={modulosColumns}
+          data={modulos}
+          search={{
+            placeholder: "Buscar módulo...",
+            columns: ["clave", "slug", "nombre"],
+          }}
+          action={{
+            label: "Crear módulo",
+            href: "/dashboard/plataforma/modulos/crear",
+            iconName: "plus",
+          }}
+        />
       </div>
     </main>
   );
