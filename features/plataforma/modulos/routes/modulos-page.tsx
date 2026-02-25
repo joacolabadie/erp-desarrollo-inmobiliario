@@ -44,10 +44,7 @@ export default async function ModulosPage() {
         <DataTable
           columns={modulosColumns}
           data={modulos}
-          search={{
-            placeholder: "Buscar módulo...",
-            columns: ["clave", "slug", "nombre"],
-          }}
+          search={{ placeholder: "Buscar módulo..." }}
           action={{
             label: "Crear módulo",
             href: "/dashboard/plataforma/modulos/crear",

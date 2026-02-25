@@ -89,10 +89,7 @@ export default async function ModuloAplicacionesPage({
           <DataTable
             columns={aplicacionesColumns}
             data={aplicaciones}
-            search={{
-              placeholder: "Buscar aplicación...",
-              columns: ["clave", "slug", "nombre"],
-            }}
+            search={{ placeholder: "Buscar aplicación..." }}
             action={{
               label: "Crear aplicación",
               href: `/dashboard/plataforma/modulos/${moduloId}/aplicaciones/crear`,

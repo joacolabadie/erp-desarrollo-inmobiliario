@@ -19,7 +19,7 @@ import {
 } from "@tanstack/react-table";
 import { Plus, type LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 const ICONS: Record<string, LucideIcon> = {
   plus: Plus,
@@ -27,7 +27,6 @@ const ICONS: Record<string, LucideIcon> = {
 
 type DataTableSearch = {
   placeholder: string;
-  columns: string[];
 };
 
 type DataTableAction = {
@@ -51,39 +50,12 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [globalFilter, setGlobalFilter] = useState("");
 
-  const searchColumns = useMemo(() => search?.columns ?? [], [search?.columns]);
-
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: (row, _columnId, filterValue) => {
-      if (searchColumns.length === 0) {
-        return true;
-      }
-
-      const filterText = String(filterValue ?? "")
-        .trim()
-        .toLowerCase();
-
-      if (filterText.length === 0) {
-        return true;
-      }
-
-      return searchColumns.some((columnId) => {
-        const cellValue = row.getValue(columnId);
-
-        if (cellValue === null || cellValue === undefined) {
-          return false;
-        }
-
-        const cellText = String(cellValue).trim().toLowerCase();
-
-        return cellText.includes(filterText);
-      });
-    },
     state: {
       globalFilter,
     },
