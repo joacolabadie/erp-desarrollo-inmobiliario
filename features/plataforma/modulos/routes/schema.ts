@@ -1,4 +1,4 @@
-import { APLICACION_SCOPE_VALUES } from "@/lib/domain/aplicaciones/scope";
+import { APLICACION_SCOPE_VALUES } from "@/lib/domain";
 import * as z from "zod";
 
 export const createModuloSchema = z.object({

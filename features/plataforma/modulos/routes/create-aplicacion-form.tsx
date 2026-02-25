@@ -24,7 +24,7 @@ import {
 import {
   APLICACION_SCOPE_LABELS,
   APLICACION_SCOPE_VALUES,
-} from "@/lib/domain/aplicaciones/scope";
+} from "@/lib/domain";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";

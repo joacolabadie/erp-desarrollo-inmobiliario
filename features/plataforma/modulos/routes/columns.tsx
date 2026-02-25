@@ -10,10 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  APLICACION_SCOPE_LABELS,
-  type AplicacionScope,
-} from "@/lib/domain/aplicaciones/scope";
+import { APLICACION_SCOPE_LABELS, type AplicacionScope } from "@/lib/domain";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
