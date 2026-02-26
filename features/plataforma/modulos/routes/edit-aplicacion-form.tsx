@@ -21,10 +21,7 @@ import {
   editAplicacionSchema,
   type EditAplicacionSchema,
 } from "@/features/plataforma/modulos/routes/schema";
-import {
-  APLICACION_SCOPE_LABELS,
-  APLICACION_SCOPE_VALUES,
-} from "@/lib/domain";
+import { APLICACION_SCOPE_LABELS, APLICACION_SCOPE_VALUES } from "@/lib/domain";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";

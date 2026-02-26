@@ -110,12 +110,8 @@
           "name": "accounts_user_id_users_id_fk",
           "tableFrom": "accounts",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -202,12 +198,8 @@
           "name": "sessions_user_id_users_id_fk",
           "tableFrom": "sessions",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -217,9 +209,7 @@
         "sessions_token_unique": {
           "name": "sessions_token_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
+          "columns": ["token"]
         }
       },
       "policies": {},
@@ -283,9 +273,7 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -467,12 +455,8 @@
           "name": "aplicaciones_modulo_id_modulos_id_fk",
           "tableFrom": "aplicaciones",
           "tableTo": "modulos",
-          "columnsFrom": [
-            "modulo_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["modulo_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -655,12 +639,8 @@
           "name": "materiales_organizacion_id_organizaciones_id_fk",
           "tableFrom": "materiales",
           "tableTo": "organizaciones",
-          "columnsFrom": [
-            "organizacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -668,12 +648,8 @@
           "name": "materiales_unidad_medida_id_unidades_medida_id_fk",
           "tableFrom": "materiales",
           "tableTo": "unidades_medida",
-          "columnsFrom": [
-            "unidad_medida_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unidad_medida_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -791,12 +767,8 @@
           "name": "organizaciones_aplicaciones_organizacion_id_organizaciones_id_fk",
           "tableFrom": "organizaciones_aplicaciones",
           "tableTo": "organizaciones",
-          "columnsFrom": [
-            "organizacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -804,12 +776,8 @@
           "name": "organizaciones_aplicaciones_aplicacion_id_aplicaciones_id_fk",
           "tableFrom": "organizaciones_aplicaciones",
           "tableTo": "aplicaciones",
-          "columnsFrom": [
-            "aplicacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["aplicacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -895,12 +863,8 @@
           "name": "organizaciones_miembros_organizacion_id_organizaciones_id_fk",
           "tableFrom": "organizaciones_miembros",
           "tableTo": "organizaciones",
-          "columnsFrom": [
-            "organizacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -908,12 +872,8 @@
           "name": "organizaciones_miembros_usuario_id_users_id_fk",
           "tableFrom": "organizaciones_miembros",
           "tableTo": "users",
-          "columnsFrom": [
-            "usuario_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["usuario_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -1003,12 +963,8 @@
           "name": "organizaciones_miembros_aplicaciones_organizacion_id_organizaciones_id_fk",
           "tableFrom": "organizaciones_miembros_aplicaciones",
           "tableTo": "organizaciones",
-          "columnsFrom": [
-            "organizacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1016,12 +972,8 @@
           "name": "organizaciones_miembros_aplicaciones_usuario_id_users_id_fk",
           "tableFrom": "organizaciones_miembros_aplicaciones",
           "tableTo": "users",
-          "columnsFrom": [
-            "usuario_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["usuario_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -1029,12 +981,8 @@
           "name": "organizaciones_miembros_aplicaciones_aplicacion_id_aplicaciones_id_fk",
           "tableFrom": "organizaciones_miembros_aplicaciones",
           "tableTo": "aplicaciones",
-          "columnsFrom": [
-            "aplicacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["aplicacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -1124,12 +1072,8 @@
           "name": "organizaciones_miembros_proyectos_organizacion_id_organizaciones_id_fk",
           "tableFrom": "organizaciones_miembros_proyectos",
           "tableTo": "organizaciones",
-          "columnsFrom": [
-            "organizacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1137,12 +1081,8 @@
           "name": "organizaciones_miembros_proyectos_usuario_id_users_id_fk",
           "tableFrom": "organizaciones_miembros_proyectos",
           "tableTo": "users",
-          "columnsFrom": [
-            "usuario_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["usuario_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -1150,12 +1090,8 @@
           "name": "organizaciones_miembros_proyectos_proyecto_id_proyectos_id_fk",
           "tableFrom": "organizaciones_miembros_proyectos",
           "tableTo": "proyectos",
-          "columnsFrom": [
-            "proyecto_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["proyecto_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1239,12 +1175,8 @@
           "name": "organizaciones_razones_sociales_organizacion_id_organizaciones_id_fk",
           "tableFrom": "organizaciones_razones_sociales",
           "tableTo": "organizaciones",
-          "columnsFrom": [
-            "organizacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1350,12 +1282,8 @@
           "name": "unidades_medida_organizacion_id_organizaciones_id_fk",
           "tableFrom": "unidades_medida",
           "tableTo": "organizaciones",
-          "columnsFrom": [
-            "organizacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1421,12 +1349,8 @@
           "name": "plataforma_administradores_usuario_id_users_id_fk",
           "tableFrom": "plataforma_administradores",
           "tableTo": "users",
-          "columnsFrom": [
-            "usuario_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["usuario_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -1504,12 +1428,8 @@
           "name": "plataforma_administradores_aplicaciones_plataforma_administrador_id_plataforma_administradores_id_fk",
           "tableFrom": "plataforma_administradores_aplicaciones",
           "tableTo": "plataforma_administradores",
-          "columnsFrom": [
-            "plataforma_administrador_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["plataforma_administrador_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1517,12 +1437,8 @@
           "name": "plataforma_administradores_aplicaciones_plataforma_aplicacion_id_plataforma_aplicaciones_id_fk",
           "tableFrom": "plataforma_administradores_aplicaciones",
           "tableTo": "plataforma_aplicaciones",
-          "columnsFrom": [
-            "plataforma_aplicacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["plataforma_aplicacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -1706,12 +1622,8 @@
           "name": "proyectos_organizacion_id_organizaciones_id_fk",
           "tableFrom": "proyectos",
           "tableTo": "organizaciones",
-          "columnsFrom": [
-            "organizacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1719,12 +1631,8 @@
           "name": "proyectos_organizacion_razon_social_principal_id_organizaciones_razones_sociales_id_fk",
           "tableFrom": "proyectos",
           "tableTo": "organizaciones_razones_sociales",
-          "columnsFrom": [
-            "organizacion_razon_social_principal_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_razon_social_principal_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -1814,12 +1722,8 @@
           "name": "proyectos_categorias_organizacion_id_organizaciones_id_fk",
           "tableFrom": "proyectos_categorias",
           "tableTo": "organizaciones",
-          "columnsFrom": [
-            "organizacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1827,12 +1731,8 @@
           "name": "proyectos_categorias_proyecto_id_proyectos_id_fk",
           "tableFrom": "proyectos_categorias",
           "tableTo": "proyectos",
-          "columnsFrom": [
-            "proyecto_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["proyecto_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1840,12 +1740,8 @@
           "name": "proyectos_categorias_rubro_id_proyectos_rubros_id_fk",
           "tableFrom": "proyectos_categorias",
           "tableTo": "proyectos_rubros",
-          "columnsFrom": [
-            "rubro_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["rubro_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -1929,12 +1825,8 @@
           "name": "proyectos_razones_sociales_organizacion_id_organizaciones_id_fk",
           "tableFrom": "proyectos_razones_sociales",
           "tableTo": "organizaciones",
-          "columnsFrom": [
-            "organizacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1942,12 +1834,8 @@
           "name": "proyectos_razones_sociales_proyecto_id_proyectos_id_fk",
           "tableFrom": "proyectos_razones_sociales",
           "tableTo": "proyectos",
-          "columnsFrom": [
-            "proyecto_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["proyecto_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1955,12 +1843,8 @@
           "name": "proyectos_razones_sociales_organizacion_razon_social_id_organizaciones_razones_sociales_id_fk",
           "tableFrom": "proyectos_razones_sociales",
           "tableTo": "organizaciones_razones_sociales",
-          "columnsFrom": [
-            "organizacion_razon_social_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_razon_social_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -2051,12 +1935,8 @@
           "name": "proyectos_rubros_organizacion_id_organizaciones_id_fk",
           "tableFrom": "proyectos_rubros",
           "tableTo": "organizaciones",
-          "columnsFrom": [
-            "organizacion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2064,12 +1944,8 @@
           "name": "proyectos_rubros_proyecto_id_proyectos_id_fk",
           "tableFrom": "proyectos_rubros",
           "tableTo": "proyectos",
-          "columnsFrom": [
-            "proyecto_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["proyecto_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -2085,46 +1961,27 @@
     "public.aplicaciones_scopes": {
       "name": "aplicaciones_scopes",
       "schema": "public",
-      "values": [
-        "mixto",
-        "organizacional",
-        "proyecto"
-      ]
+      "values": ["mixto", "organizacional", "proyecto"]
     },
     "public.estado_miembro_organizacion": {
       "name": "estado_miembro_organizacion",
       "schema": "public",
-      "values": [
-        "activo",
-        "suspendido"
-      ]
+      "values": ["activo", "suspendido"]
     },
     "public.material_tipo": {
       "name": "material_tipo",
       "schema": "public",
-      "values": [
-        "mano_obra",
-        "material"
-      ]
+      "values": ["mano_obra", "material"]
     },
     "public.proyecto_estado": {
       "name": "proyecto_estado",
       "schema": "public",
-      "values": [
-        "cancelado",
-        "en_construccion",
-        "finalizado",
-        "planificacion"
-      ]
+      "values": ["cancelado", "en_construccion", "finalizado", "planificacion"]
     },
     "public.proyecto_tipo": {
       "name": "proyecto_tipo",
       "schema": "public",
-      "values": [
-        "casa",
-        "cocheras",
-        "edificio"
-      ]
+      "values": ["casa", "cocheras", "edificio"]
     }
   },
   "schemas": {},
