@@ -59,6 +59,11 @@ export function DataTable<TData, TValue>({
     state: {
       globalFilter,
     },
+    initialState: {
+      columnVisibility: {
+        id: false,
+      },
+    },
   });
 
   const Icon = action?.iconName ? ICONS[action.iconName] : null;

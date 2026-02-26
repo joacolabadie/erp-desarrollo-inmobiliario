@@ -33,6 +33,10 @@ type Aplicacion = {
 
 export const modulosColumns: ColumnDef<Modulo>[] = [
   {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
     accessorKey: "clave",
     header: "Clave",
   },
@@ -88,6 +92,10 @@ export const modulosColumns: ColumnDef<Modulo>[] = [
 ];
 
 export const aplicacionesColumns: ColumnDef<Aplicacion>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
   {
     accessorKey: "clave",
     header: "Clave",
