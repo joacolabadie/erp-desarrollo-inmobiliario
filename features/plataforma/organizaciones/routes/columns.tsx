@@ -9,12 +9,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Organizacion } from "@/lib/types/dashboard";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 
+type Organizacion = {
+  id: string;
+  nombre: string;
+};
+
 export const organizacionesColumns: ColumnDef<Organizacion>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
   {
     accessorKey: "nombre",
     header: "Nombre",
@@ -39,19 +47,26 @@ export const organizacionesColumns: ColumnDef<Organizacion>[] = [
               >
                 Copiar ID
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link
-                  href={`/dashboard/plataforma/organizaciones/${organizacion.id}/modulos`}
+                  href={`/dashboard/plataforma/organizaciones/${organizacion.id}/editar`}
                 >
-                  Ver módulos
+                  Editar
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link
                   href={`/dashboard/plataforma/organizaciones/${organizacion.id}/miembros`}
                 >
                   Ver miembros
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  href={`/dashboard/plataforma/organizaciones/${organizacion.id}/modulos`}
+                >
+                  Ver módulos
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>

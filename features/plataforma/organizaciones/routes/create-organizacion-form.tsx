@@ -8,19 +8,22 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { crearOrganizacionAction } from "@/features/plataforma/organizaciones/routes/actions";
+import { createOrganizacionAction } from "@/features/plataforma/organizaciones/routes/actions";
 import {
-  crearOrganizacionSchema,
-  type CrearOrganizacionSchema,
+  createOrganizacionSchema,
+  type CreateOrganizacionSchema,
 } from "@/features/plataforma/organizaciones/routes/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export function CrearOrganizacionForm() {
-  const form = useForm<CrearOrganizacionSchema>({
-    resolver: zodResolver(crearOrganizacionSchema),
+export function CreateOrganizacionForm() {
+  const router = useRouter();
+
+  const form = useForm<CreateOrganizacionSchema>({
+    resolver: zodResolver(createOrganizacionSchema),
     defaultValues: {
       nombre: "",
     },
@@ -28,11 +31,9 @@ export function CrearOrganizacionForm() {
 
   const isSubmitting = form.formState.isSubmitting;
 
-  async function onSubmit(data: CrearOrganizacionSchema) {
+  async function onSubmit(data: CreateOrganizacionSchema) {
     try {
-      const response = await crearOrganizacionAction({
-        nombre: data.nombre,
-      });
+      const response = await createOrganizacionAction(data);
 
       if (!response.ok) {
         toast.error(
@@ -46,6 +47,8 @@ export function CrearOrganizacionForm() {
       toast.success("Organización creada correctamente.");
 
       form.reset();
+
+      router.push("/dashboard/plataforma/organizaciones");
     } catch {
       toast.error("Ocurrió un error inesperado al crear la organización.");
     }
