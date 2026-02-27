@@ -9,24 +9,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Aplicacion,
+  Modulo,
+  Organizacion,
+} from "@/features/plataforma/organizaciones/routes/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-
-type Organizacion = {
-  id: string;
-  nombre: string;
-};
-
-type Modulo = {
-  id: string;
-  nombre: string;
-};
-
-type Aplicacion = {
-  id: string;
-  nombre: string;
-};
 
 export const organizacionesColumns: ColumnDef<Organizacion>[] = [
   {
