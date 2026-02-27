@@ -18,6 +18,16 @@ type Organizacion = {
   nombre: string;
 };
 
+type Modulo = {
+  id: string;
+  nombre: string;
+};
+
+type Aplicacion = {
+  id: string;
+  nombre: string;
+};
+
 export const organizacionesColumns: ColumnDef<Organizacion>[] = [
   {
     accessorKey: "id",
@@ -68,6 +78,89 @@ export const organizacionesColumns: ColumnDef<Organizacion>[] = [
                 >
                   Ver módulos
                 </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    },
+  },
+];
+
+export const modulosColumns = (organizacionId: string): ColumnDef<Modulo>[] => [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "nombre",
+    header: "Nombre",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const modulo = row.original;
+
+      return (
+        <div className="flex justify-end">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon-sm">
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="whitespace-nowrap">
+              <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(modulo.id)}
+              >
+                Copiar ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link
+                  href={`/dashboard/plataforma/organizaciones/${organizacionId}/modulos/${modulo.id}/aplicaciones`}
+                >
+                  Ver aplicaciones
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    },
+  },
+];
+
+export const aplicacionesColumns: ColumnDef<Aplicacion>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "nombre",
+    header: "Nombre",
+  },
+
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const aplicacion = row.original;
+
+      return (
+        <div className="flex justify-end">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon-sm">
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="whitespace-nowrap">
+              <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(aplicacion.id)}
+              >
+                Copiar ID
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

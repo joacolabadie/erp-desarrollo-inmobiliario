@@ -1,5 +1,7 @@
 import CreateOrganizacionPage from "@/features/plataforma/organizaciones/routes/create-organizacion-page";
 import EditOrganizacionPage from "@/features/plataforma/organizaciones/routes/edit-organizacion-page";
+import OrganizacionModuloAplicacionesPage from "@/features/plataforma/organizaciones/routes/organizacion-modulo-aplicaciones-page";
+import OrganizacionModulosPage from "@/features/plataforma/organizaciones/routes/organizacion-modulos-page";
 import OrganizacionesPage from "@/features/plataforma/organizaciones/routes/organizaciones-page";
 import { auth } from "@/lib/auth";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
@@ -41,6 +43,26 @@ export default async function OrganizacionesAplicacionPlataforma({
     if (aplicacionPlataformaPath[1] === "editar") {
       return (
         <EditOrganizacionPage organizacionId={aplicacionPlataformaPath[0]} />
+      );
+    }
+
+    if (aplicacionPlataformaPath[1] === "modulos") {
+      return (
+        <OrganizacionModulosPage organizacionId={aplicacionPlataformaPath[0]} />
+      );
+    }
+  }
+
+  if (aplicacionPlataformaPath.length === 4) {
+    if (
+      aplicacionPlataformaPath[1] === "modulos" &&
+      aplicacionPlataformaPath[3] === "aplicaciones"
+    ) {
+      return (
+        <OrganizacionModuloAplicacionesPage
+          organizacionId={aplicacionPlataformaPath[0]}
+          moduloId={aplicacionPlataformaPath[2]}
+        />
       );
     }
   }
