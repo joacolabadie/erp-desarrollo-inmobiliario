@@ -65,8 +65,22 @@ export default async function OrganizacionModuloAplicacionesPage({
       id: modulosTabla.id,
       nombre: modulosTabla.nombre,
     })
-    .from(modulosTabla)
-    .where(and(eq(modulosTabla.id, moduloId), eq(modulosTabla.activo, true)))
+    .from(organizacionesAplicacionesTabla)
+    .innerJoin(
+      aplicacionesTabla,
+      eq(organizacionesAplicacionesTabla.aplicacionId, aplicacionesTabla.id),
+    )
+    .innerJoin(modulosTabla, eq(aplicacionesTabla.moduloId, modulosTabla.id))
+    .where(
+      and(
+        eq(organizacionesAplicacionesTabla.organizacionId, organizacionId),
+        eq(organizacionesAplicacionesTabla.activo, true),
+        eq(aplicacionesTabla.activo, true),
+        eq(modulosTabla.id, moduloId),
+        eq(modulosTabla.activo, true),
+      ),
+    )
+    .groupBy(modulosTabla.id, modulosTabla.nombre)
     .limit(1);
 
   if (modulo.length === 0) {
