@@ -19,6 +19,7 @@ export function ModulosTable({ modulos }: ModulosTableProps) {
         href: "/dashboard/plataforma/modulos/crear",
         iconName: "plus",
       }}
+      hiddenColumns={["id"]}
     />
   );
 }

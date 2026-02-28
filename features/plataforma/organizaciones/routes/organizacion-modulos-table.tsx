@@ -18,6 +18,7 @@ export function OrganizacionModulosTable({
       columns={modulosColumns(organizacionId)}
       data={modulos}
       search={{ placeholder: "Buscar módulo..." }}
+      hiddenColumns={["id"]}
     />
   );
 }

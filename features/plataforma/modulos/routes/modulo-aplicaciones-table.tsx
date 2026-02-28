@@ -23,6 +23,7 @@ export function ModuloAplicacionesTable({
         href: `/dashboard/plataforma/modulos/${moduloId}/aplicaciones/crear`,
         iconName: "plus",
       }}
+      hiddenColumns={["id"]}
     />
   );
 }

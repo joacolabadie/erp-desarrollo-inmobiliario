@@ -40,6 +40,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   search?: DataTableSearch;
   action?: DataTableAction;
+  hiddenColumns?: string[];
 }
 
 export function DataTable<TData, TValue>({
@@ -47,8 +48,13 @@ export function DataTable<TData, TValue>({
   data,
   search,
   action,
+  hiddenColumns,
 }: DataTableProps<TData, TValue>) {
   const [globalFilter, setGlobalFilter] = useState("");
+
+  const columnVisibility = Object.fromEntries(
+    (hiddenColumns ?? []).map((columnId) => [columnId, false]),
+  );
 
   const table = useReactTable({
     data,
@@ -60,9 +66,7 @@ export function DataTable<TData, TValue>({
       globalFilter,
     },
     initialState: {
-      columnVisibility: {
-        id: false,
-      },
+      columnVisibility,
     },
   });
 

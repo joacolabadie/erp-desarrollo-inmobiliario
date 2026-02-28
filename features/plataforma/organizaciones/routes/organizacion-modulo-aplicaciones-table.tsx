@@ -16,6 +16,7 @@ export function OrganizacionModuloAplicacionesTable({
       columns={aplicacionesColumns}
       data={aplicaciones}
       search={{ placeholder: "Buscar aplicación..." }}
+      hiddenColumns={["id"]}
     />
   );
 }

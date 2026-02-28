@@ -1,5 +1,4 @@
-import { DataTable } from "@/components/ui/data-table";
-import { organizacionesColumns } from "@/features/plataforma/organizaciones/routes/columns";
+import { OrganizacionesTable } from "@/features/plataforma/organizaciones/routes/organizaciones-table";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import { organizaciones as organizacionesTabla } from "@/lib/server/db/schema";
@@ -39,16 +38,7 @@ export default async function OrganizacionesPage() {
     <main className="px-4 py-12">
       <div className="container mx-auto space-y-12">
         <h1 className="text-2xl font-semibold">Organizaciones</h1>
-        <DataTable
-          columns={organizacionesColumns}
-          data={organizaciones}
-          search={{ placeholder: "Buscar organización..." }}
-          action={{
-            label: "Crear organización",
-            href: "/dashboard/plataforma/organizaciones/crear",
-            iconName: "plus",
-          }}
-        />
+        <OrganizacionesTable organizaciones={organizaciones} />
       </div>
     </main>
   );
