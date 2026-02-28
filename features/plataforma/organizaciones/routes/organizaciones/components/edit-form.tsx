@@ -18,7 +18,7 @@ import { LoaderCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-type EditOrganizacionFormProps = {
+type OrganizacionEditFormProps = {
   organizacionId: string;
   nombre: string;
 };
@@ -26,7 +26,7 @@ type EditOrganizacionFormProps = {
 export function OrganizacionEditForm({
   organizacionId,
   nombre,
-}: EditOrganizacionFormProps) {
+}: OrganizacionEditFormProps) {
   const form = useForm<OrganizacionEditSchema>({
     resolver: zodResolver(organizacionEditSchema),
     defaultValues: {
