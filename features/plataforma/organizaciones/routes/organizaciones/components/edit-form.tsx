@@ -8,10 +8,10 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { editOrganizacionAction } from "@/features/plataforma/organizaciones/shared/actions";
+import { organizacionEditAction } from "@/features/plataforma/organizaciones/shared/actions";
 import {
-  editOrganizacionSchema,
-  type EditOrganizacionSchema,
+  organizacionEditSchema,
+  type OrganizacionEditSchema,
 } from "@/features/plataforma/organizaciones/shared/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
@@ -23,12 +23,12 @@ type EditOrganizacionFormProps = {
   nombre: string;
 };
 
-export function EditOrganizacionForm({
+export function OrganizacionEditForm({
   organizacionId,
   nombre,
 }: EditOrganizacionFormProps) {
-  const form = useForm<EditOrganizacionSchema>({
-    resolver: zodResolver(editOrganizacionSchema),
+  const form = useForm<OrganizacionEditSchema>({
+    resolver: zodResolver(organizacionEditSchema),
     defaultValues: {
       organizacionId,
       nombre,
@@ -37,9 +37,9 @@ export function EditOrganizacionForm({
 
   const isSubmitting = form.formState.isSubmitting;
 
-  async function onSubmit(data: EditOrganizacionSchema) {
+  async function onSubmit(data: OrganizacionEditSchema) {
     try {
-      const response = await editOrganizacionAction(data);
+      const response = await organizacionEditAction(data);
 
       if (!response.ok) {
         toast.error(

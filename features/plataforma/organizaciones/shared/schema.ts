@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const createOrganizacionSchema = z.object({
+export const organizacionCreateSchema = z.object({
   nombre: z
     .string()
     .trim()
@@ -11,9 +11,9 @@ export const createOrganizacionSchema = z.object({
     ),
 });
 
-export type CreateOrganizacionSchema = z.infer<typeof createOrganizacionSchema>;
+export type OrganizacionCreateSchema = z.infer<typeof organizacionCreateSchema>;
 
-export const editOrganizacionSchema = z.object({
+export const organizacionEditSchema = z.object({
   organizacionId: z.uuid("La organización seleccionada es inválida."),
   nombre: z
     .string()
@@ -25,4 +25,4 @@ export const editOrganizacionSchema = z.object({
     ),
 });
 
-export type EditOrganizacionSchema = z.infer<typeof editOrganizacionSchema>;
+export type OrganizacionEditSchema = z.infer<typeof organizacionEditSchema>;

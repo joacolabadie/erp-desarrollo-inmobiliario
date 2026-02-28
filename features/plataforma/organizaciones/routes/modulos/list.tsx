@@ -17,13 +17,13 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-type ModulosPageProps = {
+type ModulosListProps = {
   organizacionId: string;
 };
 
-export default async function ModulosPage({
+export default async function ModulosList({
   organizacionId,
-}: ModulosPageProps) {
+}: ModulosListProps) {
   if (!isValidUuid(organizacionId)) {
     redirect("/dashboard/plataforma/organizaciones");
   }

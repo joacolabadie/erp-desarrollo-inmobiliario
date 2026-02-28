@@ -1,6 +1,6 @@
 import { SetBreadcrumbExtras } from "@/components/set-breadcrumb-extras";
 import { Button } from "@/components/ui/button";
-import { EditOrganizacionForm } from "@/features/plataforma/organizaciones/routes/organizaciones/components/edit-form";
+import { OrganizacionEditForm } from "@/features/plataforma/organizaciones/routes/organizaciones/components/edit-form";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import { organizaciones as organizacionesTabla } from "@/lib/server/db/schema";
@@ -12,13 +12,13 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-type EditOrganizacionPageProps = {
+type OrganizacionEditProps = {
   organizacionId: string;
 };
 
-export default async function EditOrganizacionPage({
+export default async function OrganizacionEdit({
   organizacionId,
-}: EditOrganizacionPageProps) {
+}: OrganizacionEditProps) {
   if (!isValidUuid(organizacionId)) {
     redirect("/dashboard/plataforma/organizaciones");
   }
@@ -74,7 +74,7 @@ export default async function EditOrganizacionPage({
               </Link>
             </Button>
           </div>
-          <EditOrganizacionForm
+          <OrganizacionEditForm
             organizacionId={organizacion[0].id}
             nombre={organizacion[0].nombre}
           />

@@ -8,10 +8,10 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { createOrganizacionAction } from "@/features/plataforma/organizaciones/shared/actions";
+import { organizacionCreateAction } from "@/features/plataforma/organizaciones/shared/actions";
 import {
-  createOrganizacionSchema,
-  type CreateOrganizacionSchema,
+  organizacionCreateSchema,
+  type OrganizacionCreateSchema,
 } from "@/features/plataforma/organizaciones/shared/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
@@ -19,11 +19,11 @@ import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export function CreateOrganizacionForm() {
+export function OrganizacionCreateForm() {
   const router = useRouter();
 
-  const form = useForm<CreateOrganizacionSchema>({
-    resolver: zodResolver(createOrganizacionSchema),
+  const form = useForm<OrganizacionCreateSchema>({
+    resolver: zodResolver(organizacionCreateSchema),
     defaultValues: {
       nombre: "",
     },
@@ -31,9 +31,9 @@ export function CreateOrganizacionForm() {
 
   const isSubmitting = form.formState.isSubmitting;
 
-  async function onSubmit(data: CreateOrganizacionSchema) {
+  async function onSubmit(data: OrganizacionCreateSchema) {
     try {
-      const response = await createOrganizacionAction(data);
+      const response = await organizacionCreateAction(data);
 
       if (!response.ok) {
         toast.error(

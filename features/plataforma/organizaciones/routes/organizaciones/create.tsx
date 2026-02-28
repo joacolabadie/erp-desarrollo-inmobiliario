@@ -1,6 +1,6 @@
 import { SetBreadcrumbExtras } from "@/components/set-breadcrumb-extras";
 import { Button } from "@/components/ui/button";
-import { CreateOrganizacionForm } from "@/features/plataforma/organizaciones/routes/organizaciones/components/create-form";
+import { OrganizacionCreateForm } from "@/features/plataforma/organizaciones/routes/organizaciones/components/create-form";
 import { auth } from "@/lib/auth";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import { ChevronLeft } from "lucide-react";
@@ -8,7 +8,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function CreateOrganizacionPage() {
+export default async function OrganizacionCreate() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -40,7 +40,7 @@ export default async function CreateOrganizacionPage() {
               </Link>
             </Button>
           </div>
-          <CreateOrganizacionForm />
+          <OrganizacionCreateForm />
         </div>
       </main>
     </>

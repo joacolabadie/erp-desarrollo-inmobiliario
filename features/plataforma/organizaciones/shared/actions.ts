@@ -1,10 +1,10 @@
 "use server";
 
 import {
-  createOrganizacionSchema,
-  editOrganizacionSchema,
-  type CreateOrganizacionSchema,
-  type EditOrganizacionSchema,
+  organizacionCreateSchema,
+  organizacionEditSchema,
+  type OrganizacionCreateSchema,
+  type OrganizacionEditSchema,
 } from "@/features/plataforma/organizaciones/shared/schema";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
@@ -14,10 +14,10 @@ import { and, DrizzleQueryError, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
-export async function createOrganizacionAction(
-  input: CreateOrganizacionSchema,
+export async function organizacionCreateAction(
+  input: OrganizacionCreateSchema,
 ) {
-  const result = createOrganizacionSchema.safeParse(input);
+  const result = organizacionCreateSchema.safeParse(input);
 
   if (!result.success) {
     return { ok: false, message: "Datos del formulario inválidos." };
@@ -71,8 +71,8 @@ export async function createOrganizacionAction(
   }
 }
 
-export async function editOrganizacionAction(input: EditOrganizacionSchema) {
-  const result = editOrganizacionSchema.safeParse(input);
+export async function organizacionEditAction(input: OrganizacionEditSchema) {
+  const result = organizacionEditSchema.safeParse(input);
 
   if (!result.success) {
     return { ok: false, message: "Datos del formulario inválidos." };

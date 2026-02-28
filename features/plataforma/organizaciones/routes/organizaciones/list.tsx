@@ -7,7 +7,7 @@ import { asc, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function OrganizacionesPage() {
+export default async function OrganizacionesList() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });

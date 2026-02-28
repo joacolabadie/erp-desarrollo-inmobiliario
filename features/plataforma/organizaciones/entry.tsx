@@ -1,8 +1,8 @@
-import AplicacionesPage from "@/features/plataforma/organizaciones/routes/aplicaciones/list";
-import ModulosPage from "@/features/plataforma/organizaciones/routes/modulos/list";
-import CreateOrganizacionPage from "@/features/plataforma/organizaciones/routes/organizaciones/create";
-import EditOrganizacionPage from "@/features/plataforma/organizaciones/routes/organizaciones/edit";
-import OrganizacionesPage from "@/features/plataforma/organizaciones/routes/organizaciones/list";
+import AplicacionesList from "@/features/plataforma/organizaciones/routes/aplicaciones/list";
+import ModulosList from "@/features/plataforma/organizaciones/routes/modulos/list";
+import OrganizacionCreate from "@/features/plataforma/organizaciones/routes/organizaciones/create";
+import OrganizacionEdit from "@/features/plataforma/organizaciones/routes/organizaciones/edit";
+import OrganizacionesList from "@/features/plataforma/organizaciones/routes/organizaciones/list";
 import { auth } from "@/lib/auth";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import type { AplicacionPlataformaComponentProps } from "@/registry/types";
@@ -30,24 +30,22 @@ export default async function OrganizacionesEntry({
   }
 
   if (aplicacionPlataformaPath.length === 0) {
-    return <OrganizacionesPage />;
+    return <OrganizacionesList />;
   }
 
   if (aplicacionPlataformaPath.length === 1) {
     if (aplicacionPlataformaPath[0] === "crear") {
-      return <CreateOrganizacionPage />;
+      return <OrganizacionCreate />;
     }
   }
 
   if (aplicacionPlataformaPath.length === 2) {
     if (aplicacionPlataformaPath[1] === "editar") {
-      return (
-        <EditOrganizacionPage organizacionId={aplicacionPlataformaPath[0]} />
-      );
+      return <OrganizacionEdit organizacionId={aplicacionPlataformaPath[0]} />;
     }
 
     if (aplicacionPlataformaPath[1] === "modulos") {
-      return <ModulosPage organizacionId={aplicacionPlataformaPath[0]} />;
+      return <ModulosList organizacionId={aplicacionPlataformaPath[0]} />;
     }
   }
 
@@ -57,7 +55,7 @@ export default async function OrganizacionesEntry({
       aplicacionPlataformaPath[3] === "aplicaciones"
     ) {
       return (
-        <AplicacionesPage
+        <AplicacionesList
           organizacionId={aplicacionPlataformaPath[0]}
           moduloId={aplicacionPlataformaPath[2]}
         />

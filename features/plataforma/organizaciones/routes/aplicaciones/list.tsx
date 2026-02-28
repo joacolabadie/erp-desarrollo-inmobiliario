@@ -17,15 +17,15 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-type AplicacionesPageProps = {
+type AplicacionesListProps = {
   organizacionId: string;
   moduloId: string;
 };
 
-export default async function AplicacionesPage({
+export default async function AplicacionesList({
   organizacionId,
   moduloId,
-}: AplicacionesPageProps) {
+}: AplicacionesListProps) {
   if (!isValidUuid(organizacionId)) {
     redirect("/dashboard/plataforma/organizaciones");
   }
