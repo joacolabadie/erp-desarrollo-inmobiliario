@@ -10,6 +10,7 @@ import {
   organizaciones as organizacionesTabla,
 } from "@/lib/server/db/schema";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
+import { isValidUuid } from "@/lib/utils/validation/is-valid-uuid";
 import { and, asc, eq } from "drizzle-orm";
 import { ChevronLeft } from "lucide-react";
 import { headers } from "next/headers";
@@ -23,6 +24,10 @@ type ModulosPageProps = {
 export default async function ModulosPage({
   organizacionId,
 }: ModulosPageProps) {
+  if (!isValidUuid(organizacionId)) {
+    redirect("/dashboard/plataforma/organizaciones");
+  }
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });

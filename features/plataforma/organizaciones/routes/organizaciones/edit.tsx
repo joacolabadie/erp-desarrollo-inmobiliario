@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import { organizaciones as organizacionesTabla } from "@/lib/server/db/schema";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
+import { isValidUuid } from "@/lib/utils/validation/is-valid-uuid";
 import { and, eq } from "drizzle-orm";
 import { ChevronLeft } from "lucide-react";
 import { headers } from "next/headers";
@@ -18,6 +19,10 @@ type EditOrganizacionPageProps = {
 export default async function EditOrganizacionPage({
   organizacionId,
 }: EditOrganizacionPageProps) {
+  if (!isValidUuid(organizacionId)) {
+    redirect("/dashboard/plataforma/organizaciones");
+  }
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
