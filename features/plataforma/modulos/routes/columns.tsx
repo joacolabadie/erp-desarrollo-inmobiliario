@@ -10,26 +10,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { APLICACION_SCOPE_LABELS, type AplicacionScope } from "@/lib/domain";
+import type {
+  Aplicacion,
+  Modulo,
+} from "@/features/plataforma/modulos/routes/types";
+import { APLICACION_SCOPE_LABELS } from "@/lib/domain";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-
-type Modulo = {
-  id: string;
-  clave: string;
-  slug: string;
-  nombre: string;
-};
-
-type Aplicacion = {
-  id: string;
-  moduloId: string;
-  clave: string;
-  slug: string;
-  nombre: string;
-  scope: AplicacionScope;
-};
 
 export const modulosColumns: ColumnDef<Modulo>[] = [
   {

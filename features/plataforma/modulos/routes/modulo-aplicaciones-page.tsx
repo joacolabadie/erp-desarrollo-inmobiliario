@@ -1,7 +1,6 @@
 import { SetBreadcrumbExtras } from "@/components/set-breadcrumb-extras";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
-import { aplicacionesColumns } from "@/features/plataforma/modulos/routes/columns";
+import { ModuloAplicacionesTable } from "@/features/plataforma/modulos/routes/modulo-aplicaciones-table";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import {
@@ -86,15 +85,9 @@ export default async function ModuloAplicacionesPage({
               </Link>
             </Button>
           </div>
-          <DataTable
-            columns={aplicacionesColumns}
-            data={aplicaciones}
-            search={{ placeholder: "Buscar aplicación..." }}
-            action={{
-              label: "Crear aplicación",
-              href: `/dashboard/plataforma/modulos/${moduloId}/aplicaciones/crear`,
-              iconName: "plus",
-            }}
+          <ModuloAplicacionesTable
+            moduloId={moduloId}
+            aplicaciones={aplicaciones}
           />
         </div>
       </main>

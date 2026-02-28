@@ -1,5 +1,4 @@
-import { DataTable } from "@/components/ui/data-table";
-import { modulosColumns } from "@/features/plataforma/modulos/routes/columns";
+import { ModulosTable } from "@/features/plataforma/modulos/routes/modulos-table";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import { modulos as modulosTabla } from "@/lib/server/db/schema";
@@ -41,16 +40,7 @@ export default async function ModulosPage() {
     <main className="px-4 py-12">
       <div className="container mx-auto space-y-12">
         <h1 className="text-2xl font-semibold">Módulos</h1>
-        <DataTable
-          columns={modulosColumns}
-          data={modulos}
-          search={{ placeholder: "Buscar módulo..." }}
-          action={{
-            label: "Crear módulo",
-            href: "/dashboard/plataforma/modulos/crear",
-            iconName: "plus",
-          }}
-        />
+        <ModulosTable modulos={modulos} />
       </div>
     </main>
   );
