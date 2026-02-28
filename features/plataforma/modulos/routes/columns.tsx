@@ -104,7 +104,11 @@ export const aplicacionesColumns = (
     cell: ({ row }) => {
       const aplicacion = row.original;
 
-      return <Badge>{APLICACION_SCOPE_LABELS[aplicacion.scope]}</Badge>;
+      return (
+        <Badge variant="secondary">
+          {APLICACION_SCOPE_LABELS[aplicacion.scope]}
+        </Badge>
+      );
     },
   },
   {
