@@ -13,7 +13,7 @@ import {
   type Aplicacion,
   type Modulo,
   type Organizacion,
-} from "@/features/plataforma/organizaciones/routes/types";
+} from "@/features/plataforma/organizaciones/shared/types";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";

@@ -1,15 +1,15 @@
-import CreateOrganizacionPage from "@/features/plataforma/organizaciones/routes/create-organizacion-page";
-import EditOrganizacionPage from "@/features/plataforma/organizaciones/routes/edit-organizacion-page";
-import OrganizacionModuloAplicacionesPage from "@/features/plataforma/organizaciones/routes/organizacion-modulo-aplicaciones-page";
-import OrganizacionModulosPage from "@/features/plataforma/organizaciones/routes/organizacion-modulos-page";
-import OrganizacionesPage from "@/features/plataforma/organizaciones/routes/organizaciones-page";
+import AplicacionesPage from "@/features/plataforma/organizaciones/routes/aplicaciones/list";
+import ModulosPage from "@/features/plataforma/organizaciones/routes/modulos/list";
+import CreateOrganizacionPage from "@/features/plataforma/organizaciones/routes/organizaciones/create";
+import EditOrganizacionPage from "@/features/plataforma/organizaciones/routes/organizaciones/edit";
+import OrganizacionesPage from "@/features/plataforma/organizaciones/routes/organizaciones/list";
 import { auth } from "@/lib/auth";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import type { AplicacionPlataformaComponentProps } from "@/registry/types";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function OrganizacionesAplicacionPlataforma({
+export default async function OrganizacionesEntry({
   aplicacionPlataformaPath,
 }: AplicacionPlataformaComponentProps) {
   const session = await auth.api.getSession({
@@ -47,9 +47,7 @@ export default async function OrganizacionesAplicacionPlataforma({
     }
 
     if (aplicacionPlataformaPath[1] === "modulos") {
-      return (
-        <OrganizacionModulosPage organizacionId={aplicacionPlataformaPath[0]} />
-      );
+      return <ModulosPage organizacionId={aplicacionPlataformaPath[0]} />;
     }
   }
 
@@ -59,7 +57,7 @@ export default async function OrganizacionesAplicacionPlataforma({
       aplicacionPlataformaPath[3] === "aplicaciones"
     ) {
       return (
-        <OrganizacionModuloAplicacionesPage
+        <AplicacionesPage
           organizacionId={aplicacionPlataformaPath[0]}
           moduloId={aplicacionPlataformaPath[2]}
         />

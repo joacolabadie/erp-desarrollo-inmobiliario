@@ -1,6 +1,6 @@
 import { SetBreadcrumbExtras } from "@/components/set-breadcrumb-extras";
 import { Button } from "@/components/ui/button";
-import { OrganizacionModulosTable } from "@/features/plataforma/organizaciones/routes/organizacion-modulos-table";
+import { AplicacionesTable } from "@/features/plataforma/organizaciones/routes/aplicaciones/components/table";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import {
@@ -16,13 +16,15 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-type OrganizacionModulosPageProps = {
+type AplicacionesPageProps = {
   organizacionId: string;
+  moduloId: string;
 };
 
-export default async function OrganizacionModulosPage({
+export default async function AplicacionesPage({
   organizacionId,
-}: OrganizacionModulosPageProps) {
+  moduloId,
+}: AplicacionesPageProps) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -58,7 +60,7 @@ export default async function OrganizacionModulosPage({
     redirect("/dashboard/plataforma/organizaciones");
   }
 
-  const modulos = await db
+  const modulo = await db
     .select({
       id: modulosTabla.id,
       nombre: modulosTabla.nombre,
@@ -74,32 +76,61 @@ export default async function OrganizacionModulosPage({
         eq(organizacionesAplicacionesTabla.organizacionId, organizacionId),
         eq(organizacionesAplicacionesTabla.activo, true),
         eq(aplicacionesTabla.activo, true),
+        eq(modulosTabla.id, moduloId),
         eq(modulosTabla.activo, true),
       ),
     )
     .groupBy(modulosTabla.id, modulosTabla.nombre)
-    .orderBy(asc(modulosTabla.nombre), asc(modulosTabla.id));
+    .limit(1);
+
+  if (modulo.length === 0) {
+    redirect(`/dashboard/plataforma/organizaciones/${organizacionId}/modulos`);
+  }
+
+  const aplicaciones = await db
+    .select({
+      id: aplicacionesTabla.id,
+      nombre: aplicacionesTabla.nombre,
+    })
+    .from(organizacionesAplicacionesTabla)
+    .innerJoin(
+      aplicacionesTabla,
+      eq(organizacionesAplicacionesTabla.aplicacionId, aplicacionesTabla.id),
+    )
+    .where(
+      and(
+        eq(organizacionesAplicacionesTabla.organizacionId, organizacionId),
+        eq(organizacionesAplicacionesTabla.activo, true),
+        eq(aplicacionesTabla.moduloId, moduloId),
+        eq(aplicacionesTabla.activo, true),
+      ),
+    )
+    .orderBy(asc(aplicacionesTabla.nombre), asc(aplicacionesTabla.id));
 
   return (
     <>
       <SetBreadcrumbExtras
-        extras={[{ label: organizacion[0].nombre }, { label: "Módulos" }]}
+        extras={[
+          { label: organizacion[0].nombre },
+          { label: "Módulos" },
+          { label: modulo[0].nombre },
+          { label: "Aplicaciones" },
+        ]}
       />
       <main className="px-4 py-12">
         <div className="container mx-auto space-y-12">
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-2xl font-semibold">Módulos</h1>
+            <h1 className="text-2xl font-semibold">Aplicaciones</h1>
             <Button variant="ghost" asChild>
-              <Link href="/dashboard/plataforma/organizaciones">
+              <Link
+                href={`/dashboard/plataforma/organizaciones/${organizacionId}/modulos`}
+              >
                 <ChevronLeft />
                 Volver
               </Link>
             </Button>
           </div>
-          <OrganizacionModulosTable
-            organizacionId={organizacionId}
-            modulos={modulos}
-          />
+          <AplicacionesTable aplicaciones={aplicaciones} />
         </div>
       </main>
     </>

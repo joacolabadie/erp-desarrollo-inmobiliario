@@ -1,4 +1,4 @@
-import { OrganizacionesTable } from "@/features/plataforma/organizaciones/routes/organizaciones-table";
+import { OrganizacionesTable } from "@/features/plataforma/organizaciones/routes/organizaciones/components/table";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import { organizaciones as organizacionesTabla } from "@/lib/server/db/schema";

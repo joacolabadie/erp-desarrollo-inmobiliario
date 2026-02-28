@@ -1,6 +1,6 @@
 import { SetBreadcrumbExtras } from "@/components/set-breadcrumb-extras";
 import { Button } from "@/components/ui/button";
-import { CreateOrganizacionForm } from "@/features/plataforma/organizaciones/routes/create-organizacion-form";
+import { CreateOrganizacionForm } from "@/features/plataforma/organizaciones/routes/organizaciones/components/create-form";
 import { auth } from "@/lib/auth";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import { ChevronLeft } from "lucide-react";

@@ -1,6 +1,6 @@
 import { SetBreadcrumbExtras } from "@/components/set-breadcrumb-extras";
 import { Button } from "@/components/ui/button";
-import { EditOrganizacionForm } from "@/features/plataforma/organizaciones/routes/edit-organizacion-form";
+import { EditOrganizacionForm } from "@/features/plataforma/organizaciones/routes/organizaciones/components/edit-form";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import { organizaciones as organizacionesTabla } from "@/lib/server/db/schema";

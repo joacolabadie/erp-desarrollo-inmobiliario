@@ -8,51 +8,49 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { editOrganizacionAction } from "@/features/plataforma/organizaciones/routes/actions";
+import { createOrganizacionAction } from "@/features/plataforma/organizaciones/shared/actions";
 import {
-  editOrganizacionSchema,
-  type EditOrganizacionSchema,
-} from "@/features/plataforma/organizaciones/routes/schema";
+  createOrganizacionSchema,
+  type CreateOrganizacionSchema,
+} from "@/features/plataforma/organizaciones/shared/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-type EditOrganizacionFormProps = {
-  organizacionId: string;
-  nombre: string;
-};
+export function CreateOrganizacionForm() {
+  const router = useRouter();
 
-export function EditOrganizacionForm({
-  organizacionId,
-  nombre,
-}: EditOrganizacionFormProps) {
-  const form = useForm<EditOrganizacionSchema>({
-    resolver: zodResolver(editOrganizacionSchema),
+  const form = useForm<CreateOrganizacionSchema>({
+    resolver: zodResolver(createOrganizacionSchema),
     defaultValues: {
-      organizacionId,
-      nombre,
+      nombre: "",
     },
   });
 
   const isSubmitting = form.formState.isSubmitting;
 
-  async function onSubmit(data: EditOrganizacionSchema) {
+  async function onSubmit(data: CreateOrganizacionSchema) {
     try {
-      const response = await editOrganizacionAction(data);
+      const response = await createOrganizacionAction(data);
 
       if (!response.ok) {
         toast.error(
           response.message ||
-            "Ocurrió un error inesperado al editar la organización.",
+            "Ocurrió un error inesperado al crear la organización.",
         );
 
         return;
       }
 
-      toast.success("Organización editada correctamente.");
+      toast.success("Organización creada correctamente.");
+
+      form.reset();
+
+      router.push("/dashboard/plataforma/organizaciones");
     } catch {
-      toast.error("Ocurrió un error inesperado al editar la organización.");
+      toast.error("Ocurrió un error inesperado al crear la organización.");
     }
   }
 
@@ -78,7 +76,7 @@ export function EditOrganizacionForm({
         <Field>
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting && <LoaderCircle className="animate-spin" />}
-            Guardar
+            Crear
           </Button>
         </Field>
       </FieldGroup>

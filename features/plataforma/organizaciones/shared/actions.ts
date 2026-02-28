@@ -5,7 +5,7 @@ import {
   editOrganizacionSchema,
   type CreateOrganizacionSchema,
   type EditOrganizacionSchema,
-} from "@/features/plataforma/organizaciones/routes/schema";
+} from "@/features/plataforma/organizaciones/shared/schema";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import { organizaciones as organizacionesTabla } from "@/lib/server/db/schema";
