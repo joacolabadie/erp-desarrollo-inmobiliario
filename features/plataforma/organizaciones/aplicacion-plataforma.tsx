@@ -5,7 +5,7 @@ import OrganizacionModulosPage from "@/features/plataforma/organizaciones/routes
 import OrganizacionesPage from "@/features/plataforma/organizaciones/routes/organizaciones-page";
 import { auth } from "@/lib/auth";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
-import { AplicacionPlataformaComponentProps } from "@/registry/types";
+import type { AplicacionPlataformaComponentProps } from "@/registry/types";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 

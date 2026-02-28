@@ -15,7 +15,7 @@ import type {
   Modulo,
 } from "@/features/plataforma/modulos/routes/types";
 import { APLICACION_SCOPE_LABELS } from "@/lib/domain";
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 

@@ -6,7 +6,7 @@ import ModuloAplicacionesPage from "@/features/plataforma/modulos/routes/modulo-
 import ModulosPage from "@/features/plataforma/modulos/routes/modulos-page";
 import { auth } from "@/lib/auth";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
-import { AplicacionPlataformaComponentProps } from "@/registry/types";
+import type { AplicacionPlataformaComponentProps } from "@/registry/types";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 

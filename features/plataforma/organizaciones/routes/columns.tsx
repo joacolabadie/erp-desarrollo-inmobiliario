@@ -10,11 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Aplicacion,
-  Modulo,
-  Organizacion,
+  type Aplicacion,
+  type Modulo,
+  type Organizacion,
 } from "@/features/plataforma/organizaciones/routes/types";
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 
