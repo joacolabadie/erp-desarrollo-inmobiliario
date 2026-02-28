@@ -79,7 +79,9 @@ export const modulosColumns: ColumnDef<Modulo>[] = [
   },
 ];
 
-export const aplicacionesColumns: ColumnDef<Aplicacion>[] = [
+export const aplicacionesColumns = (
+  moduloId: string,
+): ColumnDef<Aplicacion>[] => [
   {
     accessorKey: "id",
     header: "ID",
@@ -127,7 +129,7 @@ export const aplicacionesColumns: ColumnDef<Aplicacion>[] = [
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link
-                  href={`/dashboard/plataforma/modulos/${aplicacion.moduloId}/aplicaciones/${aplicacion.id}/editar`}
+                  href={`/dashboard/plataforma/modulos/${moduloId}/aplicaciones/${aplicacion.id}/editar`}
                 >
                   Editar
                 </Link>

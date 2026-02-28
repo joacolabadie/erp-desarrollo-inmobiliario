@@ -9,7 +9,6 @@ export type Modulo = {
 
 export type Aplicacion = {
   id: string;
-  moduloId: string;
   clave: string;
   slug: string;
   nombre: string;

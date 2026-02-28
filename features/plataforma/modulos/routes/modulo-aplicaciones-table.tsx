@@ -15,7 +15,7 @@ export function ModuloAplicacionesTable({
 }: ModuloAplicacionesTableProps) {
   return (
     <DataTable
-      columns={aplicacionesColumns}
+      columns={aplicacionesColumns(moduloId)}
       data={aplicaciones}
       search={{ placeholder: "Buscar aplicación..." }}
       action={{

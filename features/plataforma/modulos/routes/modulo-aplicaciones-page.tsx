@@ -54,7 +54,6 @@ export default async function ModuloAplicacionesPage({
   const aplicaciones = await db
     .select({
       id: aplicacionesTabla.id,
-      moduloId: aplicacionesTabla.moduloId,
       clave: aplicacionesTabla.clave,
       slug: aplicacionesTabla.slug,
       nombre: aplicacionesTabla.nombre,
