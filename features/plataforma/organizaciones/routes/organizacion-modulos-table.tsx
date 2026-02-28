@@ -13,5 +13,11 @@ export function OrganizacionModulosTable({
   organizacionId,
   modulos,
 }: OrganizacionModulosTableProps) {
-  return <DataTable columns={modulosColumns(organizacionId)} data={modulos} />;
+  return (
+    <DataTable
+      columns={modulosColumns(organizacionId)}
+      data={modulos}
+      search={{ placeholder: "Buscar módulo..." }}
+    />
+  );
 }

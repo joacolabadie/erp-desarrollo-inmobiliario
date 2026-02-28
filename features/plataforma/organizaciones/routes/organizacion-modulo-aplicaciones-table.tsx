@@ -11,5 +11,11 @@ type OrganizacionModuloAplicacionesTableProps = {
 export function OrganizacionModuloAplicacionesTable({
   aplicaciones,
 }: OrganizacionModuloAplicacionesTableProps) {
-  return <DataTable columns={aplicacionesColumns} data={aplicaciones} />;
+  return (
+    <DataTable
+      columns={aplicacionesColumns}
+      data={aplicaciones}
+      search={{ placeholder: "Buscar aplicación..." }}
+    />
+  );
 }
