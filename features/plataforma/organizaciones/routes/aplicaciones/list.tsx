@@ -121,7 +121,10 @@ export default async function AplicacionesList({
       <SetBreadcrumbExtras
         extras={[
           { label: organizacion[0].nombre },
-          { label: "Módulos" },
+          {
+            label: "Módulos",
+            href: `/dashboard/plataforma/organizaciones/${organizacionId}/modulos`,
+          },
           { label: modulo[0].nombre },
           { label: "Aplicaciones" },
         ]}
