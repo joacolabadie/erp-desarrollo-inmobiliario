@@ -15,6 +15,11 @@ export function ModulosTable({ organizacionId, modulos }: ModulosTableProps) {
       columns={modulosColumns(organizacionId)}
       data={modulos}
       search={{ placeholder: "Buscar módulo..." }}
+      action={{
+        label: "Configurar módulos",
+        href: `/dashboard/plataforma/organizaciones/${organizacionId}/modulos/configurar`,
+        iconName: "settings",
+      }}
       hiddenColumns={["id"]}
     />
   );

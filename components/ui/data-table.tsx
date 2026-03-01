@@ -17,12 +17,13 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Plus, type LucideIcon } from "lucide-react";
+import { Plus, Settings, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
 const ICONS: Record<string, LucideIcon> = {
   plus: Plus,
+  settings: Settings,
 };
 
 type DataTableSearch = {

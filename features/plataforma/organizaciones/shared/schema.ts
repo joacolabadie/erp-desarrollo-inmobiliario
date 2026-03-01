@@ -26,3 +26,10 @@ export const organizacionEditSchema = z.object({
 });
 
 export type OrganizacionEditSchema = z.infer<typeof organizacionEditSchema>;
+
+export const modulosConfigureSchema = z.object({
+  organizacionId: z.uuid("La organización seleccionada es inválida."),
+  aplicacionIds: z.array(z.uuid()),
+});
+
+export type ModulosConfigureSchema = z.infer<typeof modulosConfigureSchema>;

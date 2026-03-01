@@ -1,4 +1,5 @@
 import AplicacionesList from "@/features/plataforma/organizaciones/routes/aplicaciones/list";
+import ModulosConfigure from "@/features/plataforma/organizaciones/routes/modulos/configure";
 import ModulosList from "@/features/plataforma/organizaciones/routes/modulos/list";
 import OrganizacionCreate from "@/features/plataforma/organizaciones/routes/organizaciones/create";
 import OrganizacionEdit from "@/features/plataforma/organizaciones/routes/organizaciones/edit";
@@ -46,6 +47,15 @@ export default async function OrganizacionesEntry({
 
     if (aplicacionPlataformaPath[1] === "modulos") {
       return <ModulosList organizacionId={aplicacionPlataformaPath[0]} />;
+    }
+  }
+
+  if (aplicacionPlataformaPath.length === 3) {
+    if (
+      aplicacionPlataformaPath[1] === "modulos" &&
+      aplicacionPlataformaPath[2] === "configurar"
+    ) {
+      return <ModulosConfigure organizacionId={aplicacionPlataformaPath[0]} />;
     }
   }
 
