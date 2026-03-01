@@ -53,7 +53,10 @@ export default async function CreateAplicacionPage({
       <SetBreadcrumbExtras
         extras={[
           { label: modulo[0].nombre },
-          { label: "Aplicaciones" },
+          {
+            label: "Aplicaciones",
+            href: `/dashboard/plataforma/modulos/${moduloId}/aplicaciones`,
+          },
           { label: "Crear" },
         ]}
       />
