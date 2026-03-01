@@ -1,4 +1,5 @@
 import AplicacionesList from "@/features/plataforma/organizaciones/routes/aplicaciones/list";
+import MiembrosList from "@/features/plataforma/organizaciones/routes/miembros/list";
 import ModulosConfigure from "@/features/plataforma/organizaciones/routes/modulos/configure";
 import ModulosList from "@/features/plataforma/organizaciones/routes/modulos/list";
 import OrganizacionCreate from "@/features/plataforma/organizaciones/routes/organizaciones/create";
@@ -43,6 +44,10 @@ export default async function OrganizacionesEntry({
   if (aplicacionPlataformaPath.length === 2) {
     if (aplicacionPlataformaPath[1] === "editar") {
       return <OrganizacionEdit organizacionId={aplicacionPlataformaPath[0]} />;
+    }
+
+    if (aplicacionPlataformaPath[1] === "miembros") {
+      return <MiembrosList organizacionId={aplicacionPlataformaPath[0]} />;
     }
 
     if (aplicacionPlataformaPath[1] === "modulos") {

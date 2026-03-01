@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,9 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   type Aplicacion,
+  type Miembro,
   type Modulo,
   type Organizacion,
 } from "@/features/plataforma/organizaciones/shared/types";
+import { MIEMBRO_ORGANIZACION_ESTADO_LABELS } from "@/lib/domain";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
@@ -149,6 +152,60 @@ export const aplicacionesColumns: ColumnDef<Aplicacion>[] = [
               <DropdownMenuLabel>Acciones</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(aplicacion.id)}
+              >
+                Copiar ID
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    },
+  },
+];
+
+export const miembrosColumns: ColumnDef<Miembro>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "nombre",
+    header: "Nombre",
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "estado",
+    header: "Estado",
+    cell: ({ row }) => {
+      const miembro = row.original;
+
+      return (
+        <Badge variant="secondary">
+          {MIEMBRO_ORGANIZACION_ESTADO_LABELS[miembro.estado]}
+        </Badge>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const miembro = row.original;
+
+      return (
+        <div className="flex justify-end">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon-sm">
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="whitespace-nowrap">
+              <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(miembro.id)}
               >
                 Copiar ID
               </DropdownMenuItem>
