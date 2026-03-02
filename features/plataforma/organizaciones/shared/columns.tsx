@@ -16,7 +16,10 @@ import {
   type Modulo,
   type Organizacion,
 } from "@/features/plataforma/organizaciones/shared/types";
-import { MIEMBRO_ORGANIZACION_ESTADO_LABELS } from "@/lib/domain";
+import {
+  MIEMBRO_ORGANIZACION_ESTADO_LABELS,
+  MIEMBRO_ORGANIZACION_ROL_LABELS,
+} from "@/lib/domain";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
@@ -175,6 +178,19 @@ export const miembrosColumns: ColumnDef<Miembro>[] = [
   {
     accessorKey: "email",
     header: "Email",
+  },
+  {
+    accessorKey: "rol",
+    header: "Rol",
+    cell: ({ row }) => {
+      const miembro = row.original;
+
+      return (
+        <Badge variant="secondary">
+          {MIEMBRO_ORGANIZACION_ROL_LABELS[miembro.rol]}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: "estado",

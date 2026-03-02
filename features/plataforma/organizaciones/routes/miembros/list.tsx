@@ -67,6 +67,7 @@ export default async function MiembrosList({
       id: organizacionesMiembrosTabla.id,
       nombre: usersTabla.name,
       email: usersTabla.email,
+      rol: organizacionesMiembrosTabla.rol,
       estado: organizacionesMiembrosTabla.estado,
     })
     .from(organizacionesMiembrosTabla)

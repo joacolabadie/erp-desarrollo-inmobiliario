@@ -1,4 +1,7 @@
-import type { MiembroOrganizacionEstado } from "@/lib/domain";
+import type {
+  MiembroOrganizacionEstado,
+  MiembroOrganizacionRol,
+} from "@/lib/domain";
 
 export type Organizacion = {
   id: string;
@@ -19,5 +22,6 @@ export type Miembro = {
   id: string;
   nombre: string;
   email: string;
+  rol: MiembroOrganizacionRol;
   estado: MiembroOrganizacionEstado;
 };
