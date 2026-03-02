@@ -1,5 +1,8 @@
-import { MATERIAL_TIPO_VALUES } from "@/lib/domain/materiales/tipo";
-import { MIEMBRO_ORGANIZACION_ESTADO_VALUES } from "@/lib/domain/organizaciones/miembro-estado";
+import {
+  MATERIAL_TIPO_VALUES,
+  MIEMBRO_ORGANIZACION_ESTADO_VALUES,
+  MIEMBRO_ORGANIZACION_ROL_VALUES,
+} from "@/lib/domain";
 import { users } from "@/lib/server/db/schema/auth.generated";
 import { aplicaciones } from "@/lib/server/db/schema/modulos";
 import { proyectos } from "@/lib/server/db/schema/proyectos";
@@ -17,6 +20,11 @@ import {
 export const estadoMiembroOrganizacionEnum = pgEnum(
   "estado_miembro_organizacion",
   MIEMBRO_ORGANIZACION_ESTADO_VALUES,
+);
+
+export const rolMiembroOrganizacionEnum = pgEnum(
+  "rol_miembro_organizacion",
+  MIEMBRO_ORGANIZACION_ROL_VALUES,
 );
 
 export const materialTipoEnum = pgEnum("material_tipo", MATERIAL_TIPO_VALUES);
@@ -139,6 +147,7 @@ export const organizacionesMiembros = pgTable(
     usuarioId: text("usuario_id")
       .notNull()
       .references(() => users.id, { onDelete: "restrict" }),
+    rol: rolMiembroOrganizacionEnum("rol").default("miembro").notNull(),
     estado: estadoMiembroOrganizacionEnum("estado").default("activo").notNull(),
     activo: boolean("activo").default(true).notNull(),
   },

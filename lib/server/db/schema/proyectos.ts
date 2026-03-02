@@ -1,5 +1,4 @@
-import { PROYECTO_ESTADO_VALUES } from "@/lib/domain/proyectos/estado";
-import { PROYECTO_TIPO_VALUES } from "@/lib/domain/proyectos/tipo";
+import { PROYECTO_ESTADO_VALUES, PROYECTO_TIPO_VALUES } from "@/lib/domain";
 import {
   organizaciones,
   organizacionesRazonesSociales,
