@@ -14,6 +14,11 @@ export function MiembrosTable({ miembros }: MiembrosTableProps) {
       columns={miembrosColumns}
       data={miembros}
       search={{ placeholder: "Buscar miembro..." }}
+      action={{
+        label: "Invitar miembro",
+        href: "/dashboard/plataforma/organizaciones/miembros/invitar",
+        iconName: "user-plus",
+      }}
       hiddenColumns={["id"]}
     />
   );
