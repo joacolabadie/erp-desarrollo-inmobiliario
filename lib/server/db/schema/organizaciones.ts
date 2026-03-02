@@ -17,14 +17,14 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-export const estadoMiembroOrganizacionEnum = pgEnum(
-  "estado_miembro_organizacion",
-  MIEMBRO_ORGANIZACION_ESTADO_VALUES,
-);
-
 export const rolMiembroOrganizacionEnum = pgEnum(
   "rol_miembro_organizacion",
   MIEMBRO_ORGANIZACION_ROL_VALUES,
+);
+
+export const estadoMiembroOrganizacionEnum = pgEnum(
+  "estado_miembro_organizacion",
+  MIEMBRO_ORGANIZACION_ESTADO_VALUES,
 );
 
 export const materialTipoEnum = pgEnum("material_tipo", MATERIAL_TIPO_VALUES);
@@ -155,6 +155,9 @@ export const organizacionesMiembros = pgTable(
     uniqueIndex("organizaciones_miembros_organizacion_id_usuario_id_key_active")
       .on(t.organizacionId, t.usuarioId)
       .where(sql`${t.activo} = true`),
+    uniqueIndex("organizaciones_miembros_organizacion_id_dueno_key_active")
+      .on(t.organizacionId)
+      .where(sql`${t.rol} = 'dueno' AND ${t.activo} = true`),
   ],
 );
 
