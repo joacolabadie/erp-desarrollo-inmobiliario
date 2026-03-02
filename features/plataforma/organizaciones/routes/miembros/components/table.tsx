@@ -5,10 +5,14 @@ import { miembrosColumns } from "@/features/plataforma/organizaciones/shared/col
 import type { Miembro } from "@/features/plataforma/organizaciones/shared/types";
 
 type MiembrosTableProps = {
+  organizacionId: string;
   miembros: Miembro[];
 };
 
-export function MiembrosTable({ miembros }: MiembrosTableProps) {
+export function MiembrosTable({
+  organizacionId,
+  miembros,
+}: MiembrosTableProps) {
   return (
     <DataTable
       columns={miembrosColumns}
@@ -16,7 +20,7 @@ export function MiembrosTable({ miembros }: MiembrosTableProps) {
       search={{ placeholder: "Buscar miembro..." }}
       action={{
         label: "Invitar miembro",
-        href: "/dashboard/plataforma/organizaciones/miembros/invitar",
+        href: `/dashboard/plataforma/organizaciones/${organizacionId}/miembros/invitar`,
         iconName: "user-plus",
       }}
       hiddenColumns={["id"]}

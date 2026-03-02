@@ -103,7 +103,7 @@ export default async function MiembrosList({
               </Link>
             </Button>
           </div>
-          <MiembrosTable miembros={miembros} />
+          <MiembrosTable organizacionId={organizacionId} miembros={miembros} />
         </div>
       </main>
     </>
