@@ -15,6 +15,13 @@
       "when": 1772485950986,
       "tag": "0001_cold_iron_monger",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1772659426992,
+      "tag": "0002_windy_the_twelve",
+      "breakpoints": true
     }
   ]
 }
