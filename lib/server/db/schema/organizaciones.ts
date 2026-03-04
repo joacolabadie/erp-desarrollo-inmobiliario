@@ -1,4 +1,5 @@
 import {
+  INVITACION_ORGANIZACION_ESTADO_VALUES,
   MATERIAL_TIPO_VALUES,
   MIEMBRO_ORGANIZACION_ESTADO_VALUES,
   MIEMBRO_ORGANIZACION_ROL_VALUES,
@@ -25,6 +26,11 @@ export const rolMiembroOrganizacionEnum = pgEnum(
 export const estadoMiembroOrganizacionEnum = pgEnum(
   "estado_miembro_organizacion",
   MIEMBRO_ORGANIZACION_ESTADO_VALUES,
+);
+
+export const estadoInvitacionOrganizacionEnum = pgEnum(
+  "estado_invitacion_organizacion",
+  INVITACION_ORGANIZACION_ESTADO_VALUES,
 );
 
 export const materialTipoEnum = pgEnum("material_tipo", MATERIAL_TIPO_VALUES);
@@ -212,5 +218,33 @@ export const organizacionesMiembrosProyectos = pgTable(
     )
       .on(t.organizacionId, t.usuarioId, t.proyectoId)
       .where(sql`${t.activo} = true`),
+  ],
+);
+
+export const organizacionesInvitaciones = pgTable(
+  "organizaciones_invitaciones",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    creadoEn: timestamp("creado_en", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    organizacionId: uuid("organizacion_id")
+      .notNull()
+      .references(() => organizaciones.id, { onDelete: "cascade" }),
+    email: text("email").notNull(),
+    tokenHash: text("token_hash").notNull(),
+    expiraEn: timestamp("expira_en", { withTimezone: true }).notNull(),
+    rol: rolMiembroOrganizacionEnum("rol").default("miembro").notNull(),
+    estado: estadoInvitacionOrganizacionEnum("estado")
+      .default("pendiente")
+      .notNull(),
+    activo: boolean("activo").default(true).notNull(),
+  },
+  (t) => [
+    uniqueIndex(
+      "organizaciones_invitaciones_organizacion_id_email_pendiente_key_active",
+    )
+      .on(t.organizacionId, t.email)
+      .where(sql`${t.estado} = 'pendiente' AND ${t.activo} = true`),
   ],
 );
