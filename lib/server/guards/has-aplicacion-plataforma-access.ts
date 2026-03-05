@@ -6,7 +6,7 @@ import {
 } from "@/lib/server/db/schema";
 import { and, eq } from "drizzle-orm";
 
-type HasAplicacionPlataformaAccessParams = {
+type HasAplicacionPlataformaAccessArgs = {
   userId: string;
   clave: string;
 };
@@ -14,7 +14,7 @@ type HasAplicacionPlataformaAccessParams = {
 export async function hasAplicacionPlataformaAccess({
   userId,
   clave,
-}: HasAplicacionPlataformaAccessParams): Promise<boolean> {
+}: HasAplicacionPlataformaAccessArgs): Promise<boolean> {
   const aplicacionPlataforma = await db
     .select({
       id: plataformaAplicacionesTabla.id,

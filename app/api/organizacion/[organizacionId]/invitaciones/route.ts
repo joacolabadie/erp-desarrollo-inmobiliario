@@ -7,6 +7,7 @@ import {
   organizacionesMiembros as organizacionesMiembrosTabla,
   organizaciones as organizacionesTabla,
 } from "@/lib/server/db/schema/organizaciones";
+import { sendOrganizacionInvitacionEmail } from "@/lib/server/email/send-organizacion-invitacion-email";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import {
   generateToken,
@@ -17,15 +18,6 @@ import { and, DrizzleQueryError, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-
-async function enviarEmailInvitacion(args: {
-  to: string;
-  inviteUrl: string;
-  organizacionId: string;
-  rol: string;
-}) {
-  console.log("INVITE EMAIL:", args);
-}
 
 const paramsSchema = z.object({
   organizacionId: z.uuid(),
@@ -180,7 +172,7 @@ export async function POST(
 
     const inviteUrl = `${appUrl}/invite/accept?token=${encodeURIComponent(rawToken)}`;
 
-    await enviarEmailInvitacion({
+    await sendOrganizacionInvitacionEmail({
       to: email,
       inviteUrl,
       organizacionId,
@@ -192,6 +184,19 @@ export async function POST(
       message: "Invitacion enviada correctamente.",
     });
   } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      error.message.startsWith("SEND_ORGANIZACION_INVITACION_EMAIL_ERROR:")
+    ) {
+      return NextResponse.json(
+        {
+          ok: false,
+          message: "No se pudo enviar el email de invitacion.",
+        },
+        { status: 502 },
+      );
+    }
+
     const cause = error instanceof DrizzleQueryError ? error.cause : error;
 
     if (typeof cause === "object" && cause !== null) {
