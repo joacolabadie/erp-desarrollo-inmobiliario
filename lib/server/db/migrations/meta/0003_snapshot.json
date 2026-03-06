@@ -1,6 +1,6 @@
 {
-  "id": "1a17f4ea-2f9b-431f-9bc1-bad9bfc1cafa",
-  "prevId": "58b9346e-bef1-482a-a56b-2e2791a9d155",
+  "id": "a64ef83e-230d-4739-b4da-237976cef146",
+  "prevId": "1a17f4ea-2f9b-431f-9bc1-bad9bfc1cafa",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -968,22 +968,6 @@
           ],
           "isUnique": true,
           "where": "\"organizaciones_miembros\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "organizaciones_miembros_organizacion_id_dueno_key_active": {
-          "name": "organizaciones_miembros_organizacion_id_dueno_key_active",
-          "columns": [
-            {
-              "expression": "organizacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"organizaciones_miembros\".\"rol\" = 'dueno' AND \"organizaciones_miembros\".\"activo\" = true",
           "concurrently": false,
           "method": "btree",
           "with": {}

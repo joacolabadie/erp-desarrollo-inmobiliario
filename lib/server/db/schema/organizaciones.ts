@@ -161,9 +161,6 @@ export const organizacionesMiembros = pgTable(
     uniqueIndex("organizaciones_miembros_organizacion_id_usuario_id_key_active")
       .on(t.organizacionId, t.usuarioId)
       .where(sql`${t.activo} = true`),
-    uniqueIndex("organizaciones_miembros_organizacion_id_dueno_key_active")
-      .on(t.organizacionId)
-      .where(sql`${t.rol} = 'dueno' AND ${t.activo} = true`),
   ],
 );
 
