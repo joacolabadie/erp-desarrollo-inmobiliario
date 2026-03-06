@@ -76,7 +76,10 @@ export async function POST(
   const rol = parsedBody.data.rol as MiembroOrganizacionRol;
 
   const organizacion = await db
-    .select({ id: organizacionesTabla.id })
+    .select({
+      id: organizacionesTabla.id,
+      nombre: organizacionesTabla.nombre,
+    })
     .from(organizacionesTabla)
     .where(
       and(
@@ -173,7 +176,7 @@ export async function POST(
     await sendOrganizacionInvitacionEmail({
       to: email,
       inviteUrl,
-      organizacionId,
+      organizacionNombre: organizacion[0]!.nombre,
       rol,
     });
 

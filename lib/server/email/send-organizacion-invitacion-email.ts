@@ -1,16 +1,20 @@
+import {
+  MIEMBRO_ORGANIZACION_ROL_LABELS,
+  type MiembroOrganizacionRol,
+} from "@/lib/domain";
 import { resend } from "@/lib/server/email/resend";
 
 type SendOrganizacionInvitacionEmailArgs = {
   to: string;
   inviteUrl: string;
-  organizacionId: string;
-  rol: string;
+  organizacionNombre: string;
+  rol: MiembroOrganizacionRol;
 };
 
 export async function sendOrganizacionInvitacionEmail({
   to,
   inviteUrl,
-  organizacionId,
+  organizacionNombre,
   rol,
 }: SendOrganizacionInvitacionEmailArgs) {
   const from = process.env.RESEND_FROM_EMAIL;
@@ -20,17 +24,18 @@ export async function sendOrganizacionInvitacionEmail({
   }
 
   const subject = "Invitacion a organizacion";
+  const rolLabel = MIEMBRO_ORGANIZACION_ROL_LABELS[rol];
   const text = [
     "Recibiste una invitacion para sumarte a una organizacion.",
-    `Organizacion: ${organizacionId}`,
-    `Rol: ${rol}`,
+    `Organizacion: ${organizacionNombre}`,
+    `Rol: ${rolLabel}`,
     `Aceptar invitacion: ${inviteUrl}`,
   ].join("\n");
 
   const html = [
     "<p>Recibiste una invitacion para sumarte a una organizacion.</p>",
-    `<p><strong>Organizacion:</strong> ${organizacionId}</p>`,
-    `<p><strong>Rol:</strong> ${rol}</p>`,
+    `<p><strong>Organizacion:</strong> ${organizacionNombre}</p>`,
+    `<p><strong>Rol:</strong> ${rolLabel}</p>`,
     `<p><a href="${inviteUrl}">Aceptar invitacion</a></p>`,
   ].join("");
 
