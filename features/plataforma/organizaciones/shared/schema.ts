@@ -1,3 +1,4 @@
+import { MIEMBRO_ORGANIZACION_ROL_VALUES } from "@/lib/domain";
 import * as z from "zod";
 
 export const organizacionCreateSchema = z.object({
@@ -33,3 +34,18 @@ export const modulosConfigureSchema = z.object({
 });
 
 export type ModulosConfigureSchema = z.infer<typeof modulosConfigureSchema>;
+
+export const invitacionSendSchema = z.object({
+  email: z.email("Ingresá un email válido.").trim(),
+  rol: z
+    .string()
+    .trim()
+    .min(1, "Seleccioná un rol para la invitación.")
+    .refine(
+      (value) =>
+        (MIEMBRO_ORGANIZACION_ROL_VALUES as readonly string[]).includes(value),
+      "Seleccioná un rol para la invitación.",
+    ),
+});
+
+export type InvitacionSendSchema = z.infer<typeof invitacionSendSchema>;

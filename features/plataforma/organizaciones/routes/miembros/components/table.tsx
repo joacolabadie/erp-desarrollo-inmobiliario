@@ -1,6 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/ui/data-table";
+import { InvitacionSendSheet } from "@/features/plataforma/organizaciones/routes/miembros/components/invitacion-send-sheet";
 import { miembrosColumns } from "@/features/plataforma/organizaciones/shared/columns";
 import type { Miembro } from "@/features/plataforma/organizaciones/shared/types";
 
@@ -18,11 +19,7 @@ export function MiembrosTable({
       columns={miembrosColumns}
       data={miembros}
       search={{ placeholder: "Buscar miembro..." }}
-      action={{
-        label: "Invitar miembro",
-        href: `/dashboard/plataforma/organizaciones/${organizacionId}/miembros/invitar`,
-        iconName: "user-plus",
-      }}
+      actionSlot={<InvitacionSendSheet organizacionId={organizacionId} />}
       hiddenColumns={["id"]}
     />
   );

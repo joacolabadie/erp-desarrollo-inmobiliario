@@ -19,7 +19,7 @@ import {
 } from "@tanstack/react-table";
 import { Plus, Settings, UserPlus, type LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 const ICONS: Record<string, LucideIcon> = {
   plus: Plus,
@@ -42,6 +42,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   search?: DataTableSearch;
   action?: DataTableAction;
+  actionSlot?: ReactNode;
   hiddenColumns?: string[];
 }
 
@@ -50,6 +51,7 @@ export function DataTable<TData, TValue>({
   data,
   search,
   action,
+  actionSlot,
   hiddenColumns,
 }: DataTableProps<TData, TValue>) {
   const [globalFilter, setGlobalFilter] = useState("");
@@ -76,7 +78,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      {(search || action) && (
+      {(search || action || actionSlot) && (
         <div className="flex items-center gap-4 pb-4">
           {search && (
             <Input
@@ -87,7 +89,8 @@ export function DataTable<TData, TValue>({
               placeholder={search.placeholder}
             />
           )}
-          {action && (
+          {actionSlot ?? null}
+          {!actionSlot && action && (
             <Button asChild>
               <Link href={action.href}>
                 {Icon !== null && <Icon />}
