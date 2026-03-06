@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -46,6 +46,7 @@ const formSchema = z
 
 export function SignUpForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,7 +74,9 @@ export function SignUpForm() {
         return;
       }
 
-      router.push("/dashboard");
+      const next = searchParams.get("next");
+
+      router.push(next || "/dashboard");
     } catch {
       toast.error("Ocurrió un error inesperado al registrarte.");
     }

@@ -4,13 +4,19 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function SignInPage() {
+export default async function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string }>;
+}) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
+  const { next } = await searchParams;
+
   if (session) {
-    redirect("/dashboard");
+    redirect(next || "/dashboard");
   }
 
   return (
@@ -29,7 +35,11 @@ export default async function SignInPage() {
         <p className="text-muted-foreground text-center text-sm">
           Todavía no tenés una cuenta?{" "}
           <Link
-            href="/auth/sign-up"
+            href={
+              next
+                ? `/auth/sign-up?next=${encodeURIComponent(next)}`
+                : "/auth/sign-up"
+            }
             className="text-primary underline underline-offset-4"
           >
             Registrate
