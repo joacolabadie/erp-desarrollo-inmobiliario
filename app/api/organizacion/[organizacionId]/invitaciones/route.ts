@@ -1,5 +1,5 @@
-import { auth } from "@/lib/auth";
 import { invitacionSendSchema } from "@/features/plataforma/organizaciones/shared/schema";
+import { auth } from "@/lib/auth";
 import type { MiembroOrganizacionRol } from "@/lib/domain";
 import { db } from "@/lib/server/db";
 import { users as usersTabla } from "@/lib/server/db/schema/auth.generated";
@@ -168,7 +168,7 @@ export async function POST(
       });
     }
 
-    const inviteUrl = `${appUrl}/invite/accept?token=${encodeURIComponent(rawToken)}`;
+    const inviteUrl = `${appUrl}/invitaciones/aceptar?token=${encodeURIComponent(rawToken)}`;
 
     await sendOrganizacionInvitacionEmail({
       to: email,
