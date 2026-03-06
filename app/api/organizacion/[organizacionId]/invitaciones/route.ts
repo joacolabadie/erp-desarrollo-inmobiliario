@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
-import { MIEMBRO_ORGANIZACION_ROL_VALUES } from "@/lib/domain";
+import { invitacionSendSchema } from "@/features/plataforma/organizaciones/shared/schema";
+import type { MiembroOrganizacionRol } from "@/lib/domain";
 import { db } from "@/lib/server/db";
 import { users as usersTabla } from "@/lib/server/db/schema/auth.generated";
 import {
@@ -23,14 +24,9 @@ const paramsSchema = z.object({
   organizacionId: z.uuid(),
 });
 
-const bodySchema = z.object({
-  email: z.email().trim(),
-  rol: z.enum(MIEMBRO_ORGANIZACION_ROL_VALUES).default("miembro"),
-});
-
 export async function POST(
   req: Request,
-  { params }: { params: { organizacionId: string } },
+  { params }: { params: Promise<{ organizacionId: string }> },
 ) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -43,7 +39,7 @@ export async function POST(
     );
   }
 
-  const parsedParams = paramsSchema.safeParse(params);
+  const parsedParams = paramsSchema.safeParse(await params);
 
   if (!parsedParams.success) {
     return NextResponse.json(
@@ -52,7 +48,9 @@ export async function POST(
     );
   }
 
-  const parsedBody = bodySchema.safeParse(await req.json().catch(() => null));
+  const parsedBody = invitacionSendSchema.safeParse(
+    await req.json().catch(() => null),
+  );
 
   if (!parsedBody.success) {
     return NextResponse.json(
@@ -75,7 +73,7 @@ export async function POST(
 
   const organizacionId = parsedParams.data.organizacionId;
   const email = normalizeEmail(parsedBody.data.email);
-  const rol = parsedBody.data.rol;
+  const rol = parsedBody.data.rol as MiembroOrganizacionRol;
 
   const organizacion = await db
     .select({ id: organizacionesTabla.id })
@@ -122,7 +120,7 @@ export async function POST(
     );
   }
 
-  const appUrl = process.env.APP_URL;
+  const appUrl = process.env.SITE_URL;
 
   if (!appUrl) {
     return NextResponse.json(
@@ -188,6 +186,8 @@ export async function POST(
       error instanceof Error &&
       error.message.startsWith("SEND_ORGANIZACION_INVITACION_EMAIL_ERROR:")
     ) {
+      console.error(error.message);
+
       return NextResponse.json(
         {
           ok: false,
