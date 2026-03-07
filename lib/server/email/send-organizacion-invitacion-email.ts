@@ -23,20 +23,22 @@ export async function sendOrganizacionInvitacionEmail({
     throw new Error("Missing RESEND_FROM_EMAIL environment variable");
   }
 
-  const subject = "Invitacion a organizacion";
+  const subject = `Invitación para sumarte a ${organizacionNombre}`;
+
   const rolLabel = MIEMBRO_ORGANIZACION_ROL_LABELS[rol];
+
   const text = [
-    "Recibiste una invitacion para sumarte a una organizacion.",
-    `Organizacion: ${organizacionNombre}`,
-    `Rol: ${rolLabel}`,
-    `Aceptar invitacion: ${inviteUrl}`,
+    `Recibiste una invitación para sumarte a la organización ${organizacionNombre}.`,
+    `Tu rol asignado es ${rolLabel}.`,
+    "Para aceptar la invitación, entrá a este enlace:",
+    inviteUrl,
   ].join("\n");
 
   const html = [
-    "<p>Recibiste una invitacion para sumarte a una organizacion.</p>",
-    `<p><strong>Organizacion:</strong> ${organizacionNombre}</p>`,
-    `<p><strong>Rol:</strong> ${rolLabel}</p>`,
-    `<p><a href="${inviteUrl}">Aceptar invitacion</a></p>`,
+    `<p>Recibiste una invitación para sumarte a la organización <strong>${organizacionNombre}</strong>.</p>`,
+    `<p>Tu rol asignado es <strong>${rolLabel}</strong>.</p>`,
+    "<p>Para aceptar la invitación, entrá a este enlace:</p>",
+    `<p><a href="${inviteUrl}">Aceptar invitación</a></p>`,
   ].join("");
 
   const { error } = await resend.emails.send({
