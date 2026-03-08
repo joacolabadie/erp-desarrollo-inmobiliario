@@ -173,33 +173,28 @@ export async function POST(
 
     const invitacionUrl = `${siteUrl}/invitaciones/aceptar?token=${encodeURIComponent(rawToken)}`;
 
-    await sendOrganizacionInvitacionEmail({
-      to: email,
-      invitacionUrl,
-      organizacionNombre: organizacion[0]!.nombre,
-      rol,
-    });
+    try {
+      await sendOrganizacionInvitacionEmail({
+        to: email,
+        invitacionUrl,
+        organizacionNombre: organizacion[0]!.nombre,
+        rol,
+      });
+    } catch {
+      return NextResponse.json(
+        {
+          ok: false,
+          message: "No se pudo enviar la invitación.",
+        },
+        { status: 502 },
+      );
+    }
 
     return NextResponse.json({
       ok: true,
       message: "Invitacion enviada correctamente.",
     });
   } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      error.message.startsWith("SEND_ORGANIZACION_INVITACION_EMAIL_ERROR:")
-    ) {
-      console.error(error.message);
-
-      return NextResponse.json(
-        {
-          ok: false,
-          message: "No se pudo enviar el email de invitacion.",
-        },
-        { status: 502 },
-      );
-    }
-
     const cause = error instanceof DrizzleQueryError ? error.cause : error;
 
     if (typeof cause === "object" && cause !== null) {

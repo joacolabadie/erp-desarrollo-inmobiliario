@@ -50,8 +50,6 @@ export async function sendOrganizacionInvitacionEmail({
   });
 
   if (error) {
-    throw new Error(
-      `SEND_ORGANIZACION_INVITACION_EMAIL_ERROR: ${error.message}`,
-    );
+    throw new Error("No se pudo enviar la invitación.");
   }
 }
