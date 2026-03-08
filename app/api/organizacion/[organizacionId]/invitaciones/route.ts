@@ -14,7 +14,7 @@ import {
   generateToken,
   hashToken,
   normalizeEmail,
-} from "@/lib/server/invitations";
+} from "@/lib/server/organizaciones/invitaciones";
 import { and, DrizzleQueryError, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -123,9 +123,9 @@ export async function POST(
     );
   }
 
-  const appUrl = process.env.SITE_URL;
+  const siteUrl = process.env.SITE_URL;
 
-  if (!appUrl) {
+  if (!siteUrl) {
     return NextResponse.json(
       { ok: false, message: "No se pudo generar la URL de invitacion." },
       { status: 500 },
@@ -171,11 +171,11 @@ export async function POST(
       });
     }
 
-    const inviteUrl = `${appUrl}/invitaciones/aceptar?token=${encodeURIComponent(rawToken)}`;
+    const invitacionUrl = `${siteUrl}/invitaciones/aceptar?token=${encodeURIComponent(rawToken)}`;
 
     await sendOrganizacionInvitacionEmail({
       to: email,
-      inviteUrl,
+      invitacionUrl,
       organizacionNombre: organizacion[0]!.nombre,
       rol,
     });

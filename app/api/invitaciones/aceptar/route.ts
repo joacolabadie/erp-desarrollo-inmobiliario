@@ -5,7 +5,10 @@ import {
   organizacionesMiembros as organizacionesMiembrosTabla,
   organizaciones as organizacionesTabla,
 } from "@/lib/server/db/schema/organizaciones";
-import { hashToken, normalizeEmail } from "@/lib/server/invitations";
+import {
+  hashToken,
+  normalizeEmail,
+} from "@/lib/server/organizaciones/invitaciones";
 import { and, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";

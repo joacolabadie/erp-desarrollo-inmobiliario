@@ -6,14 +6,14 @@ import { resend } from "@/lib/server/email/resend";
 
 type SendOrganizacionInvitacionEmailArgs = {
   to: string;
-  inviteUrl: string;
+  invitacionUrl: string;
   organizacionNombre: string;
   rol: MiembroOrganizacionRol;
 };
 
 export async function sendOrganizacionInvitacionEmail({
   to,
-  inviteUrl,
+  invitacionUrl,
   organizacionNombre,
   rol,
 }: SendOrganizacionInvitacionEmailArgs) {
@@ -31,14 +31,14 @@ export async function sendOrganizacionInvitacionEmail({
     `Recibiste una invitación para sumarte a la organización ${organizacionNombre}.`,
     `Tu rol asignado es ${rolLabel}.`,
     "Para aceptar la invitación, entrá a este enlace:",
-    inviteUrl,
+    invitacionUrl,
   ].join("\n");
 
   const html = [
     `<p>Recibiste una invitación para sumarte a la organización <strong>${organizacionNombre}</strong>.</p>`,
     `<p>Tu rol asignado es <strong>${rolLabel}</strong>.</p>`,
     "<p>Para aceptar la invitación, entrá a este enlace:</p>",
-    `<p><a href="${inviteUrl}">Aceptar invitación</a></p>`,
+    `<p><a href="${invitacionUrl}">Aceptar invitación</a></p>`,
   ].join("");
 
   const { error } = await resend.emails.send({

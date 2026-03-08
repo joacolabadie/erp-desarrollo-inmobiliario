@@ -10,6 +10,7 @@ import { proyectos } from "@/lib/server/db/schema/proyectos";
 import { sql } from "drizzle-orm";
 import {
   boolean,
+  check,
   pgEnum,
   pgTable,
   text,
@@ -238,6 +239,13 @@ export const organizacionesInvitaciones = pgTable(
     activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
+    check(
+      "organizaciones_invitaciones_email_lowercase",
+      sql`${t.email} = lower(${t.email})`,
+    ),
+    uniqueIndex("organizaciones_invitaciones_token_hash_key_active")
+      .on(t.tokenHash)
+      .where(sql`${t.activo} = true`),
     uniqueIndex(
       "organizaciones_invitaciones_organizacion_id_email_pendiente_key_active",
     )

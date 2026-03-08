@@ -1,3 +1,5 @@
+import type { AplicacionScope } from "@/lib/domain";
+
 export type Organizacion = {
   id: string;
   nombre: string;
@@ -8,8 +10,6 @@ export type Proyecto = {
   organizacionId: string;
   nombre: string;
 };
-
-export type AplicacionScope = "organizacional" | "proyecto" | "mixto";
 
 export type Aplicacion = {
   id: string;
