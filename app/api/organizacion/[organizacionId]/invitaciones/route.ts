@@ -8,13 +8,13 @@ import {
   organizacionesMiembros as organizacionesMiembrosTabla,
   organizaciones as organizacionesTabla,
 } from "@/lib/server/db/schema/organizaciones";
-import { sendOrganizacionInvitacionEmail } from "@/lib/server/email/send-organizacion-invitacion-email";
+import { sendInvitacionEmail } from "@/lib/server/email/send-invitacion-email";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import {
   generateToken,
   hashToken,
   normalizeEmail,
-} from "@/lib/server/organizaciones/invitaciones";
+} from "@/lib/server/invitaciones";
 import { and, DrizzleQueryError, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -174,7 +174,7 @@ export async function POST(
     const invitacionUrl = `${siteUrl}/invitaciones/aceptar?token=${encodeURIComponent(rawToken)}`;
 
     try {
-      await sendOrganizacionInvitacionEmail({
+      await sendInvitacionEmail({
         to: email,
         invitacionUrl,
         organizacionNombre: organizacion[0]!.nombre,
@@ -184,7 +184,7 @@ export async function POST(
       return NextResponse.json(
         {
           ok: false,
-          message: "No se pudo enviar la invitación.",
+          message: "No se pudo enviar el email de invitación.",
         },
         { status: 502 },
       );

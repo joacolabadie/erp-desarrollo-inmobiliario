@@ -4,19 +4,19 @@ import {
 } from "@/lib/domain";
 import { resend } from "@/lib/server/email/resend";
 
-type SendOrganizacionInvitacionEmailArgs = {
+type SendInvitacionEmailArgs = {
   to: string;
   invitacionUrl: string;
   organizacionNombre: string;
   rol: MiembroOrganizacionRol;
 };
 
-export async function sendOrganizacionInvitacionEmail({
+export async function sendInvitacionEmail({
   to,
   invitacionUrl,
   organizacionNombre,
   rol,
-}: SendOrganizacionInvitacionEmailArgs) {
+}: SendInvitacionEmailArgs) {
   const from = process.env.RESEND_FROM_EMAIL;
 
   if (!from) {
@@ -50,6 +50,6 @@ export async function sendOrganizacionInvitacionEmail({
   });
 
   if (error) {
-    throw new Error("No se pudo enviar la invitación.");
+    throw new Error("No se pudo enviar el email de invitación.");
   }
 }
