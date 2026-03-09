@@ -184,7 +184,7 @@ export async function POST(
       return NextResponse.json(
         {
           ok: false,
-          message: "No se pudo enviar el email de invitación.",
+          message: "No se pudo enviar la invitación.",
         },
         { status: 502 },
       );

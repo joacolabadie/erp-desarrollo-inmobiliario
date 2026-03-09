@@ -50,6 +50,6 @@ export async function sendInvitacionEmail({
   });
 
   if (error) {
-    throw new Error("No se pudo enviar el email de invitación.");
+    throw new Error("No se pudo enviar la invitación.");
   }
 }

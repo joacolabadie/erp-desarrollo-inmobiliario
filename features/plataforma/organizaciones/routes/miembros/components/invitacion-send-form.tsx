@@ -54,7 +54,7 @@ export function InvitacionSendForm({
   async function onSubmit(data: InvitacionSendSchema) {
     try {
       const response = await fetch(
-        `/api/organizacion/${organizacionId}/invitaciones`,
+        `/api/organizaciones/${organizacionId}/invitaciones`,
         {
           method: "POST",
           headers: {
