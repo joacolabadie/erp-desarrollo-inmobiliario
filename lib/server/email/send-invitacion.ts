@@ -2,21 +2,21 @@ import {
   MIEMBRO_ORGANIZACION_ROL_LABELS,
   type MiembroOrganizacionRol,
 } from "@/lib/domain";
-import { resend } from "@/lib/server/email/resend";
+import { resend } from "@/lib/server/email/client";
 
-type SendInvitacionEmailArgs = {
+type SendInvitacionArgs = {
   to: string;
   invitacionUrl: string;
   organizacionNombre: string;
   rol: MiembroOrganizacionRol;
 };
 
-export async function sendInvitacionEmail({
+export async function sendInvitacion({
   to,
   invitacionUrl,
   organizacionNombre,
   rol,
-}: SendInvitacionEmailArgs) {
+}: SendInvitacionArgs) {
   const from = process.env.RESEND_FROM_EMAIL;
 
   if (!from) {

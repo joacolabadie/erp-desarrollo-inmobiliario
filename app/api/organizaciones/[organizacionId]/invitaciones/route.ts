@@ -8,7 +8,7 @@ import {
   organizacionesMiembros as organizacionesMiembrosTabla,
   organizaciones as organizacionesTabla,
 } from "@/lib/server/db/schema/organizaciones";
-import { sendInvitacionEmail } from "@/lib/server/email/send-invitacion-email";
+import { sendInvitacion } from "@/lib/server/email/send-invitacion";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import {
   generateToken,
@@ -39,22 +39,22 @@ export async function POST(
     );
   }
 
-  const parsedParams = paramsSchema.safeParse(await params);
+  const paramsResult = paramsSchema.safeParse(await params);
 
-  if (!parsedParams.success) {
+  if (!paramsResult.success) {
     return NextResponse.json(
-      { ok: false, message: "La organizacion seleccionada es invalida." },
+      { ok: false, message: "La organización seleccionada es inválida." },
       { status: 400 },
     );
   }
 
-  const parsedBody = invitacionSendSchema.safeParse(
+  const result = invitacionSendSchema.safeParse(
     await req.json().catch(() => null),
   );
 
-  if (!parsedBody.success) {
+  if (!result.success) {
     return NextResponse.json(
-      { ok: false, message: "Datos del formulario invalidos." },
+      { ok: false, message: "Datos del formulario inválidos." },
       { status: 400 },
     );
   }
@@ -71,11 +71,11 @@ export async function POST(
     );
   }
 
-  const organizacionId = parsedParams.data.organizacionId;
-  const email = normalizeEmail(parsedBody.data.email);
-  const rol = parsedBody.data.rol as MiembroOrganizacionRol;
+  const { organizacionId } = paramsResult.data;
+  const email = normalizeEmail(result.data.email);
+  const rol = result.data.rol as MiembroOrganizacionRol;
 
-  const organizacion = await db
+  const activeOrganizacion = await db
     .select({
       id: organizacionesTabla.id,
       nombre: organizacionesTabla.nombre,
@@ -89,14 +89,14 @@ export async function POST(
     )
     .limit(1);
 
-  if (organizacion.length === 0) {
+  if (activeOrganizacion.length === 0) {
     return NextResponse.json(
-      { ok: false, message: "La organizacion no existe o esta inactiva." },
+      { ok: false, message: "La organización no existe o está inactiva." },
       { status: 404 },
     );
   }
 
-  const miembroExistente = await db
+  const existingMiembro = await db
     .select({ id: organizacionesMiembrosTabla.id })
     .from(organizacionesMiembrosTabla)
     .innerJoin(
@@ -112,12 +112,12 @@ export async function POST(
     )
     .limit(1);
 
-  if (miembroExistente.length > 0) {
+  if (existingMiembro.length > 0) {
     return NextResponse.json(
       {
         ok: false,
         message:
-          "El email ya pertenece a un miembro activo de la organizacion.",
+          "El email ya pertenece a un miembro activo de la organización.",
       },
       { status: 409 },
     );
@@ -127,7 +127,7 @@ export async function POST(
 
   if (!siteUrl) {
     return NextResponse.json(
-      { ok: false, message: "No se pudo generar la URL de invitacion." },
+      { ok: false, message: "No se pudo generar la URL de invitación." },
       { status: 500 },
     );
   }
@@ -137,7 +137,7 @@ export async function POST(
   const expiraEn = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
   try {
-    const invitacion = await db
+    const existingInvitacion = await db
       .select({ id: organizacionesInvitacionesTabla.id })
       .from(organizacionesInvitacionesTabla)
       .where(
@@ -150,7 +150,7 @@ export async function POST(
       )
       .limit(1);
 
-    if (invitacion.length > 0) {
+    if (existingInvitacion.length > 0) {
       await db
         .update(organizacionesInvitacionesTabla)
         .set({
@@ -158,7 +158,9 @@ export async function POST(
           expiraEn,
           rol,
         })
-        .where(eq(organizacionesInvitacionesTabla.id, invitacion[0]!.id));
+        .where(
+          eq(organizacionesInvitacionesTabla.id, existingInvitacion[0]!.id),
+        );
     } else {
       await db.insert(organizacionesInvitacionesTabla).values({
         organizacionId,
@@ -174,10 +176,10 @@ export async function POST(
     const invitacionUrl = `${siteUrl}/invitaciones/aceptar?token=${encodeURIComponent(rawToken)}`;
 
     try {
-      await sendInvitacionEmail({
+      await sendInvitacion({
         to: email,
         invitacionUrl,
-        organizacionNombre: organizacion[0]!.nombre,
+        organizacionNombre: activeOrganizacion[0]!.nombre,
         rol,
       });
     } catch {
@@ -192,7 +194,7 @@ export async function POST(
 
     return NextResponse.json({
       ok: true,
-      message: "Invitacion enviada correctamente.",
+      message: "Invitación enviada correctamente.",
     });
   } catch (error: unknown) {
     const cause = error instanceof DrizzleQueryError ? error.cause : error;
@@ -205,7 +207,7 @@ export async function POST(
           {
             ok: false,
             message:
-              "Ya existe una invitacion pendiente activa para este email en la organizacion.",
+              "Ya existe una invitación pendiente activa para este email en la organización.",
           },
           { status: 409 },
         );
@@ -215,7 +217,7 @@ export async function POST(
     return NextResponse.json(
       {
         ok: false,
-        message: "Ocurrio un error inesperado al enviar la invitacion.",
+        message: "Ocurrió un error inesperado al enviar la invitación.",
       },
       { status: 500 },
     );
