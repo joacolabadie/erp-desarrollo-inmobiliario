@@ -27,27 +27,26 @@ export async function POST(req: Request) {
     );
   }
 
-  const parsedBody = bodySchema.safeParse(await req.json().catch(() => null));
+  const result = bodySchema.safeParse(await req.json().catch(() => null));
 
-  if (!parsedBody.success) {
+  if (!result.success) {
     return NextResponse.json(
-      { ok: false, message: "Datos del formulario invalidos." },
+      { ok: false, message: "Datos del formulario inválidos." },
       { status: 400 },
     );
   }
 
-  const tokenHash = hashToken(parsedBody.data.token);
-  const emailUsuario = normalizeEmail(session.user.email);
+  const email = normalizeEmail(session.user.email);
+  const tokenHash = hashToken(result.data.token);
 
   const invitacion = await db
     .select({
       id: organizacionesInvitacionesTabla.id,
       organizacionId: organizacionesInvitacionesTabla.organizacionId,
       email: organizacionesInvitacionesTabla.email,
+      expiraEn: organizacionesInvitacionesTabla.expiraEn,
       rol: organizacionesInvitacionesTabla.rol,
       estado: organizacionesInvitacionesTabla.estado,
-      expiraEn: organizacionesInvitacionesTabla.expiraEn,
-      activo: organizacionesInvitacionesTabla.activo,
     })
     .from(organizacionesInvitacionesTabla)
     .where(
@@ -60,51 +59,51 @@ export async function POST(req: Request) {
 
   if (invitacion.length === 0) {
     return NextResponse.json(
-      { ok: false, message: "La invitacion no existe o ya no es valida." },
+      { ok: false, message: "La invitación no existe o ya no es válida." },
       { status: 404 },
     );
   }
 
-  const invitacionActual = invitacion[0]!;
-
-  if (invitacionActual.estado !== "pendiente") {
+  if (invitacion[0].estado !== "pendiente") {
     return NextResponse.json(
-      { ok: false, message: "La invitacion ya no esta disponible." },
+      { ok: false, message: "La invitación ya no está disponible." },
       { status: 409 },
     );
   }
 
-  if (invitacionActual.expiraEn.getTime() <= Date.now()) {
+  if (invitacion[0].expiraEn.getTime() <= Date.now()) {
     await db
       .update(organizacionesInvitacionesTabla)
       .set({
         estado: "expirada",
       })
-      .where(eq(organizacionesInvitacionesTabla.id, invitacionActual.id));
+      .where(eq(organizacionesInvitacionesTabla.id, invitacion[0].id));
 
     return NextResponse.json(
-      { ok: false, message: "La invitacion expiro." },
+      { ok: false, message: "La invitación expiró." },
       { status: 410 },
     );
   }
 
-  if (normalizeEmail(invitacionActual.email) !== emailUsuario) {
+  if (normalizeEmail(invitacion[0].email) !== email) {
     return NextResponse.json(
       {
         ok: false,
         message:
-          "Debes iniciar sesion con el mismo email al que se envio la invitacion.",
+          "Debes iniciar sesión con el mismo email al que se envió la invitación.",
       },
       { status: 403 },
     );
   }
 
   const organizacion = await db
-    .select({ id: organizacionesTabla.id })
+    .select({
+      id: organizacionesTabla.id,
+    })
     .from(organizacionesTabla)
     .where(
       and(
-        eq(organizacionesTabla.id, invitacionActual.organizacionId),
+        eq(organizacionesTabla.id, invitacion[0].organizacionId),
         eq(organizacionesTabla.activo, true),
       ),
     )
@@ -112,21 +111,23 @@ export async function POST(req: Request) {
 
   if (organizacion.length === 0) {
     return NextResponse.json(
-      { ok: false, message: "La organizacion no existe o esta inactiva." },
+      { ok: false, message: "La organización no existe o está inactiva." },
       { status: 404 },
     );
   }
 
   try {
     await db.transaction(async (tx) => {
-      const miembroActivo = await tx
-        .select({ id: organizacionesMiembrosTabla.id })
+      const miembro = await tx
+        .select({
+          id: organizacionesMiembrosTabla.id,
+        })
         .from(organizacionesMiembrosTabla)
         .where(
           and(
             eq(
               organizacionesMiembrosTabla.organizacionId,
-              invitacionActual.organizacionId,
+              invitacion[0].organizacionId,
             ),
             eq(organizacionesMiembrosTabla.usuarioId, session.user.id),
             eq(organizacionesMiembrosTabla.activo, true),
@@ -134,12 +135,11 @@ export async function POST(req: Request) {
         )
         .limit(1);
 
-      if (miembroActivo.length === 0) {
+      if (miembro.length === 0) {
         await tx.insert(organizacionesMiembrosTabla).values({
-          organizacionId: invitacionActual.organizacionId,
+          organizacionId: invitacion[0].organizacionId,
           usuarioId: session.user.id,
-          rol: invitacionActual.rol,
-          estado: "activo",
+          rol: invitacion[0].rol,
           activo: true,
         });
       }
@@ -149,21 +149,18 @@ export async function POST(req: Request) {
         .set({
           estado: "aceptada",
         })
-        .where(eq(organizacionesInvitacionesTabla.id, invitacionActual.id));
+        .where(eq(organizacionesInvitacionesTabla.id, invitacion[0].id));
     });
 
     return NextResponse.json({
       ok: true,
-      message: "Invitacion aceptada correctamente.",
-      data: {
-        organizacionId: invitacionActual.organizacionId,
-      },
+      message: "Invitación aceptada correctamente.",
     });
   } catch {
     return NextResponse.json(
       {
         ok: false,
-        message: "Ocurrio un error inesperado al aceptar la invitacion.",
+        message: "Ocurrió un error inesperado al aceptar la invitación.",
       },
       { status: 500 },
     );
