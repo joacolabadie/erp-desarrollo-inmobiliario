@@ -15,18 +15,18 @@ import {
   hashToken,
   normalizeEmail,
 } from "@/lib/server/invitaciones";
+import { isValidUuid } from "@/lib/utils/validation/is-valid-uuid";
 import { and, DrizzleQueryError, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { z } from "zod";
-
-const paramsSchema = z.object({
-  organizacionId: z.uuid(),
-});
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ organizacionId: string }> },
+  {
+    params,
+  }: {
+    params: Promise<{ organizacionId: string }>;
+  },
 ) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -39,9 +39,9 @@ export async function POST(
     );
   }
 
-  const paramsResult = paramsSchema.safeParse(await params);
+  const { organizacionId } = await params;
 
-  if (!paramsResult.success) {
+  if (!isValidUuid(organizacionId)) {
     return NextResponse.json(
       { ok: false, message: "La organización seleccionada es inválida." },
       { status: 400 },
@@ -71,11 +71,10 @@ export async function POST(
     );
   }
 
-  const { organizacionId } = paramsResult.data;
   const email = normalizeEmail(result.data.email);
   const rol = result.data.rol as MiembroOrganizacionRol;
 
-  const activeOrganizacion = await db
+  const organizacion = await db
     .select({
       id: organizacionesTabla.id,
       nombre: organizacionesTabla.nombre,
@@ -89,15 +88,17 @@ export async function POST(
     )
     .limit(1);
 
-  if (activeOrganizacion.length === 0) {
+  if (organizacion.length === 0) {
     return NextResponse.json(
       { ok: false, message: "La organización no existe o está inactiva." },
       { status: 404 },
     );
   }
 
-  const existingMiembro = await db
-    .select({ id: organizacionesMiembrosTabla.id })
+  const miembro = await db
+    .select({
+      id: organizacionesMiembrosTabla.id,
+    })
     .from(organizacionesMiembrosTabla)
     .innerJoin(
       usersTabla,
@@ -112,7 +113,7 @@ export async function POST(
     )
     .limit(1);
 
-  if (existingMiembro.length > 0) {
+  if (miembro.length > 0) {
     return NextResponse.json(
       {
         ok: false,
@@ -134,11 +135,14 @@ export async function POST(
 
   const rawToken = generateToken();
   const tokenHash = hashToken(rawToken);
+
   const expiraEn = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
   try {
-    const existingInvitacion = await db
-      .select({ id: organizacionesInvitacionesTabla.id })
+    const invitacion = await db
+      .select({
+        id: organizacionesInvitacionesTabla.id,
+      })
       .from(organizacionesInvitacionesTabla)
       .where(
         and(
@@ -150,7 +154,7 @@ export async function POST(
       )
       .limit(1);
 
-    if (existingInvitacion.length > 0) {
+    if (invitacion.length > 0) {
       await db
         .update(organizacionesInvitacionesTabla)
         .set({
@@ -158,18 +162,14 @@ export async function POST(
           expiraEn,
           rol,
         })
-        .where(
-          eq(organizacionesInvitacionesTabla.id, existingInvitacion[0]!.id),
-        );
+        .where(eq(organizacionesInvitacionesTabla.id, invitacion[0].id));
     } else {
       await db.insert(organizacionesInvitacionesTabla).values({
         organizacionId,
         email,
         rol,
-        estado: "pendiente",
         tokenHash,
         expiraEn,
-        activo: true,
       });
     }
 
@@ -179,7 +179,7 @@ export async function POST(
       await sendInvitacion({
         to: email,
         invitacionUrl,
-        organizacionNombre: activeOrganizacion[0]!.nombre,
+        organizacionNombre: organizacion[0].nombre,
         rol,
       });
     } catch {
