@@ -12,7 +12,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 const bodySchema = z.object({
-  token: z.string().min(1),
+  token: z.string().trim().min(1),
 });
 
 export async function POST(req: Request) {
