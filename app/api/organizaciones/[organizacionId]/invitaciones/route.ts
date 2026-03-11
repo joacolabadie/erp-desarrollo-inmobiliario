@@ -25,7 +25,9 @@ export async function POST(
   {
     params,
   }: {
-    params: Promise<{ organizacionId: string }>;
+    params: Promise<{
+      organizacionId: string;
+    }>;
   },
 ) {
   const session = await auth.api.getSession({
@@ -80,17 +82,12 @@ export async function POST(
       nombre: organizacionesTabla.nombre,
     })
     .from(organizacionesTabla)
-    .where(
-      and(
-        eq(organizacionesTabla.id, organizacionId),
-        eq(organizacionesTabla.activo, true),
-      ),
-    )
+    .where(eq(organizacionesTabla.id, organizacionId))
     .limit(1);
 
   if (organizacion.length === 0) {
     return NextResponse.json(
-      { ok: false, message: "La organización no existe o está inactiva." },
+      { ok: false, message: "La organización no existe." },
       { status: 404 },
     );
   }
@@ -107,7 +104,6 @@ export async function POST(
     .where(
       and(
         eq(organizacionesMiembrosTabla.organizacionId, organizacionId),
-        eq(organizacionesMiembrosTabla.activo, true),
         eq(usersTabla.email, email),
       ),
     )
@@ -117,8 +113,7 @@ export async function POST(
     return NextResponse.json(
       {
         ok: false,
-        message:
-          "El email ya pertenece a un miembro activo de la organización.",
+        message: "El email ya pertenece a un miembro de la organización.",
       },
       { status: 409 },
     );
@@ -149,7 +144,6 @@ export async function POST(
           eq(organizacionesInvitacionesTabla.organizacionId, organizacionId),
           eq(organizacionesInvitacionesTabla.email, email),
           eq(organizacionesInvitacionesTabla.estado, "pendiente"),
-          eq(organizacionesInvitacionesTabla.activo, true),
         ),
       )
       .limit(1);
@@ -207,7 +201,7 @@ export async function POST(
           {
             ok: false,
             message:
-              "Ya existe una invitación pendiente activa para este email en la organización.",
+              "Ya existe una invitación pendiente para este email en la organización.",
           },
           { status: 409 },
         );

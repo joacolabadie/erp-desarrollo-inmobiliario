@@ -3,7 +3,6 @@ import { db } from "@/lib/server/db";
 import {
   organizacionesInvitaciones as organizacionesInvitacionesTabla,
   organizacionesMiembros as organizacionesMiembrosTabla,
-  organizaciones as organizacionesTabla,
 } from "@/lib/server/db/schema/organizaciones";
 import { hashToken, normalizeEmail } from "@/lib/server/invitaciones";
 import { and, eq } from "drizzle-orm";
@@ -49,12 +48,7 @@ export async function POST(req: Request) {
       estado: organizacionesInvitacionesTabla.estado,
     })
     .from(organizacionesInvitacionesTabla)
-    .where(
-      and(
-        eq(organizacionesInvitacionesTabla.tokenHash, tokenHash),
-        eq(organizacionesInvitacionesTabla.activo, true),
-      ),
-    )
+    .where(eq(organizacionesInvitacionesTabla.tokenHash, tokenHash))
     .limit(1);
 
   if (invitacion.length === 0) {
@@ -96,53 +90,46 @@ export async function POST(req: Request) {
     );
   }
 
-  const organizacion = await db
+  const miembro = await db
     .select({
-      id: organizacionesTabla.id,
+      id: organizacionesMiembrosTabla.id,
     })
-    .from(organizacionesTabla)
+    .from(organizacionesMiembrosTabla)
     .where(
       and(
-        eq(organizacionesTabla.id, invitacion[0].organizacionId),
-        eq(organizacionesTabla.activo, true),
+        eq(
+          organizacionesMiembrosTabla.organizacionId,
+          invitacion[0].organizacionId,
+        ),
+        eq(organizacionesMiembrosTabla.usuarioId, session.user.id),
       ),
     )
     .limit(1);
 
-  if (organizacion.length === 0) {
+  if (miembro.length > 0) {
+    await db
+      .update(organizacionesInvitacionesTabla)
+      .set({
+        estado: "revocada",
+      })
+      .where(eq(organizacionesInvitacionesTabla.id, invitacion[0].id));
+
     return NextResponse.json(
-      { ok: false, message: "La organización no existe o está inactiva." },
-      { status: 404 },
+      {
+        ok: false,
+        message: "Ya pertenecés a esta organización.",
+      },
+      { status: 409 },
     );
   }
 
   try {
     await db.transaction(async (tx) => {
-      const miembro = await tx
-        .select({
-          id: organizacionesMiembrosTabla.id,
-        })
-        .from(organizacionesMiembrosTabla)
-        .where(
-          and(
-            eq(
-              organizacionesMiembrosTabla.organizacionId,
-              invitacion[0].organizacionId,
-            ),
-            eq(organizacionesMiembrosTabla.usuarioId, session.user.id),
-            eq(organizacionesMiembrosTabla.activo, true),
-          ),
-        )
-        .limit(1);
-
-      if (miembro.length === 0) {
-        await tx.insert(organizacionesMiembrosTabla).values({
-          organizacionId: invitacion[0].organizacionId,
-          usuarioId: session.user.id,
-          rol: invitacion[0].rol,
-          activo: true,
-        });
-      }
+      await tx.insert(organizacionesMiembrosTabla).values({
+        organizacionId: invitacion[0].organizacionId,
+        usuarioId: session.user.id,
+        rol: invitacion[0].rol,
+      });
 
       await tx
         .update(organizacionesInvitacionesTabla)

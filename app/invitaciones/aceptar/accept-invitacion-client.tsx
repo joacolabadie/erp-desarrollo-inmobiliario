@@ -26,8 +26,6 @@ export function AcceptInvitacionClient({ token }: AcceptInvitacionClientProps) {
   useEffect(() => {
     async function validateInvitacion() {
       if (!token) {
-        toast.error("La invitación no existe o ya no es válida.");
-
         router.replace("/auth/sign-in");
 
         return;
