@@ -1,17 +1,15 @@
 import { APLICACION_SCOPE_VALUES } from "@/lib/domain";
-import { sql } from "drizzle-orm";
 import {
-  boolean,
   pgEnum,
   pgTable,
   text,
   timestamp,
-  uniqueIndex,
+  unique,
   uuid,
 } from "drizzle-orm/pg-core";
 
-export const aplicacionesScopeEnum = pgEnum(
-  "aplicaciones_scopes",
+export const aplicacionScopeEnum = pgEnum(
+  "aplicacion_scope",
   APLICACION_SCOPE_VALUES,
 );
 
@@ -25,16 +23,8 @@ export const modulos = pgTable(
     clave: text("clave").notNull(),
     slug: text("slug").notNull(),
     nombre: text("nombre").notNull(),
-    activo: boolean("activo").default(true).notNull(),
   },
-  (t) => [
-    uniqueIndex("modulos_clave_key_active")
-      .on(t.clave)
-      .where(sql`${t.activo} = true`),
-    uniqueIndex("modulos_slug_key_active")
-      .on(t.slug)
-      .where(sql`${t.activo} = true`),
-  ],
+  (t) => [unique().on(t.clave), unique().on(t.slug)],
 );
 
 export const aplicaciones = pgTable(
@@ -50,15 +40,7 @@ export const aplicaciones = pgTable(
     clave: text("clave").notNull(),
     slug: text("slug").notNull(),
     nombre: text("nombre").notNull(),
-    scope: aplicacionesScopeEnum("scope").notNull(),
-    activo: boolean("activo").default(true).notNull(),
+    scope: aplicacionScopeEnum("scope").notNull(),
   },
-  (t) => [
-    uniqueIndex("aplicaciones_modulo_id_clave_key_active")
-      .on(t.moduloId, t.clave)
-      .where(sql`${t.activo} = true`),
-    uniqueIndex("aplicaciones_modulo_id_slug_key_active")
-      .on(t.moduloId, t.slug)
-      .where(sql`${t.activo} = true`),
-  ],
+  (t) => [unique().on(t.moduloId, t.clave), unique().on(t.moduloId, t.slug)],
 );

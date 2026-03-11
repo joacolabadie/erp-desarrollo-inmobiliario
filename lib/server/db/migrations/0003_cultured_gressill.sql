@@ -1,1 +1,0 @@
-DROP INDEX "organizaciones_miembros_organizacion_id_dueno_key_active";

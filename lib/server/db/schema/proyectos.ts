@@ -3,15 +3,14 @@ import {
   organizaciones,
   organizacionesRazonesSociales,
 } from "@/lib/server/db/schema/organizaciones";
-import { sql } from "drizzle-orm";
 import {
-  boolean,
+  foreignKey,
   integer,
   pgEnum,
   pgTable,
   text,
   timestamp,
-  uniqueIndex,
+  unique,
   uuid,
 } from "drizzle-orm/pg-core";
 
@@ -31,21 +30,14 @@ export const proyectos = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
     nombre: text("nombre").notNull(),
     tipo: proyectoTipoEnum("tipo").notNull(),
     estado: proyectoEstadoEnum("estado").default("planificacion").notNull(),
-    organizacionRazonSocialPrincipalId: uuid(
-      "organizacion_razon_social_principal_id",
-    ).references(() => organizacionesRazonesSociales.id, {
-      onDelete: "restrict",
-    }),
-    activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
-    uniqueIndex("proyectos_organizacion_id_nombre_key_active")
-      .on(t.organizacionId, t.nombre)
-      .where(sql`${t.activo} = true`),
+    unique().on(t.organizacionId, t.id),
+    unique().on(t.organizacionId, t.nombre),
   ],
 );
 
@@ -58,23 +50,23 @@ export const proyectosRazonesSociales = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
-    proyectoId: uuid("proyecto_id")
-      .notNull()
-      .references(() => proyectos.id, { onDelete: "cascade" }),
-    organizacionRazonSocialId: uuid("organizacion_razon_social_id")
-      .notNull()
-      .references(() => organizacionesRazonesSociales.id, {
-        onDelete: "restrict",
-      }),
-    activo: boolean("activo").default(true).notNull(),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
+    proyectoId: uuid("proyecto_id").notNull(),
+    organizacionRazonSocialId: uuid("organizacion_razon_social_id").notNull(),
   },
   (t) => [
-    uniqueIndex(
-      "proyectos_razones_sociales_proyecto_id_organizacion_razon_social_id_key_active",
-    )
-      .on(t.proyectoId, t.organizacionRazonSocialId)
-      .where(sql`${t.activo} = true`),
+    foreignKey({
+      columns: [t.organizacionId, t.proyectoId],
+      foreignColumns: [proyectos.organizacionId, proyectos.id],
+    }).onDelete("restrict"),
+    foreignKey({
+      columns: [t.organizacionId, t.organizacionRazonSocialId],
+      foreignColumns: [
+        organizacionesRazonesSociales.organizacionId,
+        organizacionesRazonesSociales.id,
+      ],
+    }).onDelete("restrict"),
+    unique().on(t.organizacionId, t.proyectoId, t.organizacionRazonSocialId),
   ],
 );
 
@@ -87,18 +79,18 @@ export const proyectosRubros = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
-    proyectoId: uuid("proyecto_id")
-      .notNull()
-      .references(() => proyectos.id, { onDelete: "cascade" }),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
+    proyectoId: uuid("proyecto_id").notNull(),
     nombre: text("nombre").notNull(),
     orden: integer("orden").notNull().default(0),
-    activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
-    uniqueIndex("proyectos_rubros_proyecto_id_nombre_key_active")
-      .on(t.proyectoId, t.nombre)
-      .where(sql`${t.activo} = true`),
+    foreignKey({
+      columns: [t.organizacionId, t.proyectoId],
+      foreignColumns: [proyectos.organizacionId, proyectos.id],
+    }).onDelete("restrict"),
+    unique().on(t.organizacionId, t.proyectoId, t.id),
+    unique().on(t.organizacionId, t.proyectoId, t.nombre),
   ],
 );
 
@@ -111,19 +103,24 @@ export const proyectosCategorias = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
-    proyectoId: uuid("proyecto_id")
-      .notNull()
-      .references(() => proyectos.id, { onDelete: "cascade" }),
-    rubroId: uuid("rubro_id")
-      .notNull()
-      .references(() => proyectosRubros.id, { onDelete: "restrict" }),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
+    proyectoId: uuid("proyecto_id").notNull(),
+    rubroId: uuid("rubro_id").notNull(),
     nombre: text("nombre").notNull(),
-    activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
-    uniqueIndex("proyectos_categorias_proyecto_id_nombre_key_active")
-      .on(t.proyectoId, t.nombre)
-      .where(sql`${t.activo} = true`),
+    foreignKey({
+      columns: [t.organizacionId, t.proyectoId],
+      foreignColumns: [proyectos.organizacionId, proyectos.id],
+    }).onDelete("restrict"),
+    foreignKey({
+      columns: [t.organizacionId, t.proyectoId, t.rubroId],
+      foreignColumns: [
+        proyectosRubros.organizacionId,
+        proyectosRubros.proyectoId,
+        proyectosRubros.id,
+      ],
+    }).onDelete("restrict"),
+    unique().on(t.organizacionId, t.proyectoId, t.nombre),
   ],
 );

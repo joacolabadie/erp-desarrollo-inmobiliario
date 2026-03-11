@@ -1,5 +1,5 @@
 {
-  "id": "8823ad81-1b7e-4e82-a191-0da51c51f199",
+  "id": "25d5073c-13a2-4955-a983-4a8299096981",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -391,65 +391,13 @@
         },
         "scope": {
           "name": "scope",
-          "type": "aplicaciones_scopes",
+          "type": "aplicacion_scope",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "aplicaciones_modulo_id_clave_key_active": {
-          "name": "aplicaciones_modulo_id_clave_key_active",
-          "columns": [
-            {
-              "expression": "modulo_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "clave",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"aplicaciones\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "aplicaciones_modulo_id_slug_key_active": {
-          "name": "aplicaciones_modulo_id_slug_key_active",
-          "columns": [
-            {
-              "expression": "modulo_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "slug",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"aplicaciones\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "aplicaciones_modulo_id_modulos_id_fk": {
           "name": "aplicaciones_modulo_id_modulos_id_fk",
@@ -462,7 +410,18 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "aplicaciones_modulo_id_clave_unique": {
+          "name": "aplicaciones_modulo_id_clave_unique",
+          "nullsNotDistinct": false,
+          "columns": ["modulo_id", "clave"]
+        },
+        "aplicaciones_modulo_id_slug_unique": {
+          "name": "aplicaciones_modulo_id_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": ["modulo_id", "slug"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -502,52 +461,23 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "modulos_clave_key_active": {
-          "name": "modulos_clave_key_active",
-          "columns": [
-            {
-              "expression": "clave",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"modulos\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "modulos_slug_key_active": {
-          "name": "modulos_slug_key_active",
-          "columns": [
-            {
-              "expression": "slug",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"modulos\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "modulos_clave_unique": {
+          "name": "modulos_clave_unique",
+          "nullsNotDistinct": false,
+          "columns": ["clave"]
+        },
+        "modulos_slug_unique": {
+          "name": "modulos_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": ["slug"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -600,40 +530,10 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": false
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
           "default": true
         }
       },
-      "indexes": {
-        "materiales_organizacion_id_nombre_key_active": {
-          "name": "materiales_organizacion_id_nombre_key_active",
-          "columns": [
-            {
-              "expression": "organizacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "nombre",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"materiales\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "materiales_organizacion_id_organizaciones_id_fk": {
           "name": "materiales_organizacion_id_organizaciones_id_fk",
@@ -641,21 +541,27 @@
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "materiales_unidad_medida_id_unidades_medida_id_fk": {
-          "name": "materiales_unidad_medida_id_unidades_medida_id_fk",
+        "materiales_organizacion_id_unidad_medida_id_unidades_medida_organizacion_id_id_fk": {
+          "name": "materiales_organizacion_id_unidad_medida_id_unidades_medida_organizacion_id_id_fk",
           "tableFrom": "materiales",
           "tableTo": "unidades_medida",
-          "columnsFrom": ["unidad_medida_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": ["organizacion_id", "unidad_medida_id"],
+          "columnsTo": ["organizacion_id", "id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "materiales_organizacion_id_nombre_unique": {
+          "name": "materiales_organizacion_id_nombre_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "nombre"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -678,24 +584,29 @@
           "notNull": true,
           "default": "now()"
         },
+        "identificador_cliente": {
+          "name": "identificador_cliente",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "nombre": {
           "name": "nombre",
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "organizaciones_identificador_cliente_unique": {
+          "name": "organizaciones_identificador_cliente_unique",
+          "nullsNotDistinct": false,
+          "columns": ["identificador_cliente"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -729,39 +640,9 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "organizaciones_aplicaciones_organizacion_id_aplicacion_id_key_active": {
-          "name": "organizaciones_aplicaciones_organizacion_id_aplicacion_id_key_active",
-          "columns": [
-            {
-              "expression": "organizacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "aplicacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"organizaciones_aplicaciones\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "organizaciones_aplicaciones_organizacion_id_organizaciones_id_fk": {
           "name": "organizaciones_aplicaciones_organizacion_id_organizaciones_id_fk",
@@ -769,7 +650,7 @@
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         },
         "organizaciones_aplicaciones_aplicacion_id_aplicaciones_id_fk": {
@@ -783,7 +664,119 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "organizaciones_aplicaciones_organizacion_id_aplicacion_id_unique": {
+          "name": "organizaciones_aplicaciones_organizacion_id_aplicacion_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "aplicacion_id"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.organizaciones_invitaciones": {
+      "name": "organizaciones_invitaciones",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "creado_en": {
+          "name": "creado_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "organizacion_id": {
+          "name": "organizacion_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rol": {
+          "name": "rol",
+          "type": "miembro_organizacion_rol",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'miembro'"
+        },
+        "token_hash": {
+          "name": "token_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expira_en": {
+          "name": "expira_en",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "estado": {
+          "name": "estado",
+          "type": "invitacion_organizacion_estado",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pendiente'"
+        }
+      },
+      "indexes": {
+        "organizaciones_invitaciones_organizacion_id_email_index": {
+          "name": "organizaciones_invitaciones_organizacion_id_email_index",
+          "columns": [
+            {
+              "expression": "organizacion_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"organizaciones_invitaciones\".\"estado\" = 'pendiente'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "organizaciones_invitaciones_organizacion_id_organizaciones_id_fk": {
+          "name": "organizaciones_invitaciones_organizacion_id_organizaciones_id_fk",
+          "tableFrom": "organizaciones_invitaciones",
+          "tableTo": "organizaciones",
+          "columnsFrom": ["organizacion_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "organizaciones_invitaciones_token_hash_unique": {
+          "name": "organizaciones_invitaciones_token_hash_unique",
+          "nullsNotDistinct": false,
+          "columns": ["token_hash"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -818,46 +811,24 @@
           "primaryKey": false,
           "notNull": true
         },
+        "rol": {
+          "name": "rol",
+          "type": "miembro_organizacion_rol",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'miembro'"
+        },
         "estado": {
           "name": "estado",
-          "type": "estado_miembro_organizacion",
+          "type": "miembro_organizacion_estado",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'activo'"
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "organizaciones_miembros_organizacion_id_usuario_id_key_active": {
-          "name": "organizaciones_miembros_organizacion_id_usuario_id_key_active",
-          "columns": [
-            {
-              "expression": "organizacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "usuario_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"organizaciones_miembros\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "organizaciones_miembros_organizacion_id_organizaciones_id_fk": {
           "name": "organizaciones_miembros_organizacion_id_organizaciones_id_fk",
@@ -865,7 +836,7 @@
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         },
         "organizaciones_miembros_usuario_id_users_id_fk": {
@@ -879,7 +850,13 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "organizaciones_miembros_organizacion_id_usuario_id_unique": {
+          "name": "organizaciones_miembros_organizacion_id_usuario_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "usuario_id"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -919,45 +896,9 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_aplicacion_id_key_active": {
-          "name": "organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_aplicacion_id_key_active",
-          "columns": [
-            {
-              "expression": "organizacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "usuario_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "aplicacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"organizaciones_miembros_aplicaciones\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "organizaciones_miembros_aplicaciones_organizacion_id_organizaciones_id_fk": {
           "name": "organizaciones_miembros_aplicaciones_organizacion_id_organizaciones_id_fk",
@@ -965,30 +906,36 @@
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "organizaciones_miembros_aplicaciones_usuario_id_users_id_fk": {
-          "name": "organizaciones_miembros_aplicaciones_usuario_id_users_id_fk",
-          "tableFrom": "organizaciones_miembros_aplicaciones",
-          "tableTo": "users",
-          "columnsFrom": ["usuario_id"],
-          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "organizaciones_miembros_aplicaciones_aplicacion_id_aplicaciones_id_fk": {
-          "name": "organizaciones_miembros_aplicaciones_aplicacion_id_aplicaciones_id_fk",
+        "manual_organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_fkey": {
+          "name": "manual_organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_fkey",
           "tableFrom": "organizaciones_miembros_aplicaciones",
-          "tableTo": "aplicaciones",
-          "columnsFrom": ["aplicacion_id"],
-          "columnsTo": ["id"],
+          "tableTo": "organizaciones_miembros",
+          "columnsFrom": ["organizacion_id", "usuario_id"],
+          "columnsTo": ["organizacion_id", "usuario_id"],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "organizaciones_miembros_aplicaciones_organizacion_id_aplicacion_id_organizaciones_aplicaciones_organizacion_id_aplicacion_id_fk": {
+          "name": "organizaciones_miembros_aplicaciones_organizacion_id_aplicacion_id_organizaciones_aplicaciones_organizacion_id_aplicacion_id_fk",
+          "tableFrom": "organizaciones_miembros_aplicaciones",
+          "tableTo": "organizaciones_aplicaciones",
+          "columnsFrom": ["organizacion_id", "aplicacion_id"],
+          "columnsTo": ["organizacion_id", "aplicacion_id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_aplicacion_id_unique": {
+          "name": "organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_aplicacion_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "usuario_id", "aplicacion_id"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1028,45 +975,9 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "organizaciones_miembros_proyectos_organizacion_id_usuario_id_proyecto_id_key_active": {
-          "name": "organizaciones_miembros_proyectos_organizacion_id_usuario_id_proyecto_id_key_active",
-          "columns": [
-            {
-              "expression": "organizacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "usuario_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "proyecto_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"organizaciones_miembros_proyectos\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "organizaciones_miembros_proyectos_organizacion_id_organizaciones_id_fk": {
           "name": "organizaciones_miembros_proyectos_organizacion_id_organizaciones_id_fk",
@@ -1074,30 +985,36 @@
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "organizaciones_miembros_proyectos_usuario_id_users_id_fk": {
-          "name": "organizaciones_miembros_proyectos_usuario_id_users_id_fk",
-          "tableFrom": "organizaciones_miembros_proyectos",
-          "tableTo": "users",
-          "columnsFrom": ["usuario_id"],
-          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "organizaciones_miembros_proyectos_proyecto_id_proyectos_id_fk": {
-          "name": "organizaciones_miembros_proyectos_proyecto_id_proyectos_id_fk",
+        "organizaciones_miembros_proyectos_organizacion_id_usuario_id_organizaciones_miembros_organizacion_id_usuario_id_fk": {
+          "name": "organizaciones_miembros_proyectos_organizacion_id_usuario_id_organizaciones_miembros_organizacion_id_usuario_id_fk",
+          "tableFrom": "organizaciones_miembros_proyectos",
+          "tableTo": "organizaciones_miembros",
+          "columnsFrom": ["organizacion_id", "usuario_id"],
+          "columnsTo": ["organizacion_id", "usuario_id"],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "organizaciones_miembros_proyectos_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk": {
+          "name": "organizaciones_miembros_proyectos_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk",
           "tableFrom": "organizaciones_miembros_proyectos",
           "tableTo": "proyectos",
-          "columnsFrom": ["proyecto_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "columnsFrom": ["organizacion_id", "proyecto_id"],
+          "columnsTo": ["organizacion_id", "id"],
+          "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "organizaciones_miembros_proyectos_organizacion_id_usuario_id_proyecto_id_unique": {
+          "name": "organizaciones_miembros_proyectos_organizacion_id_usuario_id_proyecto_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "usuario_id", "proyecto_id"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1137,39 +1054,9 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "organizaciones_razones_sociales_organizacion_id_cuit_key_active": {
-          "name": "organizaciones_razones_sociales_organizacion_id_cuit_key_active",
-          "columns": [
-            {
-              "expression": "organizacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "cuit",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"organizaciones_razones_sociales\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "organizaciones_razones_sociales_organizacion_id_organizaciones_id_fk": {
           "name": "organizaciones_razones_sociales_organizacion_id_organizaciones_id_fk",
@@ -1177,12 +1064,23 @@
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "organizaciones_razones_sociales_organizacion_id_id_unique": {
+          "name": "organizaciones_razones_sociales_organizacion_id_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "id"]
+        },
+        "organizaciones_razones_sociales_organizacion_id_cuit_unique": {
+          "name": "organizaciones_razones_sociales_organizacion_id_cuit_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "cuit"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1222,61 +1120,9 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "unidades_medida_organizacion_id_codigo_key_active": {
-          "name": "unidades_medida_organizacion_id_codigo_key_active",
-          "columns": [
-            {
-              "expression": "organizacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "codigo",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"unidades_medida\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "unidades_medida_organizacion_id_nombre_key_active": {
-          "name": "unidades_medida_organizacion_id_nombre_key_active",
-          "columns": [
-            {
-              "expression": "organizacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "nombre",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"unidades_medida\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "unidades_medida_organizacion_id_organizaciones_id_fk": {
           "name": "unidades_medida_organizacion_id_organizaciones_id_fk",
@@ -1284,12 +1130,28 @@
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "unidades_medida_organizacion_id_id_unique": {
+          "name": "unidades_medida_organizacion_id_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "id"]
+        },
+        "unidades_medida_organizacion_id_codigo_unique": {
+          "name": "unidades_medida_organizacion_id_codigo_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "codigo"]
+        },
+        "unidades_medida_organizacion_id_nombre_unique": {
+          "name": "unidades_medida_organizacion_id_nombre_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "nombre"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1317,33 +1179,9 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "plataforma_administradores_usuario_id_key_active": {
-          "name": "plataforma_administradores_usuario_id_key_active",
-          "columns": [
-            {
-              "expression": "usuario_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"plataforma_administradores\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "plataforma_administradores_usuario_id_users_id_fk": {
           "name": "plataforma_administradores_usuario_id_users_id_fk",
@@ -1356,7 +1194,13 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "plataforma_administradores_usuario_id_unique": {
+          "name": "plataforma_administradores_usuario_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["usuario_id"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1390,49 +1234,10 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "plataforma_administradores_aplicaciones_plataforma_administrador_id_plataforma_aplicacion_id_key_active": {
-          "name": "plataforma_administradores_aplicaciones_plataforma_administrador_id_plataforma_aplicacion_id_key_active",
-          "columns": [
-            {
-              "expression": "plataforma_administrador_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "plataforma_aplicacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"plataforma_administradores_aplicaciones\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
-        "plataforma_administradores_aplicaciones_plataforma_administrador_id_plataforma_administradores_id_fk": {
-          "name": "plataforma_administradores_aplicaciones_plataforma_administrador_id_plataforma_administradores_id_fk",
-          "tableFrom": "plataforma_administradores_aplicaciones",
-          "tableTo": "plataforma_administradores",
-          "columnsFrom": ["plataforma_administrador_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
         "plataforma_administradores_aplicaciones_plataforma_aplicacion_id_plataforma_aplicaciones_id_fk": {
           "name": "plataforma_administradores_aplicaciones_plataforma_aplicacion_id_plataforma_aplicaciones_id_fk",
           "tableFrom": "plataforma_administradores_aplicaciones",
@@ -1441,10 +1246,25 @@
           "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
+        },
+        "manual_plataforma_administradores_aplicaciones_plataforma_administrador_id_fkey": {
+          "name": "manual_plataforma_administradores_aplicaciones_plataforma_administrador_id_fkey",
+          "tableFrom": "plataforma_administradores_aplicaciones",
+          "tableTo": "plataforma_administradores",
+          "columnsFrom": ["plataforma_administrador_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "plataforma_administradores_aplicaciones_plataforma_administrador_id_plataforma_aplicacion_id_unique": {
+          "name": "plataforma_administradores_aplicaciones_plataforma_administrador_id_plataforma_aplicacion_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["plataforma_administrador_id", "plataforma_aplicacion_id"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1484,52 +1304,23 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "plataforma_aplicaciones_clave_key_active": {
-          "name": "plataforma_aplicaciones_clave_key_active",
-          "columns": [
-            {
-              "expression": "clave",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"plataforma_aplicaciones\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "plataforma_aplicaciones_slug_key_active": {
-          "name": "plataforma_aplicaciones_slug_key_active",
-          "columns": [
-            {
-              "expression": "slug",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"plataforma_aplicaciones\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "plataforma_aplicaciones_clave_unique": {
+          "name": "plataforma_aplicaciones_clave_unique",
+          "nullsNotDistinct": false,
+          "columns": ["clave"]
+        },
+        "plataforma_aplicaciones_slug_unique": {
+          "name": "plataforma_aplicaciones_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": ["slug"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1578,45 +1369,9 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'planificacion'"
-        },
-        "organizacion_razon_social_principal_id": {
-          "name": "organizacion_razon_social_principal_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "proyectos_organizacion_id_nombre_key_active": {
-          "name": "proyectos_organizacion_id_nombre_key_active",
-          "columns": [
-            {
-              "expression": "organizacion_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "nombre",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"proyectos\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "proyectos_organizacion_id_organizaciones_id_fk": {
           "name": "proyectos_organizacion_id_organizaciones_id_fk",
@@ -1624,21 +1379,23 @@
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "proyectos_organizacion_razon_social_principal_id_organizaciones_razones_sociales_id_fk": {
-          "name": "proyectos_organizacion_razon_social_principal_id_organizaciones_razones_sociales_id_fk",
-          "tableFrom": "proyectos",
-          "tableTo": "organizaciones_razones_sociales",
-          "columnsFrom": ["organizacion_razon_social_principal_id"],
-          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "proyectos_organizacion_id_id_unique": {
+          "name": "proyectos_organizacion_id_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "id"]
+        },
+        "proyectos_organizacion_id_nombre_unique": {
+          "name": "proyectos_organizacion_id_nombre_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "nombre"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1684,39 +1441,9 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "proyectos_categorias_proyecto_id_nombre_key_active": {
-          "name": "proyectos_categorias_proyecto_id_nombre_key_active",
-          "columns": [
-            {
-              "expression": "proyecto_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "nombre",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"proyectos_categorias\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "proyectos_categorias_organizacion_id_organizaciones_id_fk": {
           "name": "proyectos_categorias_organizacion_id_organizaciones_id_fk",
@@ -1724,30 +1451,36 @@
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "proyectos_categorias_proyecto_id_proyectos_id_fk": {
-          "name": "proyectos_categorias_proyecto_id_proyectos_id_fk",
+        "proyectos_categorias_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk": {
+          "name": "proyectos_categorias_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk",
           "tableFrom": "proyectos_categorias",
           "tableTo": "proyectos",
-          "columnsFrom": ["proyecto_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "columnsFrom": ["organizacion_id", "proyecto_id"],
+          "columnsTo": ["organizacion_id", "id"],
+          "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "proyectos_categorias_rubro_id_proyectos_rubros_id_fk": {
-          "name": "proyectos_categorias_rubro_id_proyectos_rubros_id_fk",
+        "proyectos_categorias_organizacion_id_proyecto_id_rubro_id_proyectos_rubros_organizacion_id_proyecto_id_id_fk": {
+          "name": "proyectos_categorias_organizacion_id_proyecto_id_rubro_id_proyectos_rubros_organizacion_id_proyecto_id_id_fk",
           "tableFrom": "proyectos_categorias",
           "tableTo": "proyectos_rubros",
-          "columnsFrom": ["rubro_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": ["organizacion_id", "proyecto_id", "rubro_id"],
+          "columnsTo": ["organizacion_id", "proyecto_id", "id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "proyectos_categorias_organizacion_id_proyecto_id_nombre_unique": {
+          "name": "proyectos_categorias_organizacion_id_proyecto_id_nombre_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "proyecto_id", "nombre"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1787,39 +1520,9 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "proyectos_razones_sociales_proyecto_id_organizacion_razon_social_id_key_active": {
-          "name": "proyectos_razones_sociales_proyecto_id_organizacion_razon_social_id_key_active",
-          "columns": [
-            {
-              "expression": "proyecto_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "organizacion_razon_social_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"proyectos_razones_sociales\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "proyectos_razones_sociales_organizacion_id_organizaciones_id_fk": {
           "name": "proyectos_razones_sociales_organizacion_id_organizaciones_id_fk",
@@ -1827,30 +1530,40 @@
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "proyectos_razones_sociales_proyecto_id_proyectos_id_fk": {
-          "name": "proyectos_razones_sociales_proyecto_id_proyectos_id_fk",
+        "proyectos_razones_sociales_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk": {
+          "name": "proyectos_razones_sociales_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk",
           "tableFrom": "proyectos_razones_sociales",
           "tableTo": "proyectos",
-          "columnsFrom": ["proyecto_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "columnsFrom": ["organizacion_id", "proyecto_id"],
+          "columnsTo": ["organizacion_id", "id"],
+          "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "proyectos_razones_sociales_organizacion_razon_social_id_organizaciones_razones_sociales_id_fk": {
-          "name": "proyectos_razones_sociales_organizacion_razon_social_id_organizaciones_razones_sociales_id_fk",
+        "proyectos_razones_sociales_organizacion_id_organizacion_razon_social_id_organizaciones_razones_sociales_organizacion_id_id_fk": {
+          "name": "proyectos_razones_sociales_organizacion_id_organizacion_razon_social_id_organizaciones_razones_sociales_organizacion_id_id_fk",
           "tableFrom": "proyectos_razones_sociales",
           "tableTo": "organizaciones_razones_sociales",
-          "columnsFrom": ["organizacion_razon_social_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": ["organizacion_id", "organizacion_razon_social_id"],
+          "columnsTo": ["organizacion_id", "id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "proyectos_razones_sociales_organizacion_id_proyecto_id_organizacion_razon_social_id_unique": {
+          "name": "proyectos_razones_sociales_organizacion_id_proyecto_id_organizacion_razon_social_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "organizacion_id",
+            "proyecto_id",
+            "organizacion_razon_social_id"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1897,39 +1610,9 @@
           "primaryKey": false,
           "notNull": true,
           "default": 0
-        },
-        "activo": {
-          "name": "activo",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
         }
       },
-      "indexes": {
-        "proyectos_rubros_proyecto_id_nombre_key_active": {
-          "name": "proyectos_rubros_proyecto_id_nombre_key_active",
-          "columns": [
-            {
-              "expression": "proyecto_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "nombre",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"proyectos_rubros\".\"activo\" = true",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "proyectos_rubros_organizacion_id_organizaciones_id_fk": {
           "name": "proyectos_rubros_organizacion_id_organizaciones_id_fk",
@@ -1937,41 +1620,62 @@
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "proyectos_rubros_proyecto_id_proyectos_id_fk": {
-          "name": "proyectos_rubros_proyecto_id_proyectos_id_fk",
+        "proyectos_rubros_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk": {
+          "name": "proyectos_rubros_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk",
           "tableFrom": "proyectos_rubros",
           "tableTo": "proyectos",
-          "columnsFrom": ["proyecto_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "columnsFrom": ["organizacion_id", "proyecto_id"],
+          "columnsTo": ["organizacion_id", "id"],
+          "onDelete": "restrict",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "proyectos_rubros_organizacion_id_proyecto_id_id_unique": {
+          "name": "proyectos_rubros_organizacion_id_proyecto_id_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "proyecto_id", "id"]
+        },
+        "proyectos_rubros_organizacion_id_proyecto_id_nombre_unique": {
+          "name": "proyectos_rubros_organizacion_id_proyecto_id_nombre_unique",
+          "nullsNotDistinct": false,
+          "columns": ["organizacion_id", "proyecto_id", "nombre"]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
     }
   },
   "enums": {
-    "public.aplicaciones_scopes": {
-      "name": "aplicaciones_scopes",
+    "public.aplicacion_scope": {
+      "name": "aplicacion_scope",
       "schema": "public",
       "values": ["mixto", "organizacional", "proyecto"]
     },
-    "public.estado_miembro_organizacion": {
-      "name": "estado_miembro_organizacion",
+    "public.invitacion_organizacion_estado": {
+      "name": "invitacion_organizacion_estado",
       "schema": "public",
-      "values": ["activo", "suspendido"]
+      "values": ["aceptada", "expirada", "pendiente", "revocada"]
     },
     "public.material_tipo": {
       "name": "material_tipo",
       "schema": "public",
       "values": ["mano_obra", "material"]
+    },
+    "public.miembro_organizacion_estado": {
+      "name": "miembro_organizacion_estado",
+      "schema": "public",
+      "values": ["activo", "suspendido"]
+    },
+    "public.miembro_organizacion_rol": {
+      "name": "miembro_organizacion_rol",
+      "schema": "public",
+      "values": ["administrador", "miembro"]
     },
     "public.proyecto_estado": {
       "name": "proyecto_estado",

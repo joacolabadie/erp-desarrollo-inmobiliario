@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1771463814240,
-      "tag": "0000_elite_jean_grey",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1772485950986,
-      "tag": "0001_cold_iron_monger",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1772659426992,
-      "tag": "0002_windy_the_twelve",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1772839411131,
-      "tag": "0003_cultured_gressill",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1772839579753,
-      "tag": "0004_crazy_the_captain",
+      "when": 1773194583669,
+      "tag": "0000_cynical_thanos",
       "breakpoints": true
     }
   ]

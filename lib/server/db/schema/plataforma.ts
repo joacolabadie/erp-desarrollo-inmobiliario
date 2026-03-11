@@ -1,11 +1,10 @@
 import { users } from "@/lib/server/db/schema/auth.generated";
-import { sql } from "drizzle-orm";
 import {
-  boolean,
+  foreignKey,
   pgTable,
   text,
   timestamp,
-  uniqueIndex,
+  unique,
   uuid,
 } from "drizzle-orm/pg-core";
 
@@ -19,13 +18,8 @@ export const plataformaAdministradores = pgTable(
     usuarioId: text("usuario_id")
       .notNull()
       .references(() => users.id, { onDelete: "restrict" }),
-    activo: boolean("activo").default(true).notNull(),
   },
-  (t) => [
-    uniqueIndex("plataforma_administradores_usuario_id_key_active")
-      .on(t.usuarioId)
-      .where(sql`${t.activo} = true`),
-  ],
+  (t) => [unique().on(t.usuarioId)],
 );
 
 export const plataformaAplicaciones = pgTable(
@@ -38,16 +32,8 @@ export const plataformaAplicaciones = pgTable(
     clave: text("clave").notNull(),
     slug: text("slug").notNull(),
     nombre: text("nombre").notNull(),
-    activo: boolean("activo").default(true).notNull(),
   },
-  (t) => [
-    uniqueIndex("plataforma_aplicaciones_clave_key_active")
-      .on(t.clave)
-      .where(sql`${t.activo} = true`),
-    uniqueIndex("plataforma_aplicaciones_slug_key_active")
-      .on(t.slug)
-      .where(sql`${t.activo} = true`),
-  ],
+  (t) => [unique().on(t.clave), unique().on(t.slug)],
 );
 
 export const plataformaAdministradoresAplicaciones = pgTable(
@@ -57,19 +43,17 @@ export const plataformaAdministradoresAplicaciones = pgTable(
     creadoEn: timestamp("creado_en", { withTimezone: true })
       .defaultNow()
       .notNull(),
-    plataformaAdministradorId: uuid("plataforma_administrador_id")
-      .notNull()
-      .references(() => plataformaAdministradores.id, { onDelete: "cascade" }),
+    plataformaAdministradorId: uuid("plataforma_administrador_id").notNull(),
     plataformaAplicacionId: uuid("plataforma_aplicacion_id")
       .notNull()
       .references(() => plataformaAplicaciones.id, { onDelete: "restrict" }),
-    activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
-    uniqueIndex(
-      "plataforma_administradores_aplicaciones_plataforma_administrador_id_plataforma_aplicacion_id_key_active",
-    )
-      .on(t.plataformaAdministradorId, t.plataformaAplicacionId)
-      .where(sql`${t.activo} = true`),
+    foreignKey({
+      name: "manual_plataforma_administradores_aplicaciones_plataforma_administrador_id_fkey",
+      columns: [t.plataformaAdministradorId],
+      foreignColumns: [plataformaAdministradores.id],
+    }).onDelete("restrict"),
+    unique().on(t.plataformaAdministradorId, t.plataformaAplicacionId),
   ],
 );

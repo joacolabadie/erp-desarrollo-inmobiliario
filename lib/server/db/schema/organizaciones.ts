@@ -10,40 +10,45 @@ import { proyectos } from "@/lib/server/db/schema/proyectos";
 import { sql } from "drizzle-orm";
 import {
   boolean,
-  check,
+  foreignKey,
   pgEnum,
   pgTable,
   text,
   timestamp,
+  unique,
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 
-export const rolMiembroOrganizacionEnum = pgEnum(
-  "rol_miembro_organizacion",
+export const miembroOrganizacionRolEnum = pgEnum(
+  "miembro_organizacion_rol",
   MIEMBRO_ORGANIZACION_ROL_VALUES,
 );
 
-export const estadoMiembroOrganizacionEnum = pgEnum(
-  "estado_miembro_organizacion",
+export const miembroOrganizacionEstadoEnum = pgEnum(
+  "miembro_organizacion_estado",
   MIEMBRO_ORGANIZACION_ESTADO_VALUES,
 );
 
-export const estadoInvitacionOrganizacionEnum = pgEnum(
-  "estado_invitacion_organizacion",
+export const invitacionOrganizacionEstadoEnum = pgEnum(
+  "invitacion_organizacion_estado",
   INVITACION_ORGANIZACION_ESTADO_VALUES,
 );
 
 export const materialTipoEnum = pgEnum("material_tipo", MATERIAL_TIPO_VALUES);
 
-export const organizaciones = pgTable("organizaciones", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  creadoEn: timestamp("creado_en", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  nombre: text("nombre").notNull(),
-  activo: boolean("activo").default(true).notNull(),
-});
+export const organizaciones = pgTable(
+  "organizaciones",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    creadoEn: timestamp("creado_en", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    identificadorCliente: text("identificador_cliente").notNull(),
+    nombre: text("nombre").notNull(),
+  },
+  (t) => [unique().on(t.identificadorCliente)],
+);
 
 export const organizacionesRazonesSociales = pgTable(
   "organizaciones_razones_sociales",
@@ -54,17 +59,13 @@ export const organizacionesRazonesSociales = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
     nombreLegal: text("nombre_legal").notNull(),
     cuit: text("cuit").notNull(),
-    activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
-    uniqueIndex(
-      "organizaciones_razones_sociales_organizacion_id_cuit_key_active",
-    )
-      .on(t.organizacionId, t.cuit)
-      .where(sql`${t.activo} = true`),
+    unique().on(t.organizacionId, t.id),
+    unique().on(t.organizacionId, t.cuit),
   ],
 );
 
@@ -77,18 +78,14 @@ export const unidadesMedida = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
     codigo: text("codigo").notNull(),
     nombre: text("nombre").notNull(),
-    activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
-    uniqueIndex("unidades_medida_organizacion_id_codigo_key_active")
-      .on(t.organizacionId, t.codigo)
-      .where(sql`${t.activo} = true`),
-    uniqueIndex("unidades_medida_organizacion_id_nombre_key_active")
-      .on(t.organizacionId, t.nombre)
-      .where(sql`${t.activo} = true`),
+    unique().on(t.organizacionId, t.id),
+    unique().on(t.organizacionId, t.codigo),
+    unique().on(t.organizacionId, t.nombre),
   ],
 );
 
@@ -101,19 +98,18 @@ export const materiales = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
     nombre: text("nombre").notNull(),
     tipo: materialTipoEnum("tipo").notNull(),
-    unidadMedidaId: uuid("unidad_medida_id")
-      .notNull()
-      .references(() => unidadesMedida.id, { onDelete: "restrict" }),
-    stockeable: boolean("stockeable").default(false).notNull(),
-    activo: boolean("activo").default(true).notNull(),
+    unidadMedidaId: uuid("unidad_medida_id").notNull(),
+    stockeable: boolean("stockeable").default(true).notNull(),
   },
   (t) => [
-    uniqueIndex("materiales_organizacion_id_nombre_key_active")
-      .on(t.organizacionId, t.nombre)
-      .where(sql`${t.activo} = true`),
+    foreignKey({
+      columns: [t.organizacionId, t.unidadMedidaId],
+      foreignColumns: [unidadesMedida.organizacionId, unidadesMedida.id],
+    }).onDelete("restrict"),
+    unique().on(t.organizacionId, t.nombre),
   ],
 );
 
@@ -126,19 +122,12 @@ export const organizacionesAplicaciones = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
     aplicacionId: uuid("aplicacion_id")
       .notNull()
       .references(() => aplicaciones.id, { onDelete: "restrict" }),
-    activo: boolean("activo").default(true).notNull(),
   },
-  (t) => [
-    uniqueIndex(
-      "organizaciones_aplicaciones_organizacion_id_aplicacion_id_key_active",
-    )
-      .on(t.organizacionId, t.aplicacionId)
-      .where(sql`${t.activo} = true`),
-  ],
+  (t) => [unique().on(t.organizacionId, t.aplicacionId)],
 );
 
 export const organizacionesMiembros = pgTable(
@@ -150,19 +139,14 @@ export const organizacionesMiembros = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
     usuarioId: text("usuario_id")
       .notNull()
       .references(() => users.id, { onDelete: "restrict" }),
-    rol: rolMiembroOrganizacionEnum("rol").default("miembro").notNull(),
-    estado: estadoMiembroOrganizacionEnum("estado").default("activo").notNull(),
-    activo: boolean("activo").default(true).notNull(),
+    rol: miembroOrganizacionRolEnum("rol").default("miembro").notNull(),
+    estado: miembroOrganizacionEstadoEnum("estado").default("activo").notNull(),
   },
-  (t) => [
-    uniqueIndex("organizaciones_miembros_organizacion_id_usuario_id_key_active")
-      .on(t.organizacionId, t.usuarioId)
-      .where(sql`${t.activo} = true`),
-  ],
+  (t) => [unique().on(t.organizacionId, t.usuarioId)],
 );
 
 export const organizacionesMiembrosAplicaciones = pgTable(
@@ -174,21 +158,27 @@ export const organizacionesMiembrosAplicaciones = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
-    usuarioId: text("usuario_id")
-      .notNull()
-      .references(() => users.id, { onDelete: "restrict" }),
-    aplicacionId: uuid("aplicacion_id")
-      .notNull()
-      .references(() => aplicaciones.id, { onDelete: "restrict" }),
-    activo: boolean("activo").default(true).notNull(),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
+    usuarioId: text("usuario_id").notNull(),
+    aplicacionId: uuid("aplicacion_id").notNull(),
   },
   (t) => [
-    uniqueIndex(
-      "organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_aplicacion_id_key_active",
-    )
-      .on(t.organizacionId, t.usuarioId, t.aplicacionId)
-      .where(sql`${t.activo} = true`),
+    foreignKey({
+      name: "manual_organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_fkey",
+      columns: [t.organizacionId, t.usuarioId],
+      foreignColumns: [
+        organizacionesMiembros.organizacionId,
+        organizacionesMiembros.usuarioId,
+      ],
+    }).onDelete("restrict"),
+    foreignKey({
+      columns: [t.organizacionId, t.aplicacionId],
+      foreignColumns: [
+        organizacionesAplicaciones.organizacionId,
+        organizacionesAplicaciones.aplicacionId,
+      ],
+    }).onDelete("restrict"),
+    unique().on(t.organizacionId, t.usuarioId, t.aplicacionId),
   ],
 );
 
@@ -201,21 +191,23 @@ export const organizacionesMiembrosProyectos = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
-    usuarioId: text("usuario_id")
-      .notNull()
-      .references(() => users.id, { onDelete: "restrict" }),
-    proyectoId: uuid("proyecto_id")
-      .notNull()
-      .references(() => proyectos.id, { onDelete: "cascade" }),
-    activo: boolean("activo").default(true).notNull(),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
+    usuarioId: text("usuario_id").notNull(),
+    proyectoId: uuid("proyecto_id").notNull(),
   },
   (t) => [
-    uniqueIndex(
-      "organizaciones_miembros_proyectos_organizacion_id_usuario_id_proyecto_id_key_active",
-    )
-      .on(t.organizacionId, t.usuarioId, t.proyectoId)
-      .where(sql`${t.activo} = true`),
+    foreignKey({
+      columns: [t.organizacionId, t.usuarioId],
+      foreignColumns: [
+        organizacionesMiembros.organizacionId,
+        organizacionesMiembros.usuarioId,
+      ],
+    }).onDelete("restrict"),
+    foreignKey({
+      columns: [t.organizacionId, t.proyectoId],
+      foreignColumns: [proyectos.organizacionId, proyectos.id],
+    }).onDelete("restrict"),
+    unique().on(t.organizacionId, t.usuarioId, t.proyectoId),
   ],
 );
 
@@ -228,28 +220,19 @@ export const organizacionesInvitaciones = pgTable(
       .notNull(),
     organizacionId: uuid("organizacion_id")
       .notNull()
-      .references(() => organizaciones.id, { onDelete: "cascade" }),
+      .references(() => organizaciones.id, { onDelete: "restrict" }),
     email: text("email").notNull(),
+    rol: miembroOrganizacionRolEnum("rol").default("miembro").notNull(),
     tokenHash: text("token_hash").notNull(),
     expiraEn: timestamp("expira_en", { withTimezone: true }).notNull(),
-    rol: rolMiembroOrganizacionEnum("rol").default("miembro").notNull(),
-    estado: estadoInvitacionOrganizacionEnum("estado")
+    estado: invitacionOrganizacionEstadoEnum("estado")
       .default("pendiente")
       .notNull(),
-    activo: boolean("activo").default(true).notNull(),
   },
   (t) => [
-    check(
-      "organizaciones_invitaciones_email_lowercase",
-      sql`${t.email} = lower(${t.email})`,
-    ),
-    uniqueIndex("organizaciones_invitaciones_token_hash_key_active")
-      .on(t.tokenHash)
-      .where(sql`${t.activo} = true`),
-    uniqueIndex(
-      "organizaciones_invitaciones_organizacion_id_email_pendiente_key_active",
-    )
+    unique().on(t.tokenHash),
+    uniqueIndex()
       .on(t.organizacionId, t.email)
-      .where(sql`${t.estado} = 'pendiente' AND ${t.activo} = true`),
+      .where(sql`${t.estado} = 'pendiente'`),
   ],
 );
