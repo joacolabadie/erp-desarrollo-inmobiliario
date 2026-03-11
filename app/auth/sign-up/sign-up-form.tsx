@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -44,9 +44,12 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-export function SignUpForm() {
+type SignUpFormProps = {
+  next: string | null;
+};
+
+export function SignUpForm({ next }: SignUpFormProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,8 +76,6 @@ export function SignUpForm() {
 
         return;
       }
-
-      const next = searchParams.get("next");
 
       router.push(next || "/dashboard");
     } catch {

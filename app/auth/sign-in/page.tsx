@@ -31,7 +31,7 @@ export default async function SignInPage({
             a tu cuenta.
           </p>
         </div>
-        <SignInForm />
+        <SignInForm next={next ?? null} />
         <p className="text-muted-foreground text-center text-sm">
           Todavía no tenés una cuenta?{" "}
           <Link

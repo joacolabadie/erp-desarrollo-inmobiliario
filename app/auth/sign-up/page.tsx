@@ -31,7 +31,7 @@ export default async function SignUpPage({
             cuenta.
           </p>
         </div>
-        <SignUpForm />
+        <SignUpForm next={next ?? null} />
         <p className="text-muted-foreground text-center text-sm">
           Ya tenés una cuenta?{" "}
           <Link
