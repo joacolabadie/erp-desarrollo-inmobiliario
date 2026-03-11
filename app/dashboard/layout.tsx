@@ -36,146 +36,192 @@ export default async function DashboardLayout({
     redirect("/auth/sign-in");
   }
 
-  const organizaciones = await db
-    .select({
-      id: organizacionesTabla.id,
-      nombre: organizacionesTabla.nombre,
-    })
-    .from(organizacionesMiembrosTabla)
-    .innerJoin(
-      organizacionesTabla,
-      eq(organizacionesTabla.id, organizacionesMiembrosTabla.organizacionId),
-    )
-    .where(
-      and(
-        eq(organizacionesMiembrosTabla.usuarioId, session.user.id),
-        eq(organizacionesMiembrosTabla.estado, "activo"),
-        eq(organizacionesMiembrosTabla.activo, true),
-        eq(organizacionesTabla.activo, true),
-      ),
-    )
-    .orderBy(asc(organizacionesTabla.nombre), asc(organizacionesTabla.id));
-
-  const proyectos = await db
-    .select({
-      id: proyectosTabla.id,
-      organizacionId: proyectosTabla.organizacionId,
-      nombre: proyectosTabla.nombre,
-    })
-    .from(organizacionesMiembrosProyectosTabla)
-    .innerJoin(
-      proyectosTabla,
-      and(
-        eq(proyectosTabla.id, organizacionesMiembrosProyectosTabla.proyectoId),
-        eq(
-          proyectosTabla.organizacionId,
-          organizacionesMiembrosProyectosTabla.organizacionId,
+  const [organizaciones, proyectos, aplicaciones, aplicacionesPlataforma] =
+    await Promise.all([
+      db
+        .select({
+          id: organizacionesTabla.id,
+          nombre: organizacionesTabla.nombre,
+        })
+        .from(organizacionesMiembrosTabla)
+        .innerJoin(
+          organizacionesTabla,
+          eq(
+            organizacionesTabla.id,
+            organizacionesMiembrosTabla.organizacionId,
+          ),
+        )
+        .where(
+          and(
+            eq(organizacionesMiembrosTabla.usuarioId, session.user.id),
+            eq(organizacionesMiembrosTabla.estado, "activo"),
+            eq(organizacionesMiembrosTabla.activo, true),
+            eq(organizacionesTabla.activo, true),
+          ),
+        )
+        .orderBy(asc(organizacionesTabla.nombre), asc(organizacionesTabla.id)),
+      db
+        .select({
+          id: proyectosTabla.id,
+          organizacionId: proyectosTabla.organizacionId,
+          nombre: proyectosTabla.nombre,
+        })
+        .from(organizacionesMiembrosProyectosTabla)
+        .innerJoin(
+          proyectosTabla,
+          and(
+            eq(
+              proyectosTabla.id,
+              organizacionesMiembrosProyectosTabla.proyectoId,
+            ),
+            eq(
+              proyectosTabla.organizacionId,
+              organizacionesMiembrosProyectosTabla.organizacionId,
+            ),
+          ),
+        )
+        .innerJoin(
+          organizacionesMiembrosTabla,
+          and(
+            eq(
+              organizacionesMiembrosTabla.organizacionId,
+              organizacionesMiembrosProyectosTabla.organizacionId,
+            ),
+            eq(
+              organizacionesMiembrosTabla.usuarioId,
+              organizacionesMiembrosProyectosTabla.usuarioId,
+            ),
+          ),
+        )
+        .innerJoin(
+          organizacionesTabla,
+          eq(
+            organizacionesTabla.id,
+            organizacionesMiembrosProyectosTabla.organizacionId,
+          ),
+        )
+        .where(
+          and(
+            eq(organizacionesMiembrosProyectosTabla.usuarioId, session.user.id),
+            eq(organizacionesMiembrosProyectosTabla.activo, true),
+            eq(proyectosTabla.activo, true),
+            eq(organizacionesMiembrosTabla.estado, "activo"),
+            eq(organizacionesMiembrosTabla.activo, true),
+            eq(organizacionesTabla.activo, true),
+          ),
+        )
+        .orderBy(asc(proyectosTabla.nombre), asc(proyectosTabla.id)),
+      db
+        .select({
+          organizacionId: organizacionesTabla.id,
+          moduloId: modulosTabla.id,
+          moduloSlug: modulosTabla.slug,
+          moduloNombre: modulosTabla.nombre,
+          aplicacionId: aplicacionesTabla.id,
+          aplicacionSlug: aplicacionesTabla.slug,
+          aplicacionNombre: aplicacionesTabla.nombre,
+          aplicacionScope: aplicacionesTabla.scope,
+        })
+        .from(organizacionesMiembrosAplicacionesTabla)
+        .innerJoin(
+          aplicacionesTabla,
+          eq(
+            aplicacionesTabla.id,
+            organizacionesMiembrosAplicacionesTabla.aplicacionId,
+          ),
+        )
+        .innerJoin(
+          modulosTabla,
+          eq(modulosTabla.id, aplicacionesTabla.moduloId),
+        )
+        .innerJoin(
+          organizacionesMiembrosTabla,
+          and(
+            eq(
+              organizacionesMiembrosTabla.organizacionId,
+              organizacionesMiembrosAplicacionesTabla.organizacionId,
+            ),
+            eq(
+              organizacionesMiembrosTabla.usuarioId,
+              organizacionesMiembrosAplicacionesTabla.usuarioId,
+            ),
+          ),
+        )
+        .innerJoin(
+          organizacionesAplicacionesTabla,
+          and(
+            eq(
+              organizacionesAplicacionesTabla.organizacionId,
+              organizacionesMiembrosAplicacionesTabla.organizacionId,
+            ),
+            eq(
+              organizacionesAplicacionesTabla.aplicacionId,
+              organizacionesMiembrosAplicacionesTabla.aplicacionId,
+            ),
+          ),
+        )
+        .innerJoin(
+          organizacionesTabla,
+          eq(
+            organizacionesTabla.id,
+            organizacionesMiembrosAplicacionesTabla.organizacionId,
+          ),
+        )
+        .where(
+          and(
+            eq(
+              organizacionesMiembrosAplicacionesTabla.usuarioId,
+              session.user.id,
+            ),
+            eq(organizacionesMiembrosAplicacionesTabla.activo, true),
+            eq(aplicacionesTabla.activo, true),
+            eq(modulosTabla.activo, true),
+            eq(organizacionesMiembrosTabla.estado, "activo"),
+            eq(organizacionesMiembrosTabla.activo, true),
+            eq(organizacionesAplicacionesTabla.activo, true),
+            eq(organizacionesTabla.activo, true),
+          ),
+        )
+        .orderBy(
+          asc(modulosTabla.nombre),
+          asc(modulosTabla.id),
+          asc(aplicacionesTabla.nombre),
+          asc(aplicacionesTabla.id),
         ),
-      ),
-    )
-    .innerJoin(
-      organizacionesMiembrosTabla,
-      and(
-        eq(
-          organizacionesMiembrosTabla.organizacionId,
-          organizacionesMiembrosProyectosTabla.organizacionId,
+      db
+        .select({
+          id: plataformaAplicacionesTabla.id,
+          slug: plataformaAplicacionesTabla.slug,
+          nombre: plataformaAplicacionesTabla.nombre,
+        })
+        .from(plataformaAdministradoresAplicacionesTabla)
+        .innerJoin(
+          plataformaAdministradoresTabla,
+          eq(
+            plataformaAdministradoresTabla.id,
+            plataformaAdministradoresAplicacionesTabla.plataformaAdministradorId,
+          ),
+        )
+        .innerJoin(
+          plataformaAplicacionesTabla,
+          eq(
+            plataformaAplicacionesTabla.id,
+            plataformaAdministradoresAplicacionesTabla.plataformaAplicacionId,
+          ),
+        )
+        .where(
+          and(
+            eq(plataformaAdministradoresAplicacionesTabla.activo, true),
+            eq(plataformaAdministradoresTabla.usuarioId, session.user.id),
+            eq(plataformaAdministradoresTabla.activo, true),
+            eq(plataformaAplicacionesTabla.activo, true),
+          ),
+        )
+        .orderBy(
+          asc(plataformaAplicacionesTabla.nombre),
+          asc(plataformaAplicacionesTabla.id),
         ),
-        eq(
-          organizacionesMiembrosTabla.usuarioId,
-          organizacionesMiembrosProyectosTabla.usuarioId,
-        ),
-      ),
-    )
-    .innerJoin(
-      organizacionesTabla,
-      eq(
-        organizacionesTabla.id,
-        organizacionesMiembrosProyectosTabla.organizacionId,
-      ),
-    )
-    .where(
-      and(
-        eq(organizacionesMiembrosProyectosTabla.usuarioId, session.user.id),
-        eq(organizacionesMiembrosProyectosTabla.activo, true),
-        eq(proyectosTabla.activo, true),
-        eq(organizacionesMiembrosTabla.estado, "activo"),
-        eq(organizacionesMiembrosTabla.activo, true),
-        eq(organizacionesTabla.activo, true),
-      ),
-    )
-    .orderBy(asc(proyectosTabla.nombre), asc(proyectosTabla.id));
-
-  const aplicaciones = await db
-    .select({
-      organizacionId: organizacionesTabla.id,
-      moduloId: modulosTabla.id,
-      moduloSlug: modulosTabla.slug,
-      moduloNombre: modulosTabla.nombre,
-      aplicacionId: aplicacionesTabla.id,
-      aplicacionSlug: aplicacionesTabla.slug,
-      aplicacionNombre: aplicacionesTabla.nombre,
-      aplicacionScope: aplicacionesTabla.scope,
-    })
-    .from(organizacionesMiembrosAplicacionesTabla)
-    .innerJoin(
-      aplicacionesTabla,
-      eq(
-        aplicacionesTabla.id,
-        organizacionesMiembrosAplicacionesTabla.aplicacionId,
-      ),
-    )
-    .innerJoin(modulosTabla, eq(modulosTabla.id, aplicacionesTabla.moduloId))
-    .innerJoin(
-      organizacionesMiembrosTabla,
-      and(
-        eq(
-          organizacionesMiembrosTabla.organizacionId,
-          organizacionesMiembrosAplicacionesTabla.organizacionId,
-        ),
-        eq(
-          organizacionesMiembrosTabla.usuarioId,
-          organizacionesMiembrosAplicacionesTabla.usuarioId,
-        ),
-      ),
-    )
-    .innerJoin(
-      organizacionesAplicacionesTabla,
-      and(
-        eq(
-          organizacionesAplicacionesTabla.organizacionId,
-          organizacionesMiembrosAplicacionesTabla.organizacionId,
-        ),
-        eq(
-          organizacionesAplicacionesTabla.aplicacionId,
-          organizacionesMiembrosAplicacionesTabla.aplicacionId,
-        ),
-      ),
-    )
-    .innerJoin(
-      organizacionesTabla,
-      eq(
-        organizacionesTabla.id,
-        organizacionesMiembrosAplicacionesTabla.organizacionId,
-      ),
-    )
-    .where(
-      and(
-        eq(organizacionesMiembrosAplicacionesTabla.usuarioId, session.user.id),
-        eq(organizacionesMiembrosAplicacionesTabla.activo, true),
-        eq(aplicacionesTabla.activo, true),
-        eq(modulosTabla.activo, true),
-        eq(organizacionesMiembrosTabla.estado, "activo"),
-        eq(organizacionesMiembrosTabla.activo, true),
-        eq(organizacionesAplicacionesTabla.activo, true),
-        eq(organizacionesTabla.activo, true),
-      ),
-    )
-    .orderBy(
-      asc(modulosTabla.nombre),
-      asc(modulosTabla.id),
-      asc(aplicacionesTabla.nombre),
-      asc(aplicacionesTabla.id),
-    );
+    ]);
 
   const modulos: Modulo[] = [];
 
@@ -205,40 +251,6 @@ export default async function DashboardLayout({
       scope: aplicacion.aplicacionScope,
     });
   }
-
-  const aplicacionesPlataforma = await db
-    .select({
-      id: plataformaAplicacionesTabla.id,
-      slug: plataformaAplicacionesTabla.slug,
-      nombre: plataformaAplicacionesTabla.nombre,
-    })
-    .from(plataformaAdministradoresAplicacionesTabla)
-    .innerJoin(
-      plataformaAdministradoresTabla,
-      eq(
-        plataformaAdministradoresTabla.id,
-        plataformaAdministradoresAplicacionesTabla.plataformaAdministradorId,
-      ),
-    )
-    .innerJoin(
-      plataformaAplicacionesTabla,
-      eq(
-        plataformaAplicacionesTabla.id,
-        plataformaAdministradoresAplicacionesTabla.plataformaAplicacionId,
-      ),
-    )
-    .where(
-      and(
-        eq(plataformaAdministradoresAplicacionesTabla.activo, true),
-        eq(plataformaAdministradoresTabla.usuarioId, session.user.id),
-        eq(plataformaAdministradoresTabla.activo, true),
-        eq(plataformaAplicacionesTabla.activo, true),
-      ),
-    )
-    .orderBy(
-      asc(plataformaAplicacionesTabla.nombre),
-      asc(plataformaAplicacionesTabla.id),
-    );
 
   return (
     <SidebarProvider>
