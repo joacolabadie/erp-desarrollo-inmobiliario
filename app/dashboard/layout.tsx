@@ -7,7 +7,6 @@ import { db } from "@/lib/server/db";
 import {
   aplicaciones as aplicacionesTabla,
   modulos as modulosTabla,
-  organizacionesAplicaciones as organizacionesAplicacionesTabla,
   organizacionesMiembrosAplicaciones as organizacionesMiembrosAplicacionesTabla,
   organizacionesMiembrosProyectos as organizacionesMiembrosProyectosTabla,
   organizacionesMiembros as organizacionesMiembrosTabla,
@@ -55,8 +54,6 @@ export default async function DashboardLayout({
           and(
             eq(organizacionesMiembrosTabla.usuarioId, session.user.id),
             eq(organizacionesMiembrosTabla.estado, "activo"),
-            eq(organizacionesMiembrosTabla.activo, true),
-            eq(organizacionesTabla.activo, true),
           ),
         )
         .orderBy(asc(organizacionesTabla.nombre), asc(organizacionesTabla.id)),
@@ -93,27 +90,17 @@ export default async function DashboardLayout({
             ),
           ),
         )
-        .innerJoin(
-          organizacionesTabla,
-          eq(
-            organizacionesTabla.id,
-            organizacionesMiembrosProyectosTabla.organizacionId,
-          ),
-        )
         .where(
           and(
             eq(organizacionesMiembrosProyectosTabla.usuarioId, session.user.id),
-            eq(organizacionesMiembrosProyectosTabla.activo, true),
-            eq(proyectosTabla.activo, true),
             eq(organizacionesMiembrosTabla.estado, "activo"),
-            eq(organizacionesMiembrosTabla.activo, true),
-            eq(organizacionesTabla.activo, true),
           ),
         )
         .orderBy(asc(proyectosTabla.nombre), asc(proyectosTabla.id)),
       db
         .select({
-          organizacionId: organizacionesTabla.id,
+          organizacionId:
+            organizacionesMiembrosAplicacionesTabla.organizacionId,
           moduloId: modulosTabla.id,
           moduloSlug: modulosTabla.slug,
           moduloNombre: modulosTabla.nombre,
@@ -147,39 +134,13 @@ export default async function DashboardLayout({
             ),
           ),
         )
-        .innerJoin(
-          organizacionesAplicacionesTabla,
-          and(
-            eq(
-              organizacionesAplicacionesTabla.organizacionId,
-              organizacionesMiembrosAplicacionesTabla.organizacionId,
-            ),
-            eq(
-              organizacionesAplicacionesTabla.aplicacionId,
-              organizacionesMiembrosAplicacionesTabla.aplicacionId,
-            ),
-          ),
-        )
-        .innerJoin(
-          organizacionesTabla,
-          eq(
-            organizacionesTabla.id,
-            organizacionesMiembrosAplicacionesTabla.organizacionId,
-          ),
-        )
         .where(
           and(
             eq(
               organizacionesMiembrosAplicacionesTabla.usuarioId,
               session.user.id,
             ),
-            eq(organizacionesMiembrosAplicacionesTabla.activo, true),
-            eq(aplicacionesTabla.activo, true),
-            eq(modulosTabla.activo, true),
             eq(organizacionesMiembrosTabla.estado, "activo"),
-            eq(organizacionesMiembrosTabla.activo, true),
-            eq(organizacionesAplicacionesTabla.activo, true),
-            eq(organizacionesTabla.activo, true),
           ),
         )
         .orderBy(
@@ -209,14 +170,7 @@ export default async function DashboardLayout({
             plataformaAdministradoresAplicacionesTabla.plataformaAplicacionId,
           ),
         )
-        .where(
-          and(
-            eq(plataformaAdministradoresAplicacionesTabla.activo, true),
-            eq(plataformaAdministradoresTabla.usuarioId, session.user.id),
-            eq(plataformaAdministradoresTabla.activo, true),
-            eq(plataformaAplicacionesTabla.activo, true),
-          ),
-        )
+        .where(eq(plataformaAdministradoresTabla.usuarioId, session.user.id))
         .orderBy(
           asc(plataformaAplicacionesTabla.nombre),
           asc(plataformaAplicacionesTabla.id),

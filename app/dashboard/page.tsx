@@ -20,7 +20,6 @@ export default async function DashboardPage() {
   const organizaciones = await db
     .select({
       id: organizacionesTabla.id,
-      nombre: organizacionesTabla.nombre,
     })
     .from(organizacionesMiembrosTabla)
     .innerJoin(
@@ -31,8 +30,6 @@ export default async function DashboardPage() {
       and(
         eq(organizacionesMiembrosTabla.usuarioId, session.user.id),
         eq(organizacionesMiembrosTabla.estado, "activo"),
-        eq(organizacionesMiembrosTabla.activo, true),
-        eq(organizacionesTabla.activo, true),
       ),
     )
     .orderBy(asc(organizacionesTabla.nombre), asc(organizacionesTabla.id));
