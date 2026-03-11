@@ -1,11 +1,13 @@
-import { AceptarInvitacionClient } from "@/app/invitaciones/aceptar/aceptar-invitacion-client";
+import { AcceptInvitacionClient } from "@/app/invitaciones/aceptar/accept-invitacion-client";
 
-export default async function AceptarInvitacionPage({
+export default async function AcceptInvitacionPage({
   searchParams,
 }: {
-  searchParams: Promise<{ token?: string }>;
+  searchParams: Promise<{
+    token?: string;
+  }>;
 }) {
   const { token } = await searchParams;
 
-  return <AceptarInvitacionClient token={token ?? null} />;
+  return <AcceptInvitacionClient token={token ?? null} />;
 }

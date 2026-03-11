@@ -38,7 +38,7 @@ export default async function DashboardPage() {
     return (
       <div className="grid min-h-full place-items-center px-4 py-12">
         <div className="w-full max-w-lg">
-          <div className="space-y-1 text-center">
+          <div className="flex flex-col gap-1 text-center">
             <h1 className="text-2xl font-semibold text-balance">
               No pertenecés a ninguna organización
             </h1>

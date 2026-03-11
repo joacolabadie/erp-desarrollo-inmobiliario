@@ -6,10 +6,22 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export function AceptarInvitacionClient({ token }: { token: string | null }) {
+type InvitacionStatus = {
+  title: string;
+  description: string;
+};
+
+type AcceptInvitacionClientProps = {
+  token: string | null;
+};
+
+export function AcceptInvitacionClient({ token }: AcceptInvitacionClientProps) {
   const router = useRouter();
 
-  const [message, setMessage] = useState("Validando invitación...");
+  const [invitacionStatus, setInvitacionStatus] = useState<InvitacionStatus>({
+    title: "Validando invitación",
+    description: "Esperá un momento mientras verificamos los datos.",
+  });
 
   useEffect(() => {
     async function validateInvitacion() {
@@ -31,7 +43,10 @@ export function AceptarInvitacionClient({ token }: { token: string | null }) {
         return;
       }
 
-      setMessage("Aceptando invitación...");
+      setInvitacionStatus({
+        title: "Aceptando invitación",
+        description: "Estamos procesando tu acceso a la organización.",
+      });
 
       try {
         const response = await fetch("/api/invitaciones/aceptar", {
@@ -45,7 +60,10 @@ export function AceptarInvitacionClient({ token }: { token: string | null }) {
         const data = await response.json();
 
         if (!response.ok || !data.ok) {
-          toast.error(data.message || "No se pudo aceptar la invitación.");
+          toast.error(
+            data.message ||
+              "Ocurrió un error inesperado al aceptar la invitación.",
+          );
 
           router.replace("/dashboard");
 
@@ -66,11 +84,18 @@ export function AceptarInvitacionClient({ token }: { token: string | null }) {
   }, [router, token]);
 
   return (
-    <div className="grid h-svh place-items-center px-4 py-12">
-      <div className="text-center">
-        <div className="flex items-center gap-2">
-          <LoaderCircle className="size-4 animate-spin" />
-          <p className="text-sm">{message}</p>
+    <div className="grid min-h-svh place-items-center px-4 py-12">
+      <div className="w-full max-w-lg">
+        <div className="flex flex-col gap-2 text-center">
+          <LoaderCircle className="text-muted-foreground mx-auto size-4 animate-spin" />
+          <div className="flex flex-col gap-1">
+            <h1 className="text-2xl font-semibold text-balance">
+              {invitacionStatus.title}
+            </h1>
+            <p className="text-muted-foreground text-sm text-balance">
+              {invitacionStatus.description}
+            </p>
+          </div>
         </div>
       </div>
     </div>
