@@ -1,9 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
-import {
-  organizacionesMiembros as organizacionesMiembrosTabla,
-  organizaciones as organizacionesTabla,
-} from "@/lib/server/db/schema";
+import { organizacionesMiembros as organizacionesMiembrosTabla } from "@/lib/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -14,7 +11,9 @@ export default async function OrganizacionLayout({
   params,
 }: {
   children: ReactNode;
-  params: Promise<{ organizacionId: string }>;
+  params: Promise<{
+    organizacionId: string;
+  }>;
 }) {
   const { organizacionId } = await params;
 
@@ -27,19 +26,15 @@ export default async function OrganizacionLayout({
   }
 
   const organizacion = await db
-    .select({ id: organizacionesTabla.id })
+    .select({
+      id: organizacionesMiembrosTabla.organizacionId,
+    })
     .from(organizacionesMiembrosTabla)
-    .innerJoin(
-      organizacionesTabla,
-      eq(organizacionesTabla.id, organizacionesMiembrosTabla.organizacionId),
-    )
     .where(
       and(
         eq(organizacionesMiembrosTabla.organizacionId, organizacionId),
         eq(organizacionesMiembrosTabla.usuarioId, session.user.id),
         eq(organizacionesMiembrosTabla.estado, "activo"),
-        eq(organizacionesMiembrosTabla.activo, true),
-        eq(organizacionesTabla.activo, true),
       ),
     )
     .limit(1);

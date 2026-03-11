@@ -215,7 +215,7 @@ export default async function DashboardLayout({
         aplicacionesPlataforma={aplicacionesPlataforma}
         user={{ name: session.user.name, email: session.user.email }}
       />
-      <SidebarInset className="h-svh flex-col overflow-y-hidden">
+      <SidebarInset className="h-svh overflow-hidden">
         <BreadcrumbExtrasProvider>
           <AppHeader
             organizaciones={organizaciones}
@@ -223,7 +223,7 @@ export default async function DashboardLayout({
             modulos={modulos}
             aplicacionesPlataforma={aplicacionesPlataforma}
           />
-          <main className="flex-1 overflow-y-auto">{children}</main>
+          <main className="min-h-0 flex-1 overflow-y-auto">{children}</main>
         </BreadcrumbExtrasProvider>
       </SidebarInset>
     </SidebarProvider>

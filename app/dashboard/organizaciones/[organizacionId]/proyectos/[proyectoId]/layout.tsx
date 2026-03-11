@@ -3,8 +3,6 @@ import { db } from "@/lib/server/db";
 import {
   organizacionesMiembrosProyectos as organizacionesMiembrosProyectosTabla,
   organizacionesMiembros as organizacionesMiembrosTabla,
-  organizaciones as organizacionesTabla,
-  proyectos as proyectosTabla,
 } from "@/lib/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { headers } from "next/headers";
@@ -16,7 +14,10 @@ export default async function ProyectoLayout({
   params,
 }: {
   children: ReactNode;
-  params: Promise<{ organizacionId: string; proyectoId: string }>;
+  params: Promise<{
+    organizacionId: string;
+    proyectoId: string;
+  }>;
 }) {
   const { organizacionId, proyectoId } = await params;
 
@@ -30,19 +31,9 @@ export default async function ProyectoLayout({
 
   const proyecto = await db
     .select({
-      id: proyectosTabla.id,
+      id: organizacionesMiembrosProyectosTabla.proyectoId,
     })
     .from(organizacionesMiembrosProyectosTabla)
-    .innerJoin(
-      proyectosTabla,
-      and(
-        eq(proyectosTabla.id, organizacionesMiembrosProyectosTabla.proyectoId),
-        eq(
-          proyectosTabla.organizacionId,
-          organizacionesMiembrosProyectosTabla.organizacionId,
-        ),
-      ),
-    )
     .innerJoin(
       organizacionesMiembrosTabla,
       and(
@@ -56,23 +47,12 @@ export default async function ProyectoLayout({
         ),
       ),
     )
-    .innerJoin(
-      organizacionesTabla,
-      eq(
-        organizacionesTabla.id,
-        organizacionesMiembrosProyectosTabla.organizacionId,
-      ),
-    )
     .where(
       and(
         eq(organizacionesMiembrosProyectosTabla.organizacionId, organizacionId),
         eq(organizacionesMiembrosProyectosTabla.usuarioId, session.user.id),
         eq(organizacionesMiembrosProyectosTabla.proyectoId, proyectoId),
-        eq(organizacionesMiembrosProyectosTabla.activo, true),
-        eq(proyectosTabla.activo, true),
         eq(organizacionesMiembrosTabla.estado, "activo"),
-        eq(organizacionesMiembrosTabla.activo, true),
-        eq(organizacionesTabla.activo, true),
       ),
     )
     .limit(1);
