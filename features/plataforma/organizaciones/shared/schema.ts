@@ -36,7 +36,7 @@ export const modulosConfigureSchema = z.object({
 export type ModulosConfigureSchema = z.infer<typeof modulosConfigureSchema>;
 
 export const invitacionSendSchema = z.object({
-  email: z.email("Ingresá un email válido.").trim(),
+  email: z.email("Ingresá un email válido.").trim().toLowerCase(),
   rol: z
     .string()
     .trim()

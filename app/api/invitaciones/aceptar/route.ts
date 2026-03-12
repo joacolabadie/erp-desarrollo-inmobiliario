@@ -4,7 +4,7 @@ import {
   organizacionesInvitaciones as organizacionesInvitacionesTabla,
   organizacionesMiembros as organizacionesMiembrosTabla,
 } from "@/lib/server/db/schema/organizaciones";
-import { hashToken, normalizeEmail } from "@/lib/server/invitaciones";
+import { hashToken } from "@/lib/server/invitaciones";
 import { and, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -35,7 +35,6 @@ export async function POST(req: Request) {
     );
   }
 
-  const email = normalizeEmail(session.user.email);
   const tokenHash = hashToken(result.data.token);
 
   const invitacion = await db
@@ -79,7 +78,7 @@ export async function POST(req: Request) {
     );
   }
 
-  if (normalizeEmail(invitacion[0].email) !== email) {
+  if (invitacion[0].email !== session.user.email) {
     return NextResponse.json(
       {
         ok: false,

@@ -25,7 +25,8 @@ const formSchema = z
       .max(255, "Tu nombre completo no puede superar los 255 caracteres."),
     email: z
       .email("Ingresá un correo electrónico válido.")
-      .min(1, "Ingresá tu correo electrónico.")
+      .trim()
+      .toLowerCase()
       .max(255, "Tu correo electrónico no puede superar los 255 caracteres."),
     password: z
       .string()

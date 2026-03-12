@@ -10,11 +10,7 @@ import {
 } from "@/lib/server/db/schema/organizaciones";
 import { sendInvitacion } from "@/lib/server/email/send-invitacion";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
-import {
-  generateToken,
-  hashToken,
-  normalizeEmail,
-} from "@/lib/server/invitaciones";
+import { generateToken, hashToken } from "@/lib/server/invitaciones";
 import { isValidUuid } from "@/lib/utils/validation/is-valid-uuid";
 import { and, DrizzleQueryError, eq } from "drizzle-orm";
 import { headers } from "next/headers";
@@ -73,7 +69,8 @@ export async function POST(
     );
   }
 
-  const email = normalizeEmail(result.data.email);
+  const { email } = result.data;
+
   const rol = result.data.rol as MiembroOrganizacionRol;
 
   const organizacion = await db
