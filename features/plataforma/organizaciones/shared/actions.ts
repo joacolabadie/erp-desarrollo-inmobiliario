@@ -45,10 +45,11 @@ export async function organizacionCreateAction(
     return { ok: false, message: "No autorizado." };
   }
 
-  const { nombre } = result.data;
+  const { identificadorCliente, nombre } = result.data;
 
   try {
     await db.insert(organizacionesTabla).values({
+      identificadorCliente,
       nombre,
     });
 
@@ -64,7 +65,8 @@ export async function organizacionCreateAction(
       if (code === "23505") {
         return {
           ok: false,
-          message: "Ya existe una organización activa con estos datos.",
+          message:
+            "Ya existe una organización con este identificador de cliente.",
         };
       }
     }
@@ -100,26 +102,22 @@ export async function organizacionEditAction(input: OrganizacionEditSchema) {
     return { ok: false, message: "No autorizado." };
   }
 
-  const { organizacionId, nombre } = result.data;
+  const { organizacionId, identificadorCliente, nombre } = result.data;
 
   try {
     const updatedOrganizacion = await db
       .update(organizacionesTabla)
       .set({
+        identificadorCliente,
         nombre,
       })
-      .where(
-        and(
-          eq(organizacionesTabla.id, organizacionId),
-          eq(organizacionesTabla.activo, true),
-        ),
-      )
+      .where(eq(organizacionesTabla.id, organizacionId))
       .returning({ id: organizacionesTabla.id });
 
     if (updatedOrganizacion.length === 0) {
       return {
         ok: false,
-        message: "La organización no existe o está inactiva.",
+        message: "La organización no existe.",
       };
     }
 
@@ -135,7 +133,8 @@ export async function organizacionEditAction(input: OrganizacionEditSchema) {
       if (code === "23505") {
         return {
           ok: false,
-          message: "Ya existe una organización activa con estos datos.",
+          message:
+            "Ya existe una organización con este identificador de cliente.",
         };
       }
     }
@@ -173,31 +172,37 @@ export async function modulosConfigureAction(input: ModulosConfigureSchema) {
 
   const { organizacionId, aplicacionIds } = result.data;
 
+  const organizacion = await db
+    .select({
+      id: organizacionesTabla.id,
+    })
+    .from(organizacionesTabla)
+    .where(eq(organizacionesTabla.id, organizacionId))
+    .limit(1);
+
+  if (organizacion.length === 0) {
+    return {
+      ok: false,
+      message: "La organización no existe.",
+    };
+  }
+
   try {
     await db.transaction(async (tx) => {
       if (aplicacionIds.length === 0) {
         await tx
-          .update(organizacionesAplicacionesTabla)
-          .set({ activo: false })
+          .delete(organizacionesAplicacionesTabla)
           .where(
-            and(
-              eq(
-                organizacionesAplicacionesTabla.organizacionId,
-                organizacionId,
-              ),
-              eq(organizacionesAplicacionesTabla.activo, true),
-            ),
+            eq(organizacionesAplicacionesTabla.organizacionId, organizacionId),
           );
         return;
       }
 
       await tx
-        .update(organizacionesAplicacionesTabla)
-        .set({ activo: false })
+        .delete(organizacionesAplicacionesTabla)
         .where(
           and(
             eq(organizacionesAplicacionesTabla.organizacionId, organizacionId),
-            eq(organizacionesAplicacionesTabla.activo, true),
             notInArray(
               organizacionesAplicacionesTabla.aplicacionId,
               aplicacionIds,
@@ -211,7 +216,6 @@ export async function modulosConfigureAction(input: ModulosConfigureSchema) {
         .where(
           and(
             eq(organizacionesAplicacionesTabla.organizacionId, organizacionId),
-            eq(organizacionesAplicacionesTabla.activo, true),
             inArray(
               organizacionesAplicacionesTabla.aplicacionId,
               aplicacionIds,
@@ -227,7 +231,6 @@ export async function modulosConfigureAction(input: ModulosConfigureSchema) {
           missingActive.map((aplicacionId) => ({
             organizacionId,
             aplicacionId,
-            activo: true,
           })),
         );
       }
@@ -247,8 +250,7 @@ export async function modulosConfigureAction(input: ModulosConfigureSchema) {
       if (code === "23505") {
         return {
           ok: false,
-          message:
-            "Ya existe una aplicación activa asignada a esta organización.",
+          message: "Ya existe una aplicación asignada a esta organización.",
         };
       }
     }

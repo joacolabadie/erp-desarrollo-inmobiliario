@@ -25,6 +25,7 @@ export function OrganizacionCreateForm() {
   const form = useForm<OrganizacionCreateSchema>({
     resolver: zodResolver(organizacionCreateSchema),
     defaultValues: {
+      identificadorCliente: "",
       nombre: "",
     },
   });
@@ -57,6 +58,24 @@ export function OrganizacionCreateForm() {
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
+        <Controller
+          name="identificadorCliente"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>
+                Identificador del cliente
+              </FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                aria-invalid={fieldState.invalid}
+                disabled={isSubmitting}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
         <Controller
           name="nombre"
           control={form.control}

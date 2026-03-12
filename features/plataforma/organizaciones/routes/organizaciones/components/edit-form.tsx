@@ -20,17 +20,20 @@ import { toast } from "sonner";
 
 type OrganizacionEditFormProps = {
   organizacionId: string;
+  identificadorCliente: string;
   nombre: string;
 };
 
 export function OrganizacionEditForm({
   organizacionId,
+  identificadorCliente,
   nombre,
 }: OrganizacionEditFormProps) {
   const form = useForm<OrganizacionEditSchema>({
     resolver: zodResolver(organizacionEditSchema),
     defaultValues: {
       organizacionId,
+      identificadorCliente,
       nombre,
     },
   });
@@ -59,6 +62,24 @@ export function OrganizacionEditForm({
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
+        <Controller
+          name="identificadorCliente"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>
+                Identificador del cliente
+              </FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                aria-invalid={fieldState.invalid}
+                disabled={isSubmitting}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
         <Controller
           name="nombre"
           control={form.control}

@@ -6,7 +6,7 @@ import { db } from "@/lib/server/db";
 import { organizaciones as organizacionesTabla } from "@/lib/server/db/schema";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import { isValidUuid } from "@/lib/utils/validation/is-valid-uuid";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { ChevronLeft } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -43,15 +43,11 @@ export default async function OrganizacionEdit({
   const organizacion = await db
     .select({
       id: organizacionesTabla.id,
+      identificadorCliente: organizacionesTabla.identificadorCliente,
       nombre: organizacionesTabla.nombre,
     })
     .from(organizacionesTabla)
-    .where(
-      and(
-        eq(organizacionesTabla.id, organizacionId),
-        eq(organizacionesTabla.activo, true),
-      ),
-    )
+    .where(eq(organizacionesTabla.id, organizacionId))
     .limit(1);
 
   if (organizacion.length === 0) {
@@ -76,6 +72,7 @@ export default async function OrganizacionEdit({
           </div>
           <OrganizacionEditForm
             organizacionId={organizacion[0].id}
+            identificadorCliente={organizacion[0].identificadorCliente}
             nombre={organizacion[0].nombre}
           />
         </div>

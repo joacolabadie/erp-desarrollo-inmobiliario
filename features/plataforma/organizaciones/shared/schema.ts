@@ -2,6 +2,14 @@ import { MIEMBRO_ORGANIZACION_ROL_VALUES } from "@/lib/domain";
 import * as z from "zod";
 
 export const organizacionCreateSchema = z.object({
+  identificadorCliente: z
+    .string()
+    .trim()
+    .min(1, "Ingresá el identificador del cliente.")
+    .max(
+      255,
+      "El identificador del cliente no puede superar los 255 caracteres.",
+    ),
   nombre: z
     .string()
     .trim()
@@ -16,6 +24,14 @@ export type OrganizacionCreateSchema = z.infer<typeof organizacionCreateSchema>;
 
 export const organizacionEditSchema = z.object({
   organizacionId: z.uuid("La organización seleccionada es inválida."),
+  identificadorCliente: z
+    .string()
+    .trim()
+    .min(1, "Ingresá el identificador del cliente.")
+    .max(
+      255,
+      "El identificador del cliente no puede superar los 255 caracteres.",
+    ),
   nombre: z
     .string()
     .trim()
