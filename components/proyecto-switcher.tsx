@@ -3,6 +3,7 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -42,7 +43,10 @@ export function ProyectoSwitcher({
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton size="lg">
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
               <div className="grid font-medium">
                 <span className="text-muted-foreground truncate text-xs">
                   Proyecto
@@ -55,27 +59,29 @@ export function ProyectoSwitcher({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
-            <DropdownMenuItem
-              onClick={() =>
-                router.push(`/dashboard/organizaciones/${organizacionId}`)
-              }
-            >
-              Vista general
-              {proyectoId === null && <Check className="ml-auto" />}
-            </DropdownMenuItem>
-            {proyectosOrganizacion.map((proyecto) => (
+            <DropdownMenuGroup>
               <DropdownMenuItem
-                key={proyecto.id}
                 onClick={() =>
-                  router.push(
-                    `/dashboard/organizaciones/${organizacionId}/proyectos/${proyecto.id}`,
-                  )
+                  router.push(`/dashboard/organizaciones/${organizacionId}`)
                 }
               >
-                {proyecto.nombre}
-                {proyecto.id === proyectoId && <Check className="ml-auto" />}
+                Vista general
+                {proyectoId === null && <Check className="ml-auto" />}
               </DropdownMenuItem>
-            ))}
+              {proyectosOrganizacion.map((proyecto) => (
+                <DropdownMenuItem
+                  key={proyecto.id}
+                  onClick={() =>
+                    router.push(
+                      `/dashboard/organizaciones/${organizacionId}/proyectos/${proyecto.id}`,
+                    )
+                  }
+                >
+                  {proyecto.nombre}
+                  {proyecto.id === proyectoId && <Check className="ml-auto" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

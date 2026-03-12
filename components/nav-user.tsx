@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -29,7 +30,10 @@ export function NavUser({ user }: NavUserProps) {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton size="lg">
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
               <Avatar>
                 <AvatarFallback>
                   {user.name.charAt(0).toUpperCase()}
@@ -45,19 +49,21 @@ export function NavUser({ user }: NavUserProps) {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
-            <DropdownMenuItem asChild>
-              <button
-                onClick={async () => {
-                  await authClient.signOut();
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <button
+                  onClick={async () => {
+                    await authClient.signOut();
 
-                  router.push("/auth/sign-in");
-                }}
-                className="w-full"
-              >
-                <LogOut />
-                Cerrar sesión
-              </button>
-            </DropdownMenuItem>
+                    router.push("/auth/sign-in");
+                  }}
+                  className="w-full"
+                >
+                  <LogOut />
+                  Cerrar sesión
+                </button>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

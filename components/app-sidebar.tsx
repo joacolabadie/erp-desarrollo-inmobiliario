@@ -1,7 +1,7 @@
 "use client";
 
 import { NavMain } from "@/components/nav-main";
-import NavPlataforma from "@/components/nav-plataforma";
+import { NavPlataforma } from "@/components/nav-plataforma";
 import { NavUser } from "@/components/nav-user";
 import { OrganizacionSwitcher } from "@/components/organizacion-switcher";
 import { ProyectoSwitcher } from "@/components/proyecto-switcher";

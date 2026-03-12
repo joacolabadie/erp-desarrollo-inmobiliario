@@ -14,9 +14,7 @@ type NavPlataformaProps = {
   aplicacionesPlataforma: AplicacionPlataforma[];
 };
 
-export default function NavPlataforma({
-  aplicacionesPlataforma,
-}: NavPlataformaProps) {
+export function NavPlataforma({ aplicacionesPlataforma }: NavPlataformaProps) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel className="text-muted-foreground">

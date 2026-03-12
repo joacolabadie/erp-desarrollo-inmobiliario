@@ -45,7 +45,7 @@ export function AppHeader({
 
   const { extras } = useBreadcrumbExtras();
 
-  const aplicacionPlataformHref = params.aplicacionPlataformaSlug
+  const aplicacionPlataformaHref = params.aplicacionPlataformaSlug
     ? `/dashboard/plataforma/${params.aplicacionPlataformaSlug}`
     : null;
 
@@ -129,11 +129,17 @@ export function AppHeader({
     aplicacionesPlataforma,
   ]);
 
+  const hasBreadcrumbs =
+    breadcrumb.nombreAplicacionPlataforma !== null ||
+    breadcrumb.nombreOrganizacion !== null;
+
   return (
     <header className="bg-sidebar border-sidebar-border flex h-16 items-center justify-between gap-4 border-b px-4">
       <div className="flex items-center gap-3">
         <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4 self-center!" />
+        {hasBreadcrumbs && (
+          <Separator orientation="vertical" className="mr-2 h-4 self-center!" />
+        )}
         <Breadcrumb>
           <BreadcrumbList>
             {breadcrumb.nombreAplicacionPlataforma !== null ? (
@@ -143,9 +149,9 @@ export function AppHeader({
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  {extras.length > 0 && aplicacionPlataformHref !== null ? (
+                  {extras.length > 0 && aplicacionPlataformaHref !== null ? (
                     <BreadcrumbLink asChild>
-                      <Link href={aplicacionPlataformHref}>
+                      <Link href={aplicacionPlataformaHref}>
                         {breadcrumb.nombreAplicacionPlataforma}
                       </Link>
                     </BreadcrumbLink>

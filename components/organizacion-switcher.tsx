@@ -3,6 +3,7 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -38,7 +39,10 @@ export function OrganizacionSwitcher({
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild disabled={organizaciones.length === 0}>
-            <SidebarMenuButton size="lg">
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
               <div className="grid flex-1 font-medium">
                 <span className="text-muted-foreground truncate text-xs">
                   Organización
@@ -51,19 +55,21 @@ export function OrganizacionSwitcher({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
-            {organizaciones.map((organizacion) => (
-              <DropdownMenuItem
-                key={organizacion.id}
-                onClick={() =>
-                  router.push(`/dashboard/organizaciones/${organizacion.id}`)
-                }
-              >
-                {organizacion.nombre}
-                {organizacion.id === organizacionId && (
-                  <Check className="ml-auto" />
-                )}
-              </DropdownMenuItem>
-            ))}
+            <DropdownMenuGroup>
+              {organizaciones.map((organizacion) => (
+                <DropdownMenuItem
+                  key={organizacion.id}
+                  onClick={() =>
+                    router.push(`/dashboard/organizaciones/${organizacion.id}`)
+                  }
+                >
+                  {organizacion.nombre}
+                  {organizacion.id === organizacionId && (
+                    <Check className="ml-auto" />
+                  )}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
