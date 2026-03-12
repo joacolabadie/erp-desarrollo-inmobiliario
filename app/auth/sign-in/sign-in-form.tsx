@@ -19,7 +19,6 @@ import * as z from "zod";
 const formSchema = z.object({
   email: z
     .email("Ingresá un correo electrónico válido.")
-    .min(1, "Ingresá tu correo electrónico.")
     .max(255, "Tu correo electrónico no puede superar los 255 caracteres."),
   password: z
     .string()

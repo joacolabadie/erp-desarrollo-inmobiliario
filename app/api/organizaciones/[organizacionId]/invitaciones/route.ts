@@ -134,6 +134,9 @@ export async function POST(
     const invitacion = await db
       .select({
         id: organizacionesInvitacionesTabla.id,
+        tokenHash: organizacionesInvitacionesTabla.tokenHash,
+        expiraEn: organizacionesInvitacionesTabla.expiraEn,
+        rol: organizacionesInvitacionesTabla.rol,
       })
       .from(organizacionesInvitacionesTabla)
       .where(
@@ -149,9 +152,9 @@ export async function POST(
       await db
         .update(organizacionesInvitacionesTabla)
         .set({
+          rol,
           tokenHash,
           expiraEn,
-          rol,
         })
         .where(eq(organizacionesInvitacionesTabla.id, invitacion[0].id));
     } else {
@@ -174,6 +177,34 @@ export async function POST(
         rol,
       });
     } catch {
+      if (invitacion.length > 0) {
+        await db
+          .update(organizacionesInvitacionesTabla)
+          .set({
+            rol: invitacion[0].rol,
+            tokenHash: invitacion[0].tokenHash,
+            expiraEn: invitacion[0].expiraEn,
+          })
+          .where(eq(organizacionesInvitacionesTabla.id, invitacion[0].id));
+      } else {
+        await db
+          .update(organizacionesInvitacionesTabla)
+          .set({
+            estado: "revocada",
+          })
+          .where(
+            and(
+              eq(
+                organizacionesInvitacionesTabla.organizacionId,
+                organizacionId,
+              ),
+              eq(organizacionesInvitacionesTabla.email, email),
+              eq(organizacionesInvitacionesTabla.tokenHash, tokenHash),
+              eq(organizacionesInvitacionesTabla.estado, "pendiente"),
+            ),
+          );
+      }
+
       return NextResponse.json(
         {
           ok: false,
