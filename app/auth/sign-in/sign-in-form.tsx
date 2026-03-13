@@ -10,7 +10,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderCircle } from "lucide-react";
+import { Loading03Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -105,7 +106,13 @@ export function SignInForm({ next }: SignInFormProps) {
         />
         <Field>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting && <LoaderCircle className="animate-spin" />}
+            {isSubmitting && (
+              <HugeiconsIcon
+                icon={Loading03Icon}
+                strokeWidth={2}
+                className="animate-spin"
+              />
+            )}
             Ingresar
           </Button>
         </Field>

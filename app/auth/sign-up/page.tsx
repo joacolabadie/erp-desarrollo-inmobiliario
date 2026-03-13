@@ -7,7 +7,9 @@ import { redirect } from "next/navigation";
 export default async function SignUpPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{
+    next?: string;
+  }>;
 }) {
   const session = await auth.api.getSession({
     headers: await headers(),
