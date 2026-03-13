@@ -1,6 +1,6 @@
-import { AppHeader } from "@/components/app-header";
-import { AppSidebar } from "@/components/app-sidebar";
-import { BreadcrumbExtrasProvider } from "@/components/breadcrumb-extras";
+import { AppHeader } from "@/components/dashboard/app-header";
+import { AppSidebar } from "@/components/dashboard/app-sidebar";
+import { BreadcrumbExtrasProvider } from "@/components/dashboard/breadcrumb-extras";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
