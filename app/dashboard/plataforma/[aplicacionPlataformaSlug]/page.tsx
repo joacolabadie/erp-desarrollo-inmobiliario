@@ -21,9 +21,7 @@ export default async function AplicacionPlataformaPage({
   }
 
   const aplicacionPlataformaDefinition =
-    aplicacionPlataformaRegistry[
-      aplicacionPlataformaSlug as keyof typeof aplicacionPlataformaRegistry
-    ];
+    aplicacionPlataformaRegistry[aplicacionPlataformaSlug];
 
   if (!aplicacionPlataformaDefinition) {
     redirect("/dashboard");

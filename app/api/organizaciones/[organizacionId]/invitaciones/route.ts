@@ -1,6 +1,8 @@
-import { invitacionSendSchema } from "@/features/plataforma/organizaciones/shared/schema";
 import { auth } from "@/lib/auth";
-import type { MiembroOrganizacionRol } from "@/lib/domain";
+import {
+  MIEMBRO_ORGANIZACION_ROL_VALUES,
+  type MiembroOrganizacionRol,
+} from "@/lib/domain";
 import { db } from "@/lib/server/db";
 import { generateConstraintName } from "@/lib/server/db/constraint-names";
 import { users as usersTabla } from "@/lib/server/db/schema/auth.generated";
@@ -16,6 +18,18 @@ import { isValidUuid } from "@/lib/utils/validation/is-valid-uuid";
 import { and, DrizzleQueryError, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import z from "zod";
+
+const bodySchema = z.object({
+  email: z.email().trim().toLowerCase(),
+  rol: z
+    .string()
+    .trim()
+    .min(1)
+    .refine((value) =>
+      (MIEMBRO_ORGANIZACION_ROL_VALUES as readonly string[]).includes(value),
+    ),
+});
 
 export async function POST(
   req: Request,
@@ -40,16 +54,14 @@ export async function POST(
 
   const { organizacionId } = await params;
 
-  if (!isValidUuid(organizacionId)) {
+  if (!isValidUuid({ value: organizacionId })) {
     return NextResponse.json(
       { ok: false, message: "La organización seleccionada es inválida." },
       { status: 400 },
     );
   }
 
-  const result = invitacionSendSchema.safeParse(
-    await req.json().catch(() => null),
-  );
+  const result = bodySchema.safeParse(await req.json().catch(() => null));
 
   if (!result.success) {
     return NextResponse.json(
@@ -127,7 +139,7 @@ export async function POST(
   }
 
   const rawToken = generateToken();
-  const tokenHash = hashToken(rawToken);
+  const tokenHash = hashToken({ token: rawToken });
 
   const expiraEn = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 

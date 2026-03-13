@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const tokenHash = hashToken(result.data.token);
+  const tokenHash = hashToken({ token: result.data.token });
 
   const invitacion = await db
     .select({

@@ -1,7 +1,8 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { LoaderCircle } from "lucide-react";
+import { Loading03Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -85,7 +86,9 @@ export function AcceptInvitacionClient({ token }: AcceptInvitacionClientProps) {
     <div className="grid min-h-svh place-items-center px-4 py-12">
       <div className="w-full max-w-lg">
         <div className="flex flex-col gap-2 text-center">
-          <LoaderCircle className="text-muted-foreground mx-auto size-4 animate-spin" />
+          <div className="text-muted-foreground mx-auto size-4 animate-spin">
+            <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} />
+          </div>
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-semibold text-balance">
               {invitacionStatus.title}
