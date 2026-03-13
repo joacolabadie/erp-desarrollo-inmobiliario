@@ -12,7 +12,7 @@ import {
 
 export type BreadcrumbExtraInput = {
   label: string;
-  href?: string | null;
+  href?: string;
 };
 
 export type BreadcrumbExtra = {

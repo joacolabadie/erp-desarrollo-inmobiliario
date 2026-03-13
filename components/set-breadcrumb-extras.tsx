@@ -14,12 +14,12 @@ function makeKey(extra: BreadcrumbExtraInput) {
 export function SetBreadcrumbExtras({
   extras,
 }: {
-  extras: BreadcrumbExtraInput[] | null;
+  extras: BreadcrumbExtraInput[];
 }) {
   const { setExtras } = useBreadcrumbExtras();
 
   const normalized = useMemo<BreadcrumbExtra[]>(() => {
-    return (extras ?? [])
+    return extras
       .filter(
         (extra) =>
           !!extra && typeof extra.label === "string" && extra.label.length > 0,

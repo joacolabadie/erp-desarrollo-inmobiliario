@@ -36,11 +36,8 @@ export async function hasAplicacionPlataformaAccess({
     )
     .where(
       and(
-        eq(plataformaAdministradoresAplicacionesTabla.activo, true),
         eq(plataformaAdministradoresTabla.usuarioId, userId),
-        eq(plataformaAdministradoresTabla.activo, true),
         eq(plataformaAplicacionesTabla.clave, clave),
-        eq(plataformaAplicacionesTabla.activo, true),
       ),
     )
     .limit(1);

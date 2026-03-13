@@ -38,7 +38,10 @@ export function AppSidebar({
   user,
   ...props
 }: AppSidebarProps) {
-  const params = useParams<{ organizacionId?: string; proyectoId?: string }>();
+  const params = useParams<{
+    organizacionId?: string;
+    proyectoId?: string;
+  }>();
 
   const organizacionId = params.organizacionId ?? null;
   const proyectoId = params.proyectoId ?? null;

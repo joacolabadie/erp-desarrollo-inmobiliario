@@ -2,6 +2,7 @@ import { invitacionSendSchema } from "@/features/plataforma/organizaciones/share
 import { auth } from "@/lib/auth";
 import type { MiembroOrganizacionRol } from "@/lib/domain";
 import { db } from "@/lib/server/db";
+import { generateConstraintName } from "@/lib/server/db/constraint-names";
 import { users as usersTabla } from "@/lib/server/db/schema/auth.generated";
 import {
   organizacionesInvitaciones as organizacionesInvitacionesTabla,
@@ -225,11 +226,30 @@ export async function POST(
       const code = (cause as Record<string, unknown>)["code"];
 
       if (code === "23505") {
+        const constraint = (cause as Record<string, unknown>)["constraint"];
+
+        if (
+          constraint ===
+          generateConstraintName({
+            table: "organizaciones_invitaciones",
+            kind: "uqx",
+            parts: ["organizacion_id", "email", "estado_pendiente"],
+          })
+        ) {
+          return NextResponse.json(
+            {
+              ok: false,
+              message:
+                "Ya existe una invitación pendiente para este email en la organización.",
+            },
+            { status: 409 },
+          );
+        }
+
         return NextResponse.json(
           {
             ok: false,
-            message:
-              "Ya existe una invitación pendiente para este email en la organización.",
+            message: "Ya existe una invitación con estos datos.",
           },
           { status: 409 },
         );
