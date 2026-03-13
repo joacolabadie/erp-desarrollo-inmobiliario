@@ -2,6 +2,10 @@ import { z } from "zod";
 
 const uuidSchema = z.uuid();
 
-export function isValidUuid(value: string): boolean {
+type IsValidUuidArgs = {
+  value: string;
+};
+
+export function isValidUuid({ value }: IsValidUuidArgs): boolean {
   return uuidSchema.safeParse(value).success;
 }
