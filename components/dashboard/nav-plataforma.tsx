@@ -2,6 +2,7 @@
 
 import {
   SidebarGroup,
+  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
@@ -20,17 +21,21 @@ export function NavPlataforma({ aplicacionesPlataforma }: NavPlataformaProps) {
       <SidebarGroupLabel className="text-muted-foreground">
         Plataforma
       </SidebarGroupLabel>
-      <SidebarMenu>
-        {aplicacionesPlataforma.map((aplicacionPlataforma) => (
-          <SidebarMenuItem key={aplicacionPlataforma.id}>
-            <SidebarMenuButton asChild>
-              <Link href={`/dashboard/plataforma/${aplicacionPlataforma.slug}`}>
-                <span>{aplicacionPlataforma.nombre}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
-      </SidebarMenu>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {aplicacionesPlataforma.map((aplicacionPlataforma) => (
+            <SidebarMenuItem key={aplicacionPlataforma.id}>
+              <SidebarMenuButton asChild>
+                <Link
+                  href={`/dashboard/plataforma/${aplicacionPlataforma.slug}`}
+                >
+                  <span>{aplicacionPlataforma.nombre}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
     </SidebarGroup>
   );
 }

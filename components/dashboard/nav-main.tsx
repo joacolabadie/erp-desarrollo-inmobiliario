@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
+  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
@@ -28,8 +29,9 @@ type NavMainProps = {
 
 export function NavMain({ organizacionId, proyectoId, modulos }: NavMainProps) {
   const modulosFiltrados = modulos
-    .map((modulo) => {
-      const aplicaciones = modulo.aplicaciones.filter((aplicacion) => {
+    .map((modulo) => ({
+      ...modulo,
+      aplicaciones: modulo.aplicaciones.filter((aplicacion) => {
         if (proyectoId === null) {
           return (
             aplicacion.scope === "organizacional" ||
@@ -38,15 +40,8 @@ export function NavMain({ organizacionId, proyectoId, modulos }: NavMainProps) {
         }
 
         return aplicacion.scope === "proyecto" || aplicacion.scope === "mixto";
-      });
-
-      return {
-        id: modulo.id,
-        slug: modulo.slug,
-        nombre: modulo.nombre,
-        aplicaciones,
-      };
-    })
+      }),
+    }))
     .filter((modulo) => modulo.aplicaciones.length > 0);
 
   const buildAplicacionHref = (moduloSlug: string, aplicacionSlug: string) =>
@@ -59,43 +54,44 @@ export function NavMain({ organizacionId, proyectoId, modulos }: NavMainProps) {
       <SidebarGroupLabel className="text-muted-foreground">
         Módulos
       </SidebarGroupLabel>
-      <SidebarMenu>
-        {modulosFiltrados.map((modulo) => (
-          <Collapsible key={modulo.id} asChild>
-            <SidebarMenuItem>
-              <CollapsibleTrigger asChild>
-                <SidebarMenuButton className="[&[data-state=open]>svg]:rotate-90">
-                  <span>{modulo.nombre}</span>
-                  <HugeiconsIcon
-                    icon={ArrowRight01Icon}
-                    strokeWidth={2}
-                    className="ml-auto transition-transform"
-                  />
-                </SidebarMenuButton>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <SidebarMenuSub className="mr-0 pr-0">
-                  {modulo.aplicaciones.map((aplicacion) => (
-                    <SidebarMenuSubItem key={aplicacion.id}>
-                      <div className="absolute top-1/2 -left-2.5 w-2.25 border-t" />
-                      <SidebarMenuSubButton asChild>
-                        <Link
-                          href={buildAplicacionHref(
-                            modulo.slug,
-                            aplicacion.slug,
-                          )}
-                        >
-                          <span>{aplicacion.nombre}</span>
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  ))}
-                </SidebarMenuSub>
-              </CollapsibleContent>
-            </SidebarMenuItem>
-          </Collapsible>
-        ))}
-      </SidebarMenu>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {modulosFiltrados.map((modulo) => (
+            <Collapsible key={modulo.id} asChild>
+              <SidebarMenuItem>
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton className="[&[data-state=open]>svg]:rotate-90">
+                    <span>{modulo.nombre}</span>
+                    <HugeiconsIcon
+                      icon={ArrowRight01Icon}
+                      strokeWidth={2}
+                      className="ml-auto transition-transform"
+                    />
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    {modulo.aplicaciones.map((aplicacion) => (
+                      <SidebarMenuSubItem key={aplicacion.id}>
+                        <SidebarMenuSubButton asChild>
+                          <Link
+                            href={buildAplicacionHref(
+                              modulo.slug,
+                              aplicacion.slug,
+                            )}
+                          >
+                            <span>{aplicacion.nombre}</span>
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </SidebarMenuItem>
+            </Collapsible>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
     </SidebarGroup>
   );
 }

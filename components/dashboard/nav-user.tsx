@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
 import type { User } from "@/lib/types/dashboard";
-import { Logout03Icon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
+import { LogoutIcon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useRouter } from "next/navigation";
 
@@ -64,11 +64,7 @@ export function NavUser({ user }: NavUserProps) {
                   }}
                   className="w-full"
                 >
-                  <HugeiconsIcon
-                    icon={Logout03Icon}
-                    strokeWidth={2}
-                    data-icon="inline-start"
-                  />
+                  <HugeiconsIcon icon={LogoutIcon} strokeWidth={2} />
                   Cerrar sesión
                 </button>
               </DropdownMenuItem>

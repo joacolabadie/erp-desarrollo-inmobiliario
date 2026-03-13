@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Moon02Icon, Sun01Icon } from "@hugeicons/core-free-icons";
+import { Moon02Icon, SunIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTheme } from "next-themes";
 
@@ -15,9 +15,14 @@ export function ModeToggle() {
   };
 
   return (
-    <Button variant="ghost" size="icon" onClick={toggleTheme} className="-mr-1">
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={toggleTheme}
+      className="relative -mr-1"
+    >
       <HugeiconsIcon
-        icon={Sun01Icon}
+        icon={SunIcon}
         strokeWidth={2}
         className="scale-100 dark:scale-0"
       />
