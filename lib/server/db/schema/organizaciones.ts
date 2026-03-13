@@ -4,6 +4,7 @@ import {
   MIEMBRO_ORGANIZACION_ESTADO_VALUES,
   MIEMBRO_ORGANIZACION_ROL_VALUES,
 } from "@/lib/domain";
+import { generateConstraintName } from "@/lib/server/db/constraint-names";
 import { users } from "@/lib/server/db/schema/auth.generated";
 import { aplicaciones } from "@/lib/server/db/schema/modulos";
 import { proyectos } from "@/lib/server/db/schema/proyectos";
@@ -47,7 +48,15 @@ export const organizaciones = pgTable(
     identificadorCliente: text("identificador_cliente").notNull(),
     nombre: text("nombre").notNull(),
   },
-  (t) => [unique().on(t.identificadorCliente)],
+  (t) => [
+    unique(
+      generateConstraintName({
+        table: "organizaciones",
+        kind: "uq",
+        parts: ["identificador_cliente"],
+      }),
+    ).on(t.identificadorCliente),
+  ],
 );
 
 export const organizacionesRazonesSociales = pgTable(
@@ -57,15 +66,34 @@ export const organizacionesRazonesSociales = pgTable(
     creadoEn: timestamp("creado_en", { withTimezone: true })
       .defaultNow()
       .notNull(),
-    organizacionId: uuid("organizacion_id")
-      .notNull()
-      .references(() => organizaciones.id, { onDelete: "restrict" }),
+    organizacionId: uuid("organizacion_id").notNull(),
     nombreLegal: text("nombre_legal").notNull(),
     cuit: text("cuit").notNull(),
   },
   (t) => [
-    unique().on(t.organizacionId, t.id),
-    unique().on(t.organizacionId, t.cuit),
+    foreignKey({
+      name: generateConstraintName({
+        table: "organizaciones_razones_sociales",
+        kind: "fk",
+        parts: ["organizacion_id", "organizaciones", "id"],
+      }),
+      columns: [t.organizacionId],
+      foreignColumns: [organizaciones.id],
+    }).onDelete("restrict"),
+    unique(
+      generateConstraintName({
+        table: "organizaciones_razones_sociales",
+        kind: "uq",
+        parts: ["organizacion_id", "id"],
+      }),
+    ).on(t.organizacionId, t.id),
+    unique(
+      generateConstraintName({
+        table: "organizaciones_razones_sociales",
+        kind: "uq",
+        parts: ["organizacion_id", "cuit"],
+      }),
+    ).on(t.organizacionId, t.cuit),
   ],
 );
 
@@ -76,16 +104,41 @@ export const unidadesMedida = pgTable(
     creadoEn: timestamp("creado_en", { withTimezone: true })
       .defaultNow()
       .notNull(),
-    organizacionId: uuid("organizacion_id")
-      .notNull()
-      .references(() => organizaciones.id, { onDelete: "restrict" }),
+    organizacionId: uuid("organizacion_id").notNull(),
     codigo: text("codigo").notNull(),
     nombre: text("nombre").notNull(),
   },
   (t) => [
-    unique().on(t.organizacionId, t.id),
-    unique().on(t.organizacionId, t.codigo),
-    unique().on(t.organizacionId, t.nombre),
+    foreignKey({
+      name: generateConstraintName({
+        table: "unidades_medida",
+        kind: "fk",
+        parts: ["organizacion_id", "organizaciones", "id"],
+      }),
+      columns: [t.organizacionId],
+      foreignColumns: [organizaciones.id],
+    }).onDelete("restrict"),
+    unique(
+      generateConstraintName({
+        table: "unidades_medida",
+        kind: "uq",
+        parts: ["organizacion_id", "id"],
+      }),
+    ).on(t.organizacionId, t.id),
+    unique(
+      generateConstraintName({
+        table: "unidades_medida",
+        kind: "uq",
+        parts: ["organizacion_id", "codigo"],
+      }),
+    ).on(t.organizacionId, t.codigo),
+    unique(
+      generateConstraintName({
+        table: "unidades_medida",
+        kind: "uq",
+        parts: ["organizacion_id", "nombre"],
+      }),
+    ).on(t.organizacionId, t.nombre),
   ],
 );
 
@@ -96,9 +149,7 @@ export const materiales = pgTable(
     creadoEn: timestamp("creado_en", { withTimezone: true })
       .defaultNow()
       .notNull(),
-    organizacionId: uuid("organizacion_id")
-      .notNull()
-      .references(() => organizaciones.id, { onDelete: "restrict" }),
+    organizacionId: uuid("organizacion_id").notNull(),
     nombre: text("nombre").notNull(),
     tipo: materialTipoEnum("tipo").notNull(),
     unidadMedidaId: uuid("unidad_medida_id").notNull(),
@@ -106,10 +157,36 @@ export const materiales = pgTable(
   },
   (t) => [
     foreignKey({
+      name: generateConstraintName({
+        table: "materiales",
+        kind: "fk",
+        parts: ["organizacion_id", "organizaciones", "id"],
+      }),
+      columns: [t.organizacionId],
+      foreignColumns: [organizaciones.id],
+    }).onDelete("restrict"),
+    foreignKey({
+      name: generateConstraintName({
+        table: "materiales",
+        kind: "fk",
+        parts: [
+          "organizacion_id",
+          "unidad_medida_id",
+          "unidades_medida",
+          "organizacion_id",
+          "id",
+        ],
+      }),
       columns: [t.organizacionId, t.unidadMedidaId],
       foreignColumns: [unidadesMedida.organizacionId, unidadesMedida.id],
     }).onDelete("restrict"),
-    unique().on(t.organizacionId, t.nombre),
+    unique(
+      generateConstraintName({
+        table: "materiales",
+        kind: "uq",
+        parts: ["organizacion_id", "nombre"],
+      }),
+    ).on(t.organizacionId, t.nombre),
   ],
 );
 
@@ -120,14 +197,36 @@ export const organizacionesAplicaciones = pgTable(
     creadoEn: timestamp("creado_en", { withTimezone: true })
       .defaultNow()
       .notNull(),
-    organizacionId: uuid("organizacion_id")
-      .notNull()
-      .references(() => organizaciones.id, { onDelete: "restrict" }),
-    aplicacionId: uuid("aplicacion_id")
-      .notNull()
-      .references(() => aplicaciones.id, { onDelete: "restrict" }),
+    organizacionId: uuid("organizacion_id").notNull(),
+    aplicacionId: uuid("aplicacion_id").notNull(),
   },
-  (t) => [unique().on(t.organizacionId, t.aplicacionId)],
+  (t) => [
+    foreignKey({
+      name: generateConstraintName({
+        table: "organizaciones_aplicaciones",
+        kind: "fk",
+        parts: ["organizacion_id", "organizaciones", "id"],
+      }),
+      columns: [t.organizacionId],
+      foreignColumns: [organizaciones.id],
+    }).onDelete("restrict"),
+    foreignKey({
+      name: generateConstraintName({
+        table: "organizaciones_aplicaciones",
+        kind: "fk",
+        parts: ["aplicacion_id", "aplicaciones", "id"],
+      }),
+      columns: [t.aplicacionId],
+      foreignColumns: [aplicaciones.id],
+    }).onDelete("restrict"),
+    unique(
+      generateConstraintName({
+        table: "organizaciones_aplicaciones",
+        kind: "uq",
+        parts: ["organizacion_id", "aplicacion_id"],
+      }),
+    ).on(t.organizacionId, t.aplicacionId),
+  ],
 );
 
 export const organizacionesMiembros = pgTable(
@@ -137,16 +236,38 @@ export const organizacionesMiembros = pgTable(
     creadoEn: timestamp("creado_en", { withTimezone: true })
       .defaultNow()
       .notNull(),
-    organizacionId: uuid("organizacion_id")
-      .notNull()
-      .references(() => organizaciones.id, { onDelete: "restrict" }),
-    usuarioId: text("usuario_id")
-      .notNull()
-      .references(() => users.id, { onDelete: "restrict" }),
+    organizacionId: uuid("organizacion_id").notNull(),
+    usuarioId: text("usuario_id").notNull(),
     rol: miembroOrganizacionRolEnum("rol").default("miembro").notNull(),
     estado: miembroOrganizacionEstadoEnum("estado").default("activo").notNull(),
   },
-  (t) => [unique().on(t.organizacionId, t.usuarioId)],
+  (t) => [
+    foreignKey({
+      name: generateConstraintName({
+        table: "organizaciones_miembros",
+        kind: "fk",
+        parts: ["organizacion_id", "organizaciones", "id"],
+      }),
+      columns: [t.organizacionId],
+      foreignColumns: [organizaciones.id],
+    }).onDelete("restrict"),
+    foreignKey({
+      name: generateConstraintName({
+        table: "organizaciones_miembros",
+        kind: "fk",
+        parts: ["usuario_id", "users", "id"],
+      }),
+      columns: [t.usuarioId],
+      foreignColumns: [users.id],
+    }).onDelete("restrict"),
+    unique(
+      generateConstraintName({
+        table: "organizaciones_miembros",
+        kind: "uq",
+        parts: ["organizacion_id", "usuario_id"],
+      }),
+    ).on(t.organizacionId, t.usuarioId),
+  ],
 );
 
 export const organizacionesMiembrosAplicaciones = pgTable(
@@ -156,15 +277,32 @@ export const organizacionesMiembrosAplicaciones = pgTable(
     creadoEn: timestamp("creado_en", { withTimezone: true })
       .defaultNow()
       .notNull(),
-    organizacionId: uuid("organizacion_id")
-      .notNull()
-      .references(() => organizaciones.id, { onDelete: "restrict" }),
+    organizacionId: uuid("organizacion_id").notNull(),
     usuarioId: text("usuario_id").notNull(),
     aplicacionId: uuid("aplicacion_id").notNull(),
   },
   (t) => [
     foreignKey({
-      name: "manual_organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_fkey",
+      name: generateConstraintName({
+        table: "organizaciones_miembros_aplicaciones",
+        kind: "fk",
+        parts: ["organizacion_id", "organizaciones", "id"],
+      }),
+      columns: [t.organizacionId],
+      foreignColumns: [organizaciones.id],
+    }).onDelete("restrict"),
+    foreignKey({
+      name: generateConstraintName({
+        table: "organizaciones_miembros_aplicaciones",
+        kind: "fk",
+        parts: [
+          "organizacion_id",
+          "usuario_id",
+          "organizaciones_miembros",
+          "organizacion_id",
+          "usuario_id",
+        ],
+      }),
       columns: [t.organizacionId, t.usuarioId],
       foreignColumns: [
         organizacionesMiembros.organizacionId,
@@ -172,13 +310,30 @@ export const organizacionesMiembrosAplicaciones = pgTable(
       ],
     }).onDelete("restrict"),
     foreignKey({
+      name: generateConstraintName({
+        table: "organizaciones_miembros_aplicaciones",
+        kind: "fk",
+        parts: [
+          "organizacion_id",
+          "aplicacion_id",
+          "organizaciones_aplicaciones",
+          "organizacion_id",
+          "aplicacion_id",
+        ],
+      }),
       columns: [t.organizacionId, t.aplicacionId],
       foreignColumns: [
         organizacionesAplicaciones.organizacionId,
         organizacionesAplicaciones.aplicacionId,
       ],
     }).onDelete("restrict"),
-    unique().on(t.organizacionId, t.usuarioId, t.aplicacionId),
+    unique(
+      generateConstraintName({
+        table: "organizaciones_miembros_aplicaciones",
+        kind: "uq",
+        parts: ["organizacion_id", "usuario_id", "aplicacion_id"],
+      }),
+    ).on(t.organizacionId, t.usuarioId, t.aplicacionId),
   ],
 );
 
@@ -189,14 +344,32 @@ export const organizacionesMiembrosProyectos = pgTable(
     creadoEn: timestamp("creado_en", { withTimezone: true })
       .defaultNow()
       .notNull(),
-    organizacionId: uuid("organizacion_id")
-      .notNull()
-      .references(() => organizaciones.id, { onDelete: "restrict" }),
+    organizacionId: uuid("organizacion_id").notNull(),
     usuarioId: text("usuario_id").notNull(),
     proyectoId: uuid("proyecto_id").notNull(),
   },
   (t) => [
     foreignKey({
+      name: generateConstraintName({
+        table: "organizaciones_miembros_proyectos",
+        kind: "fk",
+        parts: ["organizacion_id", "organizaciones", "id"],
+      }),
+      columns: [t.organizacionId],
+      foreignColumns: [organizaciones.id],
+    }).onDelete("restrict"),
+    foreignKey({
+      name: generateConstraintName({
+        table: "organizaciones_miembros_proyectos",
+        kind: "fk",
+        parts: [
+          "organizacion_id",
+          "usuario_id",
+          "organizaciones_miembros",
+          "organizacion_id",
+          "usuario_id",
+        ],
+      }),
       columns: [t.organizacionId, t.usuarioId],
       foreignColumns: [
         organizacionesMiembros.organizacionId,
@@ -204,10 +377,27 @@ export const organizacionesMiembrosProyectos = pgTable(
       ],
     }).onDelete("restrict"),
     foreignKey({
+      name: generateConstraintName({
+        table: "organizaciones_miembros_proyectos",
+        kind: "fk",
+        parts: [
+          "organizacion_id",
+          "proyecto_id",
+          "proyectos",
+          "organizacion_id",
+          "id",
+        ],
+      }),
       columns: [t.organizacionId, t.proyectoId],
       foreignColumns: [proyectos.organizacionId, proyectos.id],
     }).onDelete("restrict"),
-    unique().on(t.organizacionId, t.usuarioId, t.proyectoId),
+    unique(
+      generateConstraintName({
+        table: "organizaciones_miembros_proyectos",
+        kind: "uq",
+        parts: ["organizacion_id", "usuario_id", "proyecto_id"],
+      }),
+    ).on(t.organizacionId, t.usuarioId, t.proyectoId),
   ],
 );
 
@@ -218,9 +408,7 @@ export const organizacionesInvitaciones = pgTable(
     creadoEn: timestamp("creado_en", { withTimezone: true })
       .defaultNow()
       .notNull(),
-    organizacionId: uuid("organizacion_id")
-      .notNull()
-      .references(() => organizaciones.id, { onDelete: "restrict" }),
+    organizacionId: uuid("organizacion_id").notNull(),
     email: text("email").notNull(),
     rol: miembroOrganizacionRolEnum("rol").default("miembro").notNull(),
     tokenHash: text("token_hash").notNull(),
@@ -230,8 +418,29 @@ export const organizacionesInvitaciones = pgTable(
       .notNull(),
   },
   (t) => [
-    unique().on(t.tokenHash),
-    uniqueIndex()
+    foreignKey({
+      name: generateConstraintName({
+        table: "organizaciones_invitaciones",
+        kind: "fk",
+        parts: ["organizacion_id", "organizaciones", "id"],
+      }),
+      columns: [t.organizacionId],
+      foreignColumns: [organizaciones.id],
+    }).onDelete("restrict"),
+    unique(
+      generateConstraintName({
+        table: "organizaciones_invitaciones",
+        kind: "uq",
+        parts: ["token_hash"],
+      }),
+    ).on(t.tokenHash),
+    uniqueIndex(
+      generateConstraintName({
+        table: "organizaciones_invitaciones",
+        kind: "uqx",
+        parts: ["organizacion_id", "email", "estado_pendiente"],
+      }),
+    )
       .on(t.organizacionId, t.email)
       .where(sql`${t.estado} = 'pendiente'`),
   ],

@@ -1,5 +1,5 @@
 {
-  "id": "25d5073c-13a2-4955-a983-4a8299096981",
+  "id": "11764359-50e0-402f-b54d-d660b8b95b19",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -399,8 +399,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "aplicaciones_modulo_id_modulos_id_fk": {
-          "name": "aplicaciones_modulo_id_modulos_id_fk",
+        "aplicaciones__fk__0f0590269a": {
+          "name": "aplicaciones__fk__0f0590269a",
           "tableFrom": "aplicaciones",
           "tableTo": "modulos",
           "columnsFrom": ["modulo_id"],
@@ -411,13 +411,13 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "aplicaciones_modulo_id_clave_unique": {
-          "name": "aplicaciones_modulo_id_clave_unique",
+        "aplicaciones__uq__125965f52a": {
+          "name": "aplicaciones__uq__125965f52a",
           "nullsNotDistinct": false,
           "columns": ["modulo_id", "clave"]
         },
-        "aplicaciones_modulo_id_slug_unique": {
-          "name": "aplicaciones_modulo_id_slug_unique",
+        "aplicaciones__uq__ed10ade698": {
+          "name": "aplicaciones__uq__ed10ade698",
           "nullsNotDistinct": false,
           "columns": ["modulo_id", "slug"]
         }
@@ -467,13 +467,13 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "modulos_clave_unique": {
-          "name": "modulos_clave_unique",
+        "modulos__uq__ed319c54f5": {
+          "name": "modulos__uq__ed319c54f5",
           "nullsNotDistinct": false,
           "columns": ["clave"]
         },
-        "modulos_slug_unique": {
-          "name": "modulos_slug_unique",
+        "modulos__uq__df54a5f7b4": {
+          "name": "modulos__uq__df54a5f7b4",
           "nullsNotDistinct": false,
           "columns": ["slug"]
         }
@@ -535,8 +535,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "materiales_organizacion_id_organizaciones_id_fk": {
-          "name": "materiales_organizacion_id_organizaciones_id_fk",
+        "materiales__fk__b3747fe2d5": {
+          "name": "materiales__fk__b3747fe2d5",
           "tableFrom": "materiales",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -544,8 +544,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "materiales_organizacion_id_unidad_medida_id_unidades_medida_organizacion_id_id_fk": {
-          "name": "materiales_organizacion_id_unidad_medida_id_unidades_medida_organizacion_id_id_fk",
+        "materiales__fk__3e4ca8dfa2": {
+          "name": "materiales__fk__3e4ca8dfa2",
           "tableFrom": "materiales",
           "tableTo": "unidades_medida",
           "columnsFrom": ["organizacion_id", "unidad_medida_id"],
@@ -556,8 +556,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "materiales_organizacion_id_nombre_unique": {
-          "name": "materiales_organizacion_id_nombre_unique",
+        "materiales__uq__f0fe787d29": {
+          "name": "materiales__uq__f0fe787d29",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "nombre"]
         }
@@ -601,8 +601,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "organizaciones_identificador_cliente_unique": {
-          "name": "organizaciones_identificador_cliente_unique",
+        "organizaciones__uq__39c46b65c9": {
+          "name": "organizaciones__uq__39c46b65c9",
           "nullsNotDistinct": false,
           "columns": ["identificador_cliente"]
         }
@@ -644,8 +644,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "organizaciones_aplicaciones_organizacion_id_organizaciones_id_fk": {
-          "name": "organizaciones_aplicaciones_organizacion_id_organizaciones_id_fk",
+        "organizaciones_aplicaciones__fk__852d61f824": {
+          "name": "organizaciones_aplicaciones__fk__852d61f824",
           "tableFrom": "organizaciones_aplicaciones",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -653,8 +653,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "organizaciones_aplicaciones_aplicacion_id_aplicaciones_id_fk": {
-          "name": "organizaciones_aplicaciones_aplicacion_id_aplicaciones_id_fk",
+        "organizaciones_aplicaciones__fk__f089d5e267": {
+          "name": "organizaciones_aplicaciones__fk__f089d5e267",
           "tableFrom": "organizaciones_aplicaciones",
           "tableTo": "aplicaciones",
           "columnsFrom": ["aplicacion_id"],
@@ -665,8 +665,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "organizaciones_aplicaciones_organizacion_id_aplicacion_id_unique": {
-          "name": "organizaciones_aplicaciones_organizacion_id_aplicacion_id_unique",
+        "organizaciones_aplicaciones__uq__1ef6619111": {
+          "name": "organizaciones_aplicaciones__uq__1ef6619111",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "aplicacion_id"]
         }
@@ -735,8 +735,8 @@
         }
       },
       "indexes": {
-        "organizaciones_invitaciones_organizacion_id_email_index": {
-          "name": "organizaciones_invitaciones_organizacion_id_email_index",
+        "organizaciones_invitaciones__uqx__32b25d821a": {
+          "name": "organizaciones_invitaciones__uqx__32b25d821a",
           "columns": [
             {
               "expression": "organizacion_id",
@@ -759,8 +759,8 @@
         }
       },
       "foreignKeys": {
-        "organizaciones_invitaciones_organizacion_id_organizaciones_id_fk": {
-          "name": "organizaciones_invitaciones_organizacion_id_organizaciones_id_fk",
+        "organizaciones_invitaciones__fk__274cb82977": {
+          "name": "organizaciones_invitaciones__fk__274cb82977",
           "tableFrom": "organizaciones_invitaciones",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -771,8 +771,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "organizaciones_invitaciones_token_hash_unique": {
-          "name": "organizaciones_invitaciones_token_hash_unique",
+        "organizaciones_invitaciones__uq__6518f81ef0": {
+          "name": "organizaciones_invitaciones__uq__6518f81ef0",
           "nullsNotDistinct": false,
           "columns": ["token_hash"]
         }
@@ -830,8 +830,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "organizaciones_miembros_organizacion_id_organizaciones_id_fk": {
-          "name": "organizaciones_miembros_organizacion_id_organizaciones_id_fk",
+        "organizaciones_miembros__fk__873c14bf11": {
+          "name": "organizaciones_miembros__fk__873c14bf11",
           "tableFrom": "organizaciones_miembros",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -839,8 +839,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "organizaciones_miembros_usuario_id_users_id_fk": {
-          "name": "organizaciones_miembros_usuario_id_users_id_fk",
+        "organizaciones_miembros__fk__0a46230270": {
+          "name": "organizaciones_miembros__fk__0a46230270",
           "tableFrom": "organizaciones_miembros",
           "tableTo": "users",
           "columnsFrom": ["usuario_id"],
@@ -851,8 +851,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "organizaciones_miembros_organizacion_id_usuario_id_unique": {
-          "name": "organizaciones_miembros_organizacion_id_usuario_id_unique",
+        "organizaciones_miembros__uq__6ff6b34278": {
+          "name": "organizaciones_miembros__uq__6ff6b34278",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "usuario_id"]
         }
@@ -900,8 +900,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "organizaciones_miembros_aplicaciones_organizacion_id_organizaciones_id_fk": {
-          "name": "organizaciones_miembros_aplicaciones_organizacion_id_organizaciones_id_fk",
+        "organizaciones_miembros_aplicaciones__fk__f22d470bbe": {
+          "name": "organizaciones_miembros_aplicaciones__fk__f22d470bbe",
           "tableFrom": "organizaciones_miembros_aplicaciones",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -909,8 +909,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "manual_organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_fkey": {
-          "name": "manual_organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_fkey",
+        "organizaciones_miembros_aplicaciones__fk__d618c66ce9": {
+          "name": "organizaciones_miembros_aplicaciones__fk__d618c66ce9",
           "tableFrom": "organizaciones_miembros_aplicaciones",
           "tableTo": "organizaciones_miembros",
           "columnsFrom": ["organizacion_id", "usuario_id"],
@@ -918,8 +918,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "organizaciones_miembros_aplicaciones_organizacion_id_aplicacion_id_organizaciones_aplicaciones_organizacion_id_aplicacion_id_fk": {
-          "name": "organizaciones_miembros_aplicaciones_organizacion_id_aplicacion_id_organizaciones_aplicaciones_organizacion_id_aplicacion_id_fk",
+        "organizaciones_miembros_aplicaciones__fk__1a99e9d05a": {
+          "name": "organizaciones_miembros_aplicaciones__fk__1a99e9d05a",
           "tableFrom": "organizaciones_miembros_aplicaciones",
           "tableTo": "organizaciones_aplicaciones",
           "columnsFrom": ["organizacion_id", "aplicacion_id"],
@@ -930,8 +930,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_aplicacion_id_unique": {
-          "name": "organizaciones_miembros_aplicaciones_organizacion_id_usuario_id_aplicacion_id_unique",
+        "organizaciones_miembros_aplicaciones__uq__c7ff589836": {
+          "name": "organizaciones_miembros_aplicaciones__uq__c7ff589836",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "usuario_id", "aplicacion_id"]
         }
@@ -979,8 +979,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "organizaciones_miembros_proyectos_organizacion_id_organizaciones_id_fk": {
-          "name": "organizaciones_miembros_proyectos_organizacion_id_organizaciones_id_fk",
+        "organizaciones_miembros_proyectos__fk__2e93dc1f51": {
+          "name": "organizaciones_miembros_proyectos__fk__2e93dc1f51",
           "tableFrom": "organizaciones_miembros_proyectos",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -988,8 +988,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "organizaciones_miembros_proyectos_organizacion_id_usuario_id_organizaciones_miembros_organizacion_id_usuario_id_fk": {
-          "name": "organizaciones_miembros_proyectos_organizacion_id_usuario_id_organizaciones_miembros_organizacion_id_usuario_id_fk",
+        "organizaciones_miembros_proyectos__fk__9df76de526": {
+          "name": "organizaciones_miembros_proyectos__fk__9df76de526",
           "tableFrom": "organizaciones_miembros_proyectos",
           "tableTo": "organizaciones_miembros",
           "columnsFrom": ["organizacion_id", "usuario_id"],
@@ -997,8 +997,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "organizaciones_miembros_proyectos_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk": {
-          "name": "organizaciones_miembros_proyectos_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk",
+        "organizaciones_miembros_proyectos__fk__7d17988ba8": {
+          "name": "organizaciones_miembros_proyectos__fk__7d17988ba8",
           "tableFrom": "organizaciones_miembros_proyectos",
           "tableTo": "proyectos",
           "columnsFrom": ["organizacion_id", "proyecto_id"],
@@ -1009,8 +1009,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "organizaciones_miembros_proyectos_organizacion_id_usuario_id_proyecto_id_unique": {
-          "name": "organizaciones_miembros_proyectos_organizacion_id_usuario_id_proyecto_id_unique",
+        "organizaciones_miembros_proyectos__uq__3c5cb297df": {
+          "name": "organizaciones_miembros_proyectos__uq__3c5cb297df",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "usuario_id", "proyecto_id"]
         }
@@ -1058,8 +1058,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "organizaciones_razones_sociales_organizacion_id_organizaciones_id_fk": {
-          "name": "organizaciones_razones_sociales_organizacion_id_organizaciones_id_fk",
+        "organizaciones_razones_sociales__fk__a78a1c7d79": {
+          "name": "organizaciones_razones_sociales__fk__a78a1c7d79",
           "tableFrom": "organizaciones_razones_sociales",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -1070,13 +1070,13 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "organizaciones_razones_sociales_organizacion_id_id_unique": {
-          "name": "organizaciones_razones_sociales_organizacion_id_id_unique",
+        "organizaciones_razones_sociales__uq__42fe101a29": {
+          "name": "organizaciones_razones_sociales__uq__42fe101a29",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "id"]
         },
-        "organizaciones_razones_sociales_organizacion_id_cuit_unique": {
-          "name": "organizaciones_razones_sociales_organizacion_id_cuit_unique",
+        "organizaciones_razones_sociales__uq__f1ad38dee1": {
+          "name": "organizaciones_razones_sociales__uq__f1ad38dee1",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "cuit"]
         }
@@ -1124,8 +1124,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "unidades_medida_organizacion_id_organizaciones_id_fk": {
-          "name": "unidades_medida_organizacion_id_organizaciones_id_fk",
+        "unidades_medida__fk__f72863a30a": {
+          "name": "unidades_medida__fk__f72863a30a",
           "tableFrom": "unidades_medida",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -1136,18 +1136,18 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "unidades_medida_organizacion_id_id_unique": {
-          "name": "unidades_medida_organizacion_id_id_unique",
+        "unidades_medida__uq__c29303166e": {
+          "name": "unidades_medida__uq__c29303166e",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "id"]
         },
-        "unidades_medida_organizacion_id_codigo_unique": {
-          "name": "unidades_medida_organizacion_id_codigo_unique",
+        "unidades_medida__uq__aa69766fc9": {
+          "name": "unidades_medida__uq__aa69766fc9",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "codigo"]
         },
-        "unidades_medida_organizacion_id_nombre_unique": {
-          "name": "unidades_medida_organizacion_id_nombre_unique",
+        "unidades_medida__uq__d2e0350f00": {
+          "name": "unidades_medida__uq__d2e0350f00",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "nombre"]
         }
@@ -1183,8 +1183,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "plataforma_administradores_usuario_id_users_id_fk": {
-          "name": "plataforma_administradores_usuario_id_users_id_fk",
+        "plataforma_administradores__fk__bea820a0fb": {
+          "name": "plataforma_administradores__fk__bea820a0fb",
           "tableFrom": "plataforma_administradores",
           "tableTo": "users",
           "columnsFrom": ["usuario_id"],
@@ -1195,8 +1195,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "plataforma_administradores_usuario_id_unique": {
-          "name": "plataforma_administradores_usuario_id_unique",
+        "plataforma_administradores__uq__c093b02a47": {
+          "name": "plataforma_administradores__uq__c093b02a47",
           "nullsNotDistinct": false,
           "columns": ["usuario_id"]
         }
@@ -1238,20 +1238,20 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "plataforma_administradores_aplicaciones_plataforma_aplicacion_id_plataforma_aplicaciones_id_fk": {
-          "name": "plataforma_administradores_aplicaciones_plataforma_aplicacion_id_plataforma_aplicaciones_id_fk",
+        "plataforma_administradores_aplicaciones__fk__35716ddade": {
+          "name": "plataforma_administradores_aplicaciones__fk__35716ddade",
           "tableFrom": "plataforma_administradores_aplicaciones",
-          "tableTo": "plataforma_aplicaciones",
-          "columnsFrom": ["plataforma_aplicacion_id"],
+          "tableTo": "plataforma_administradores",
+          "columnsFrom": ["plataforma_administrador_id"],
           "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "manual_plataforma_administradores_aplicaciones_plataforma_administrador_id_fkey": {
-          "name": "manual_plataforma_administradores_aplicaciones_plataforma_administrador_id_fkey",
+        "plataforma_administradores_aplicaciones__fk__a159581135": {
+          "name": "plataforma_administradores_aplicaciones__fk__a159581135",
           "tableFrom": "plataforma_administradores_aplicaciones",
-          "tableTo": "plataforma_administradores",
-          "columnsFrom": ["plataforma_administrador_id"],
+          "tableTo": "plataforma_aplicaciones",
+          "columnsFrom": ["plataforma_aplicacion_id"],
           "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
@@ -1259,8 +1259,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "plataforma_administradores_aplicaciones_plataforma_administrador_id_plataforma_aplicacion_id_unique": {
-          "name": "plataforma_administradores_aplicaciones_plataforma_administrador_id_plataforma_aplicacion_id_unique",
+        "plataforma_administradores_aplicaciones__uq__7bca4e3d1d": {
+          "name": "plataforma_administradores_aplicaciones__uq__7bca4e3d1d",
           "nullsNotDistinct": false,
           "columns": ["plataforma_administrador_id", "plataforma_aplicacion_id"]
         }
@@ -1310,13 +1310,13 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "plataforma_aplicaciones_clave_unique": {
-          "name": "plataforma_aplicaciones_clave_unique",
+        "plataforma_aplicaciones__uq__2cbb7ac640": {
+          "name": "plataforma_aplicaciones__uq__2cbb7ac640",
           "nullsNotDistinct": false,
           "columns": ["clave"]
         },
-        "plataforma_aplicaciones_slug_unique": {
-          "name": "plataforma_aplicaciones_slug_unique",
+        "plataforma_aplicaciones__uq__7404e3395f": {
+          "name": "plataforma_aplicaciones__uq__7404e3395f",
           "nullsNotDistinct": false,
           "columns": ["slug"]
         }
@@ -1373,8 +1373,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "proyectos_organizacion_id_organizaciones_id_fk": {
-          "name": "proyectos_organizacion_id_organizaciones_id_fk",
+        "proyectos__fk__5b0c902ccd": {
+          "name": "proyectos__fk__5b0c902ccd",
           "tableFrom": "proyectos",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -1385,13 +1385,13 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "proyectos_organizacion_id_id_unique": {
-          "name": "proyectos_organizacion_id_id_unique",
+        "proyectos__uq__9a27922a60": {
+          "name": "proyectos__uq__9a27922a60",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "id"]
         },
-        "proyectos_organizacion_id_nombre_unique": {
-          "name": "proyectos_organizacion_id_nombre_unique",
+        "proyectos__uq__61ea8320be": {
+          "name": "proyectos__uq__61ea8320be",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "nombre"]
         }
@@ -1445,8 +1445,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "proyectos_categorias_organizacion_id_organizaciones_id_fk": {
-          "name": "proyectos_categorias_organizacion_id_organizaciones_id_fk",
+        "proyectos_categorias__fk__5c52a75272": {
+          "name": "proyectos_categorias__fk__5c52a75272",
           "tableFrom": "proyectos_categorias",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -1454,8 +1454,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "proyectos_categorias_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk": {
-          "name": "proyectos_categorias_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk",
+        "proyectos_categorias__fk__971e1dc92a": {
+          "name": "proyectos_categorias__fk__971e1dc92a",
           "tableFrom": "proyectos_categorias",
           "tableTo": "proyectos",
           "columnsFrom": ["organizacion_id", "proyecto_id"],
@@ -1463,8 +1463,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "proyectos_categorias_organizacion_id_proyecto_id_rubro_id_proyectos_rubros_organizacion_id_proyecto_id_id_fk": {
-          "name": "proyectos_categorias_organizacion_id_proyecto_id_rubro_id_proyectos_rubros_organizacion_id_proyecto_id_id_fk",
+        "proyectos_categorias__fk__b34b2600a3": {
+          "name": "proyectos_categorias__fk__b34b2600a3",
           "tableFrom": "proyectos_categorias",
           "tableTo": "proyectos_rubros",
           "columnsFrom": ["organizacion_id", "proyecto_id", "rubro_id"],
@@ -1475,8 +1475,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "proyectos_categorias_organizacion_id_proyecto_id_nombre_unique": {
-          "name": "proyectos_categorias_organizacion_id_proyecto_id_nombre_unique",
+        "proyectos_categorias__uq__940e2069ec": {
+          "name": "proyectos_categorias__uq__940e2069ec",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "proyecto_id", "nombre"]
         }
@@ -1524,8 +1524,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "proyectos_razones_sociales_organizacion_id_organizaciones_id_fk": {
-          "name": "proyectos_razones_sociales_organizacion_id_organizaciones_id_fk",
+        "proyectos_razones_sociales__fk__5f7c4ebad6": {
+          "name": "proyectos_razones_sociales__fk__5f7c4ebad6",
           "tableFrom": "proyectos_razones_sociales",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -1533,8 +1533,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "proyectos_razones_sociales_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk": {
-          "name": "proyectos_razones_sociales_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk",
+        "proyectos_razones_sociales__fk__f2d31f4b70": {
+          "name": "proyectos_razones_sociales__fk__f2d31f4b70",
           "tableFrom": "proyectos_razones_sociales",
           "tableTo": "proyectos",
           "columnsFrom": ["organizacion_id", "proyecto_id"],
@@ -1542,8 +1542,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "proyectos_razones_sociales_organizacion_id_organizacion_razon_social_id_organizaciones_razones_sociales_organizacion_id_id_fk": {
-          "name": "proyectos_razones_sociales_organizacion_id_organizacion_razon_social_id_organizaciones_razones_sociales_organizacion_id_id_fk",
+        "proyectos_razones_sociales__fk__86f7f4d79b": {
+          "name": "proyectos_razones_sociales__fk__86f7f4d79b",
           "tableFrom": "proyectos_razones_sociales",
           "tableTo": "organizaciones_razones_sociales",
           "columnsFrom": ["organizacion_id", "organizacion_razon_social_id"],
@@ -1554,8 +1554,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "proyectos_razones_sociales_organizacion_id_proyecto_id_organizacion_razon_social_id_unique": {
-          "name": "proyectos_razones_sociales_organizacion_id_proyecto_id_organizacion_razon_social_id_unique",
+        "proyectos_razones_sociales__uq__833319a1d2": {
+          "name": "proyectos_razones_sociales__uq__833319a1d2",
           "nullsNotDistinct": false,
           "columns": [
             "organizacion_id",
@@ -1614,8 +1614,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "proyectos_rubros_organizacion_id_organizaciones_id_fk": {
-          "name": "proyectos_rubros_organizacion_id_organizaciones_id_fk",
+        "proyectos_rubros__fk__8829c79917": {
+          "name": "proyectos_rubros__fk__8829c79917",
           "tableFrom": "proyectos_rubros",
           "tableTo": "organizaciones",
           "columnsFrom": ["organizacion_id"],
@@ -1623,8 +1623,8 @@
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
-        "proyectos_rubros_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk": {
-          "name": "proyectos_rubros_organizacion_id_proyecto_id_proyectos_organizacion_id_id_fk",
+        "proyectos_rubros__fk__cde46fa137": {
+          "name": "proyectos_rubros__fk__cde46fa137",
           "tableFrom": "proyectos_rubros",
           "tableTo": "proyectos",
           "columnsFrom": ["organizacion_id", "proyecto_id"],
@@ -1635,13 +1635,13 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "proyectos_rubros_organizacion_id_proyecto_id_id_unique": {
-          "name": "proyectos_rubros_organizacion_id_proyecto_id_id_unique",
+        "proyectos_rubros__uq__727d7ce5fc": {
+          "name": "proyectos_rubros__uq__727d7ce5fc",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "proyecto_id", "id"]
         },
-        "proyectos_rubros_organizacion_id_proyecto_id_nombre_unique": {
-          "name": "proyectos_rubros_organizacion_id_proyecto_id_nombre_unique",
+        "proyectos_rubros__uq__24fb30297a": {
+          "name": "proyectos_rubros__uq__24fb30297a",
           "nullsNotDistinct": false,
           "columns": ["organizacion_id", "proyecto_id", "nombre"]
         }
