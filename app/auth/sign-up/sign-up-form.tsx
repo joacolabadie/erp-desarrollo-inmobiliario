@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loading03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -52,6 +53,7 @@ type SignUpFormProps = {
 
 export function SignUpForm({ next }: SignUpFormProps) {
   const router = useRouter();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,7 +65,7 @@ export function SignUpForm({ next }: SignUpFormProps) {
     },
   });
 
-  const isSubmitting = form.formState.isSubmitting;
+  const isPending = form.formState.isSubmitting || isRedirecting;
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
@@ -79,7 +81,9 @@ export function SignUpForm({ next }: SignUpFormProps) {
         return;
       }
 
-      router.push(next || "/dashboard");
+      setIsRedirecting(true);
+
+      router.replace(next || "/dashboard");
     } catch {
       toast.error("Ocurrió un error inesperado al registrarte.");
     }
@@ -100,7 +104,7 @@ export function SignUpForm({ next }: SignUpFormProps) {
                 placeholder="Nombre completo"
                 autoComplete="name"
                 aria-invalid={fieldState.invalid}
-                disabled={isSubmitting}
+                disabled={isPending}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -119,7 +123,7 @@ export function SignUpForm({ next }: SignUpFormProps) {
                 placeholder="Correo electrónico"
                 autoComplete="email"
                 aria-invalid={fieldState.invalid}
-                disabled={isSubmitting}
+                disabled={isPending}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -138,7 +142,7 @@ export function SignUpForm({ next }: SignUpFormProps) {
                 placeholder="••••••••"
                 autoComplete="new-password"
                 aria-invalid={fieldState.invalid}
-                disabled={isSubmitting}
+                disabled={isPending}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -157,15 +161,15 @@ export function SignUpForm({ next }: SignUpFormProps) {
                 placeholder="••••••••"
                 autoComplete="new-password"
                 aria-invalid={fieldState.invalid}
-                disabled={isSubmitting}
+                disabled={isPending}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
         <Field>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting && (
+          <Button type="submit" disabled={isPending}>
+            {isPending && (
               <HugeiconsIcon
                 icon={Loading03Icon}
                 strokeWidth={2}

@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loading03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -33,6 +34,7 @@ type SignInFormProps = {
 
 export function SignInForm({ next }: SignInFormProps) {
   const router = useRouter();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,7 +44,7 @@ export function SignInForm({ next }: SignInFormProps) {
     },
   });
 
-  const isSubmitting = form.formState.isSubmitting;
+  const isPending = form.formState.isSubmitting || isRedirecting;
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
@@ -57,7 +59,9 @@ export function SignInForm({ next }: SignInFormProps) {
         return;
       }
 
-      router.push(next || "/dashboard");
+      setIsRedirecting(true);
+
+      router.replace(next || "/dashboard");
     } catch {
       toast.error("Ocurrió un error inesperado al ingresar.");
     }
@@ -79,7 +83,7 @@ export function SignInForm({ next }: SignInFormProps) {
                 placeholder="Correo electrónico"
                 autoComplete="email"
                 aria-invalid={fieldState.invalid}
-                disabled={isSubmitting}
+                disabled={isPending}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -98,15 +102,15 @@ export function SignInForm({ next }: SignInFormProps) {
                 placeholder="••••••••"
                 autoComplete="current-password"
                 aria-invalid={fieldState.invalid}
-                disabled={isSubmitting}
+                disabled={isPending}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
         <Field>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting && (
+          <Button type="submit" disabled={isPending}>
+            {isPending && (
               <HugeiconsIcon
                 icon={Loading03Icon}
                 strokeWidth={2}
