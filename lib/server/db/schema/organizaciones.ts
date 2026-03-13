@@ -12,6 +12,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   foreignKey,
+  integer,
   pgEnum,
   pgTable,
   text,
@@ -47,6 +48,7 @@ export const organizaciones = pgTable(
       .notNull(),
     identificadorCliente: text("identificador_cliente").notNull(),
     nombre: text("nombre").notNull(),
+    limiteProyectos: integer("limite_proyectos").notNull(),
   },
   (t) => [
     unique(
