@@ -1,7 +1,7 @@
 "use client";
 
-import { useBreadcrumbExtras } from "@/components/breadcrumb-extras";
-import { ModeToggle } from "@/components/mode-toggle";
+import { useBreadcrumbExtras } from "@/components/dashboard/breadcrumb-extras";
+import { ModeToggle } from "@/components/dashboard/mode-toggle";
 import {
   Breadcrumb,
   BreadcrumbItem,

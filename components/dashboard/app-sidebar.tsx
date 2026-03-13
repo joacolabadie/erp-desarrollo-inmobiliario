@@ -1,10 +1,10 @@
 "use client";
 
-import { NavMain } from "@/components/nav-main";
-import { NavPlataforma } from "@/components/nav-plataforma";
-import { NavUser } from "@/components/nav-user";
-import { OrganizacionSwitcher } from "@/components/organizacion-switcher";
-import { ProyectoSwitcher } from "@/components/proyecto-switcher";
+import { NavMain } from "@/components/dashboard/nav-main";
+import { NavPlataforma } from "@/components/dashboard/nav-plataforma";
+import { NavUser } from "@/components/dashboard/nav-user";
+import { OrganizacionSwitcher } from "@/components/dashboard/organizacion-switcher";
+import { ProyectoSwitcher } from "@/components/dashboard/proyecto-switcher";
 import {
   Sidebar,
   SidebarContent,

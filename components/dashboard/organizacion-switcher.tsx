@@ -1,5 +1,7 @@
 "use client";
 
+import { Tick02Icon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +15,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import type { Organizacion } from "@/lib/types/dashboard";
-import { Check, ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type OrganizacionSwitcherProps = {
@@ -51,7 +52,11 @@ export function OrganizacionSwitcher({
                   {organizacion?.nombre ?? "Seleccioná una organización"}
                 </span>
               </div>
-              <ChevronsUpDown className="ml-auto" />
+              <HugeiconsIcon
+                icon={UnfoldMoreIcon}
+                strokeWidth={2}
+                className="ml-auto"
+              />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
@@ -65,7 +70,11 @@ export function OrganizacionSwitcher({
                 >
                   {organizacion.nombre}
                   {organizacion.id === organizacionId && (
-                    <Check className="ml-auto" />
+                    <HugeiconsIcon
+                      icon={Tick02Icon}
+                      strokeWidth={2}
+                      className="ml-auto"
+                    />
                   )}
                 </DropdownMenuItem>
               ))}

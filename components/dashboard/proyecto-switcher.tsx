@@ -1,5 +1,7 @@
 "use client";
 
+import { Tick02Icon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +15,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import type { Proyecto } from "@/lib/types/dashboard";
-import { Check, ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type ProyectoSwitcherProps = {
@@ -55,7 +56,11 @@ export function ProyectoSwitcher({
                   {proyecto?.nombre ?? "Vista general"}
                 </span>
               </div>
-              <ChevronsUpDown className="ml-auto" />
+              <HugeiconsIcon
+                icon={UnfoldMoreIcon}
+                strokeWidth={2}
+                className="ml-auto"
+              />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
@@ -66,7 +71,13 @@ export function ProyectoSwitcher({
                 }
               >
                 Vista general
-                {proyectoId === null && <Check className="ml-auto" />}
+                {proyectoId === null && (
+                  <HugeiconsIcon
+                    icon={Tick02Icon}
+                    strokeWidth={2}
+                    className="ml-auto"
+                  />
+                )}
               </DropdownMenuItem>
               {proyectosOrganizacion.map((proyecto) => (
                 <DropdownMenuItem
@@ -78,7 +89,13 @@ export function ProyectoSwitcher({
                   }
                 >
                   {proyecto.nombre}
-                  {proyecto.id === proyectoId && <Check className="ml-auto" />}
+                  {proyecto.id === proyectoId && (
+                    <HugeiconsIcon
+                      icon={Tick02Icon}
+                      strokeWidth={2}
+                      className="ml-auto"
+                    />
+                  )}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuGroup>

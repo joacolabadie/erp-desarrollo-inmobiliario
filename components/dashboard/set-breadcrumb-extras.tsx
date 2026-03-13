@@ -3,8 +3,8 @@
 import type {
   BreadcrumbExtra,
   BreadcrumbExtraInput,
-} from "@/components/breadcrumb-extras";
-import { useBreadcrumbExtras } from "@/components/breadcrumb-extras";
+} from "@/components/dashboard/breadcrumb-extras";
+import { useBreadcrumbExtras } from "@/components/dashboard/breadcrumb-extras";
 import { useEffect, useMemo } from "react";
 
 function makeKey(extra: BreadcrumbExtraInput) {

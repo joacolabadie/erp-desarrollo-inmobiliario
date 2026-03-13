@@ -1,5 +1,7 @@
 "use client";
 
+import { Logout03Icon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -15,7 +17,6 @@ import {
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
 import type { User } from "@/lib/types/dashboard";
-import { ChevronsUpDown, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type NavUserProps = {
@@ -45,7 +46,11 @@ export function NavUser({ user }: NavUserProps) {
                   {user.email}
                 </span>
               </div>
-              <ChevronsUpDown className="ml-auto" />
+              <HugeiconsIcon
+                icon={UnfoldMoreIcon}
+                strokeWidth={2}
+                className="ml-auto"
+              />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
@@ -59,7 +64,11 @@ export function NavUser({ user }: NavUserProps) {
                   }}
                   className="w-full"
                 >
-                  <LogOut />
+                  <HugeiconsIcon
+                    icon={Logout03Icon}
+                    strokeWidth={2}
+                    data-icon="inline-start"
+                  />
                   Cerrar sesión
                 </button>
               </DropdownMenuItem>

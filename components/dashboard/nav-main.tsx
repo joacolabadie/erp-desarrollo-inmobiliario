@@ -16,7 +16,8 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import type { Modulo } from "@/lib/types/dashboard";
-import { ChevronRight } from "lucide-react";
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 
 type NavMainProps = {
@@ -65,7 +66,11 @@ export function NavMain({ organizacionId, proyectoId, modulos }: NavMainProps) {
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton className="[&[data-state=open]>svg]:rotate-90">
                   <span>{modulo.nombre}</span>
-                  <ChevronRight className="ml-auto transition-transform" />
+                  <HugeiconsIcon
+                    icon={ArrowRight01Icon}
+                    strokeWidth={2}
+                    className="ml-auto transition-transform"
+                  />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               <CollapsibleContent>
