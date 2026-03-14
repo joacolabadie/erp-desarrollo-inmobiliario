@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
   if (!result.success) {
     return NextResponse.json(
-      { ok: false, message: "Datos del formulario inválidos." },
+      { ok: false, message: "Datos de la solicitud inválidos." },
       { status: 400 },
     );
   }
