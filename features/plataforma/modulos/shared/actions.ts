@@ -141,7 +141,7 @@ export async function moduloEditAction(input: ModuloEditSchema) {
   const { moduloId, clave, slug, nombre } = result.data;
 
   try {
-    const updatedModulo = await db
+    const modulo = await db
       .update(modulosTabla)
       .set({
         clave,
@@ -151,7 +151,7 @@ export async function moduloEditAction(input: ModuloEditSchema) {
       .where(eq(modulosTabla.id, moduloId))
       .returning({ id: modulosTabla.id });
 
-    if (updatedModulo.length === 0) {
+    if (modulo.length === 0) {
       return {
         ok: false,
         message: "El módulo no existe.",
@@ -239,12 +239,12 @@ export async function moduloDeleteAction(input: ModuloDeleteSchema) {
   const { moduloId } = result.data;
 
   try {
-    const deletedModulo = await db
+    const modulo = await db
       .delete(modulosTabla)
       .where(eq(modulosTabla.id, moduloId))
       .returning({ id: modulosTabla.id });
 
-    if (deletedModulo.length === 0) {
+    if (modulo.length === 0) {
       return {
         ok: false,
         message: "El módulo no existe.",
@@ -391,86 +391,6 @@ export async function aplicacionCreateAction(input: AplicacionCreateSchema) {
   }
 }
 
-export async function aplicacionDeleteAction(input: AplicacionDeleteSchema) {
-  const result = aplicacionDeleteSchema.safeParse(input);
-
-  if (!result.success) {
-    return { ok: false, message: "Datos del formulario inválidos." };
-  }
-
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session) {
-    return { ok: false, message: "No autorizado." };
-  }
-
-  const allowed = await hasAplicacionPlataformaAccess({
-    userId: session.user.id,
-    clave: "MODULOS",
-  });
-
-  if (!allowed) {
-    return { ok: false, message: "No autorizado." };
-  }
-
-  const { aplicacionId } = result.data;
-
-  try {
-    const deletedAplicacion = await db
-      .delete(aplicacionesTabla)
-      .where(eq(aplicacionesTabla.id, aplicacionId))
-      .returning({
-        id: aplicacionesTabla.id,
-        moduloId: aplicacionesTabla.moduloId,
-      });
-
-    if (deletedAplicacion.length === 0) {
-      return {
-        ok: false,
-        message: "La aplicación no existe.",
-      };
-    }
-
-    revalidatePath(
-      `/dashboard/plataforma/modulos/${deletedAplicacion[0].moduloId}/aplicaciones`,
-    );
-
-    return { ok: true };
-  } catch (error: unknown) {
-    const cause = error instanceof DrizzleQueryError ? error.cause : error;
-
-    if (typeof cause === "object" && cause !== null) {
-      const code = (cause as Record<string, unknown>)["code"];
-
-      if (code === "23503") {
-        const constraint = (cause as Record<string, unknown>)["constraint"];
-
-        if (
-          constraint ===
-          generateConstraintName({
-            table: "organizaciones_aplicaciones",
-            kind: "fk",
-            parts: ["aplicacion_id", "aplicaciones", "id"],
-          })
-        ) {
-          return {
-            ok: false,
-            message:
-              "No se puede eliminar la aplicación porque está asignada a una organización.",
-          };
-        }
-      }
-    }
-
-    return {
-      ok: false,
-      message: "Ocurrió un error inesperado al eliminar la aplicación.",
-    };
-  }
-}
-
 export async function aplicacionEditAction(input: AplicacionEditSchema) {
   const result = aplicacionEditSchema.safeParse(input);
 
@@ -500,7 +420,7 @@ export async function aplicacionEditAction(input: AplicacionEditSchema) {
   const scope = result.data.scope as AplicacionScope;
 
   try {
-    const updatedAplicacion = await db
+    const aplicacion = await db
       .update(aplicacionesTabla)
       .set({
         clave,
@@ -516,7 +436,7 @@ export async function aplicacionEditAction(input: AplicacionEditSchema) {
       )
       .returning({ id: aplicacionesTabla.id });
 
-    if (updatedAplicacion.length === 0) {
+    if (aplicacion.length === 0) {
       return {
         ok: false,
         message: "La aplicación no existe.",
@@ -573,6 +493,86 @@ export async function aplicacionEditAction(input: AplicacionEditSchema) {
     return {
       ok: false,
       message: "Ocurrió un error inesperado al editar la aplicación.",
+    };
+  }
+}
+
+export async function aplicacionDeleteAction(input: AplicacionDeleteSchema) {
+  const result = aplicacionDeleteSchema.safeParse(input);
+
+  if (!result.success) {
+    return { ok: false, message: "Datos del formulario inválidos." };
+  }
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return { ok: false, message: "No autorizado." };
+  }
+
+  const allowed = await hasAplicacionPlataformaAccess({
+    userId: session.user.id,
+    clave: "MODULOS",
+  });
+
+  if (!allowed) {
+    return { ok: false, message: "No autorizado." };
+  }
+
+  const { aplicacionId } = result.data;
+
+  try {
+    const aplicacion = await db
+      .delete(aplicacionesTabla)
+      .where(eq(aplicacionesTabla.id, aplicacionId))
+      .returning({
+        id: aplicacionesTabla.id,
+        moduloId: aplicacionesTabla.moduloId,
+      });
+
+    if (aplicacion.length === 0) {
+      return {
+        ok: false,
+        message: "La aplicación no existe.",
+      };
+    }
+
+    revalidatePath(
+      `/dashboard/plataforma/modulos/${aplicacion[0].moduloId}/aplicaciones`,
+    );
+
+    return { ok: true };
+  } catch (error: unknown) {
+    const cause = error instanceof DrizzleQueryError ? error.cause : error;
+
+    if (typeof cause === "object" && cause !== null) {
+      const code = (cause as Record<string, unknown>)["code"];
+
+      if (code === "23503") {
+        const constraint = (cause as Record<string, unknown>)["constraint"];
+
+        if (
+          constraint ===
+          generateConstraintName({
+            table: "organizaciones_aplicaciones",
+            kind: "fk",
+            parts: ["aplicacion_id", "aplicaciones", "id"],
+          })
+        ) {
+          return {
+            ok: false,
+            message:
+              "No se puede eliminar la aplicación porque está asignada a una organización.",
+          };
+        }
+      }
+    }
+
+    return {
+      ok: false,
+      message: "Ocurrió un error inesperado al eliminar la aplicación.",
     };
   }
 }
