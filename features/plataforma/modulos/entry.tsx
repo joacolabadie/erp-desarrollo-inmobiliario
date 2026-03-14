@@ -1,5 +1,5 @@
-import AplicacionesList from "@/features/plataforma/modulos/routes/aplicaciones/list";
-import ModulosList from "@/features/plataforma/modulos/routes/modulos/list";
+import AplicacionesList from "@/features/plataforma/modulos/routes/aplicaciones/aplicaciones-list";
+import ModulosList from "@/features/plataforma/modulos/routes/modulos/modulos-list";
 import { auth } from "@/lib/auth";
 import { hasAplicacionPlataformaAccess } from "@/lib/server/guards/has-aplicacion-plataforma-access";
 import type { AplicacionPlataformaComponentProps } from "@/registry/types";

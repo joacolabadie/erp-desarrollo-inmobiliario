@@ -1,6 +1,6 @@
 import { SetBreadcrumbExtras } from "@/components/dashboard/set-breadcrumb-extras";
 import { Button } from "@/components/ui/button";
-import { AplicacionesTable } from "@/features/plataforma/modulos/routes/aplicaciones/components/table";
+import { AplicacionesTable } from "@/features/plataforma/modulos/routes/aplicaciones/components/aplicaciones-table";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import {

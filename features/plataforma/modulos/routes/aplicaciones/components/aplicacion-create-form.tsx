@@ -64,13 +64,7 @@ export function AplicacionCreateForm({ moduloId }: AplicacionCreateFormProps) {
 
       toast.success("Aplicación creada correctamente.");
 
-      form.reset({
-        moduloId,
-        clave: "",
-        slug: "",
-        nombre: "",
-        scope: "",
-      });
+      form.reset();
 
       router.refresh();
     } catch {

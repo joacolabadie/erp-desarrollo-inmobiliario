@@ -1,4 +1,4 @@
-import { ModulosTable } from "@/features/plataforma/modulos/routes/modulos/components/table";
+import { ModulosTable } from "@/features/plataforma/modulos/routes/modulos/components/modulos-table";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/server/db";
 import { modulos as modulosTabla } from "@/lib/server/db/schema";
