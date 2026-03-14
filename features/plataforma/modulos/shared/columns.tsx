@@ -23,6 +23,7 @@ import { MoreHorizontalCircle01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import { toast } from "sonner";
 
 type AplicacionesColumnsArgs = {
   moduloId: string;
@@ -64,7 +65,15 @@ export const modulosColumns: ColumnDef<Modulo>[] = [
             <DropdownMenuContent align="end" className="whitespace-nowrap">
               <DropdownMenuLabel>Acciones</DropdownMenuLabel>
               <DropdownMenuItem
-                onSelect={() => navigator.clipboard.writeText(modulo.id)}
+                onSelect={async () => {
+                  try {
+                    await navigator.clipboard.writeText(modulo.id);
+
+                    toast.success("ID copiado correctamente.");
+                  } catch {
+                    toast.error("Ocurrió un error inesperado al copiar el ID.");
+                  }
+                }}
               >
                 Copiar ID
               </DropdownMenuItem>
@@ -157,7 +166,15 @@ export const aplicacionesColumns = ({
             <DropdownMenuContent align="end" className="whitespace-nowrap">
               <DropdownMenuLabel>Acciones</DropdownMenuLabel>
               <DropdownMenuItem
-                onSelect={() => navigator.clipboard.writeText(aplicacion.id)}
+                onSelect={async () => {
+                  try {
+                    await navigator.clipboard.writeText(aplicacion.id);
+
+                    toast.success("ID copiado correctamente.");
+                  } catch {
+                    toast.error("Ocurrió un error inesperado al copiar el ID.");
+                  }
+                }}
               >
                 Copiar ID
               </DropdownMenuItem>

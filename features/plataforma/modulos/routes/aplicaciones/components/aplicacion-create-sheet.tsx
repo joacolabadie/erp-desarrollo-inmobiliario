@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -30,6 +31,9 @@ export function AplicacionCreateSheet({
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Crear aplicación</SheetTitle>
+          <SheetDescription>
+            Completá los datos de la aplicación.
+          </SheetDescription>
         </SheetHeader>
         <div className="px-4 pb-4">
           <AplicacionCreateForm moduloId={moduloId} />

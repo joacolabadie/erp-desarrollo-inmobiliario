@@ -3,6 +3,7 @@
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -28,6 +29,9 @@ export function AplicacionEditSheet({
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Editar aplicación</SheetTitle>
+          <SheetDescription>
+            Actualizá los datos de la aplicación.
+          </SheetDescription>
         </SheetHeader>
         <div className="px-4 pb-4">
           <AplicacionEditForm moduloId={moduloId} aplicacion={aplicacion} />

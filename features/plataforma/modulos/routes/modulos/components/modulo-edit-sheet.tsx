@@ -3,6 +3,7 @@
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -23,6 +24,7 @@ export function ModuloEditSheet({ trigger, modulo }: ModuloEditSheetProps) {
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Editar módulo</SheetTitle>
+          <SheetDescription>Actualizá los datos del módulo.</SheetDescription>
         </SheetHeader>
         <div className="px-4 pb-4">
           <ModuloEditForm modulo={modulo} />
