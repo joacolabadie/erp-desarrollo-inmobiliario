@@ -16,7 +16,7 @@ export function AplicacionesTable({
 }: AplicacionesTableProps) {
   return (
     <DataTable
-      columns={aplicacionesColumns(moduloId)}
+      columns={aplicacionesColumns({ moduloId })}
       data={aplicaciones}
       search={{ placeholder: "Buscar aplicación..." }}
       actionSlot={<AplicacionCreateSheet moduloId={moduloId} />}

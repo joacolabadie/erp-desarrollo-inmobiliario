@@ -10,6 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { AplicacionEditSheet } from "@/features/plataforma/modulos/routes/aplicaciones/components/aplicacion-edit-sheet";
+import { ModuloEditSheet } from "@/features/plataforma/modulos/routes/modulos/components/modulo-edit-sheet";
 import type {
   Aplicacion,
   Modulo,
@@ -19,6 +21,10 @@ import { MoreHorizontalCircle01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+
+type AplicacionesColumnsArgs = {
+  moduloId: string;
+};
 
 export const modulosColumns: ColumnDef<Modulo>[] = [
   {
@@ -56,12 +62,20 @@ export const modulosColumns: ColumnDef<Modulo>[] = [
             <DropdownMenuContent align="end" className="whitespace-nowrap">
               <DropdownMenuLabel>Acciones</DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(modulo.id)}
+                onSelect={() => navigator.clipboard.writeText(modulo.id)}
               >
                 Copiar ID
               </DropdownMenuItem>
-              {/* TODO: open edit sheet */}
-              <DropdownMenuItem>Editar</DropdownMenuItem>
+              <ModuloEditSheet
+                trigger={
+                  <DropdownMenuItem
+                    onSelect={(event) => event.preventDefault()}
+                  >
+                    Editar
+                  </DropdownMenuItem>
+                }
+                modulo={modulo}
+              />
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link
@@ -78,9 +92,9 @@ export const modulosColumns: ColumnDef<Modulo>[] = [
   },
 ];
 
-export const aplicacionesColumns = (
-  moduloId: string,
-): ColumnDef<Aplicacion>[] => [
+export const aplicacionesColumns = ({
+  moduloId,
+}: AplicacionesColumnsArgs): ColumnDef<Aplicacion>[] => [
   {
     accessorKey: "id",
     header: "ID",
@@ -129,12 +143,21 @@ export const aplicacionesColumns = (
             <DropdownMenuContent align="end" className="whitespace-nowrap">
               <DropdownMenuLabel>Acciones</DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(aplicacion.id)}
+                onSelect={() => navigator.clipboard.writeText(aplicacion.id)}
               >
                 Copiar ID
               </DropdownMenuItem>
-              {/* TODO: open edit sheet with moduloId */}
-              <DropdownMenuItem>Editar</DropdownMenuItem>
+              <AplicacionEditSheet
+                trigger={
+                  <DropdownMenuItem
+                    onSelect={(event) => event.preventDefault()}
+                  >
+                    Editar
+                  </DropdownMenuItem>
+                }
+                moduloId={moduloId}
+                aplicacion={aplicacion}
+              />
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
