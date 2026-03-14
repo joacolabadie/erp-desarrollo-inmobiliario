@@ -2,12 +2,16 @@
 
 import {
   aplicacionCreateSchema,
+  aplicacionDeleteSchema,
   aplicacionEditSchema,
   moduloCreateSchema,
+  moduloDeleteSchema,
   moduloEditSchema,
   type AplicacionCreateSchema,
+  type AplicacionDeleteSchema,
   type AplicacionEditSchema,
   type ModuloCreateSchema,
+  type ModuloDeleteSchema,
   type ModuloEditSchema,
 } from "@/features/plataforma/modulos/shared/schema";
 import { auth } from "@/lib/auth";
@@ -208,6 +212,81 @@ export async function moduloEditAction(input: ModuloEditSchema) {
   }
 }
 
+export async function moduloDeleteAction(input: ModuloDeleteSchema) {
+  const result = moduloDeleteSchema.safeParse(input);
+
+  if (!result.success) {
+    return { ok: false, message: "Datos del formulario inválidos." };
+  }
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return { ok: false, message: "No autorizado." };
+  }
+
+  const allowed = await hasAplicacionPlataformaAccess({
+    userId: session.user.id,
+    clave: "MODULOS",
+  });
+
+  if (!allowed) {
+    return { ok: false, message: "No autorizado." };
+  }
+
+  const { moduloId } = result.data;
+
+  try {
+    const deletedModulo = await db
+      .delete(modulosTabla)
+      .where(eq(modulosTabla.id, moduloId))
+      .returning({ id: modulosTabla.id });
+
+    if (deletedModulo.length === 0) {
+      return {
+        ok: false,
+        message: "El módulo no existe.",
+      };
+    }
+
+    revalidatePath("/dashboard/plataforma/modulos");
+
+    return { ok: true };
+  } catch (error: unknown) {
+    const cause = error instanceof DrizzleQueryError ? error.cause : error;
+
+    if (typeof cause === "object" && cause !== null) {
+      const code = (cause as Record<string, unknown>)["code"];
+
+      if (code === "23503") {
+        const constraint = (cause as Record<string, unknown>)["constraint"];
+
+        if (
+          constraint ===
+          generateConstraintName({
+            table: "aplicaciones",
+            kind: "fk",
+            parts: ["modulo_id", "modulos", "id"],
+          })
+        ) {
+          return {
+            ok: false,
+            message:
+              "No se puede eliminar el módulo porque tiene aplicaciones asociadas.",
+          };
+        }
+      }
+    }
+
+    return {
+      ok: false,
+      message: "Ocurrió un error inesperado al eliminar el módulo.",
+    };
+  }
+}
+
 export async function aplicacionCreateAction(input: AplicacionCreateSchema) {
   const result = aplicacionCreateSchema.safeParse(input);
 
@@ -308,6 +387,86 @@ export async function aplicacionCreateAction(input: AplicacionCreateSchema) {
     return {
       ok: false,
       message: "Ocurrió un error inesperado al crear la aplicación.",
+    };
+  }
+}
+
+export async function aplicacionDeleteAction(input: AplicacionDeleteSchema) {
+  const result = aplicacionDeleteSchema.safeParse(input);
+
+  if (!result.success) {
+    return { ok: false, message: "Datos del formulario inválidos." };
+  }
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return { ok: false, message: "No autorizado." };
+  }
+
+  const allowed = await hasAplicacionPlataformaAccess({
+    userId: session.user.id,
+    clave: "MODULOS",
+  });
+
+  if (!allowed) {
+    return { ok: false, message: "No autorizado." };
+  }
+
+  const { aplicacionId } = result.data;
+
+  try {
+    const deletedAplicacion = await db
+      .delete(aplicacionesTabla)
+      .where(eq(aplicacionesTabla.id, aplicacionId))
+      .returning({
+        id: aplicacionesTabla.id,
+        moduloId: aplicacionesTabla.moduloId,
+      });
+
+    if (deletedAplicacion.length === 0) {
+      return {
+        ok: false,
+        message: "La aplicación no existe.",
+      };
+    }
+
+    revalidatePath(
+      `/dashboard/plataforma/modulos/${deletedAplicacion[0].moduloId}/aplicaciones`,
+    );
+
+    return { ok: true };
+  } catch (error: unknown) {
+    const cause = error instanceof DrizzleQueryError ? error.cause : error;
+
+    if (typeof cause === "object" && cause !== null) {
+      const code = (cause as Record<string, unknown>)["code"];
+
+      if (code === "23503") {
+        const constraint = (cause as Record<string, unknown>)["constraint"];
+
+        if (
+          constraint ===
+          generateConstraintName({
+            table: "organizaciones_aplicaciones",
+            kind: "fk",
+            parts: ["aplicacion_id", "aplicaciones", "id"],
+          })
+        ) {
+          return {
+            ok: false,
+            message:
+              "No se puede eliminar la aplicación porque está asignada a una organización.",
+          };
+        }
+      }
+    }
+
+    return {
+      ok: false,
+      message: "Ocurrió un error inesperado al eliminar la aplicación.",
     };
   }
 }

@@ -58,6 +58,12 @@ export const moduloEditSchema = z.object({
 
 export type ModuloEditSchema = z.infer<typeof moduloEditSchema>;
 
+export const moduloDeleteSchema = z.object({
+  moduloId: z.uuid("El módulo seleccionado es inválido."),
+});
+
+export type ModuloDeleteSchema = z.infer<typeof moduloDeleteSchema>;
+
 export const aplicacionCreateSchema = z.object({
   moduloId: z.uuid("El módulo seleccionado es inválido."),
   clave: z
@@ -138,3 +144,9 @@ export const aplicacionEditSchema = z.object({
 });
 
 export type AplicacionEditSchema = z.infer<typeof aplicacionEditSchema>;
+
+export const aplicacionDeleteSchema = z.object({
+  aplicacionId: z.uuid("La aplicación seleccionada es inválida."),
+});
+
+export type AplicacionDeleteSchema = z.infer<typeof aplicacionDeleteSchema>;

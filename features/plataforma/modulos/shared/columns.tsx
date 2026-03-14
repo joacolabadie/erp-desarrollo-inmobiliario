@@ -10,7 +10,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { AplicacionDeleteDialog } from "@/features/plataforma/modulos/routes/aplicaciones/components/aplicacion-delete-dialog";
 import { AplicacionEditSheet } from "@/features/plataforma/modulos/routes/aplicaciones/components/aplicacion-edit-sheet";
+import { ModuloDeleteDialog } from "@/features/plataforma/modulos/routes/modulos/components/modulo-delete-dialog";
 import { ModuloEditSheet } from "@/features/plataforma/modulos/routes/modulos/components/modulo-edit-sheet";
 import type {
   Aplicacion,
@@ -84,6 +86,18 @@ export const modulosColumns: ColumnDef<Modulo>[] = [
                   Ver aplicaciones
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <ModuloDeleteDialog
+                trigger={
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onSelect={(event) => event.preventDefault()}
+                  >
+                    Eliminar
+                  </DropdownMenuItem>
+                }
+                modulo={modulo}
+              />
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -156,6 +170,18 @@ export const aplicacionesColumns = ({
                   </DropdownMenuItem>
                 }
                 moduloId={moduloId}
+                aplicacion={aplicacion}
+              />
+              <DropdownMenuSeparator />
+              <AplicacionDeleteDialog
+                trigger={
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onSelect={(event) => event.preventDefault()}
+                  >
+                    Eliminar
+                  </DropdownMenuItem>
+                }
                 aplicacion={aplicacion}
               />
             </DropdownMenuContent>
